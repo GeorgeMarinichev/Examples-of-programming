@@ -1,0 +1,86 @@
+////////////////////////////Отправка файлов в Results API
+
+using System;//Подключение директивы
+
+namespace Space//Пространство имен
+{
+    class Program//Главный класс приложения
+    {  
+        static void Main(string[] args)
+        {
+            // ////////////////////Отправка файла как массив байтов
+            // var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+
+            // app.Map("/gif", async()=>
+            // {
+            //     string path = "uploads/GIF.gif";//Путь до файла
+            //     byte[] fileContent = await File.ReadAllBytesAsync(path);//Считвывание файла в массив байтов
+            //     string contentType = "image/gif";//Установка MIME-типа
+            //     string donwladName = "GIF.gif";//Установка загружаемого имени
+            //     return Results.File(fileContent, contentType, donwladName);
+            // });
+        
+            // app.Map("/", ()=> "Hello, World");
+
+            // //app.Run(async(context)=> await context.Response.WriteAsync($"Text:{context.Items["text"]}"));
+            // app.Run();
+
+            // ////////////////////Отправка файла в виде файлового потока
+            // var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+
+            // app.Map("/gif", ()=>
+            // {
+            //     string path = "uploads/GIF.gif";//Путь до файла
+            //     FileStream fileStream = new FileStream(path, FileMode.Open);//Считвывание файла в массив байтов
+            //     string contentType = "image/gif";//Установка MIME-типа
+            //     string donwladName = "GIF.gif";//Установка загружаемого имени
+            //     return Results.File(fileStream, contentType, donwladName);
+            // });
+        
+            // app.Map("/", ()=> "Hello, World");
+
+            // //app.Run(async(context)=> await context.Response.WriteAsync($"Text:{context.Items["text"]}"));
+            // app.Run();
+
+            // ////////////////////Отправка файла по определенному пути
+            // var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+
+            // app.Map("/gif", ()=>
+            // {
+            //     string path = "GIF.gif";//Путь до файла папка wwwroot
+            //     string contentType = "image/gif";//Установка MIME-типа
+            //     string donwladName = "GIF.gif";//Установка загружаемого имени
+            //     return Results.File(path, contentType, donwladName);
+            // });
+        
+            // app.Map("/", ()=> "Hello, World");
+
+            // //app.Run(async(context)=> await context.Response.WriteAsync($"Text:{context.Items["text"]}"));
+            // app.Run();
+
+            ////////////////////Отправка файла по определенному пути из выбранной папки
+            var builder = WebApplication.CreateBuilder(new WebApplicationOptions {WebRootPath = "uploads"});//Имя папки для хранения файлов
+
+            var app = builder.Build();
+
+            app.Map("/gif", ()=>
+            {
+                string path = "GIF.gif";//Путь до файла папка wwwroot
+                string contentType = "image/gif";//Установка MIME-типа
+                string donwladName = "GIF.gif";//Установка загружаемого имени
+                return Results.File(path, contentType, donwladName);
+            });
+        
+            app.Map("/", ()=> "Hello, World");
+
+            //app.Run(async(context)=> await context.Response.WriteAsync($"Text:{context.Items["text"]}"));
+            app.Run();
+
+
+        }
+     
+    }
+}

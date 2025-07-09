@@ -1,0 +1,105 @@
+using System.ComponentModel;
+using System.Reflection;
+
+record class Person(string Name, string Company);
+record class Company(string Title, string Language);
+//////////////////////////////////////////////////////
+record class Course(string Title);
+record class Student(string Name);
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Соединение коллекций");
+        //////////////////////////join///////////////////////////////////
+        Person[] people =
+        {
+            new Person("Tom", "Microsoft"), new Person("Bob", "Google"),
+            new Person("Sam", "JetBrains"), new Person("Mike", "Google")
+        };
+
+        Company[] companies =
+        {
+            new Company("Microsoft", "C#"), 
+            new Company("Google", "Go"),
+            new Company("Google", "Python"),
+            new Company("Oracle", "Java")
+        };
+
+        // var employees = from p in people//Оператор сортировки join
+        //                 join c in companies on p.Company equals c.Title
+        //                 select new {Name = p.Name, Company = c.Title, Language = c.Language};
+
+        var employees = people.Join(companies, p => p.Company, c => c.Title, (p, c) => 
+        new {Name = p.Name, Company = c.Title, Language = c.Language});//Метод расширения Join()
+
+        foreach (var item in employees)
+        {
+            Console.WriteLine($"{item.Name}-{item.Company}({item.Language})");
+        }
+
+        //////////////////////////GroopJoin///////////////////////////////////
+        Console.WriteLine("===========================================================");
+        Person[] people1 =
+        {
+            new Person("Tom", "Microsoft"), new Person("Bob", "Google"),
+            new Person("Sam", "JetBrains"), new Person("Mike", "Google")
+        };
+
+        Company[] companies1 =
+        {
+            new Company("Microsoft", "C#"), 
+            new Company("Google", "Go"),
+            new Company("Google", "Python"),
+            new Company("Oracle", "Java")
+        };
+
+        var personnel = from c in companies//Оператор сортировки join
+                        join p in people1 on c.Title equals p.Company into g
+                        select new
+                        {
+                            Title = c.Title,
+                            Employees = g
+                        };
+
+        // var personnel = companies1.GroupJoin(people1, //Метод расширения Join()
+        //             c => c.Title, 
+        //             p => p.Company,
+        //             (c, employees)=> new
+        //             {
+        //                 Title = c.Title,
+        //                 Employees = employees
+        //             });
+       
+
+        foreach (var item1 in personnel)
+        {
+            Console.WriteLine(item1.Title);
+            foreach (var item2 in item1.Employees)
+            {
+                Console.WriteLine(item2.Name);
+            }
+            Console.WriteLine("------------------------------------------");
+        }
+
+        //////////////////////////Zip///////////////////////////////////
+       var courses = new List<Course> {new Course("C#"), new Course("Java")};
+       var students = new List<Student> {new Student("Tom"), new Student("Sam")};
+
+       var enrollments = courses.Zip(students);
+
+       foreach (var item in enrollments)
+       {
+         Console.WriteLine($"{item.First}-{item.Second}");
+       }
+        
+    }
+
+}
+    
+        
+
+
+
+

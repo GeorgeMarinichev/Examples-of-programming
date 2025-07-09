@@ -1,0 +1,179 @@
+
+
+using System.Diagnostics;
+
+namespace Genesis; // Пространство имен
+/////////////////Semaphore///////////////////////////
+class  Reader
+{
+    //Созание семафора
+    static Semaphore sem = new Semaphore(3, 3);
+    Thread myThread;
+    int count = 3;//Счетчик чтпения
+    public Reader(int i)
+    {
+        myThread = new Thread(Read);
+        myThread.Name = $"Читатель{i}";
+        myThread.Start();
+    }
+    ///////////////////////////////////////////////
+
+    public void Read()
+    {
+        sem.WaitOne();//Ожидание, когда осободится место
+        Console.WriteLine($"{Thread.CurrentThread.Name} входит в библиотеку");
+        Console.WriteLine($"{Thread.CurrentThread.Name} читает");
+        Thread.Sleep(1000);
+        Console.WriteLine($"{Thread.CurrentThread.Name} покидает библиотеку");
+        sem.Release();//Освобождает место
+        count--;
+        Thread.Sleep(1000);
+    }
+}
+
+class Program // Основной класс программы
+{
+    public static void Main(string[] args)// Основной метод программы
+    {
+        Console.WriteLine("===================<<<Многопоточность lock, Monitor, AutoResetEvent, Mutex, Semaphore>>>================");
+
+        // int x = 0;
+        // object locker = new();//Объект заглушка
+        // //Запускаем пять потоков
+        // for (int i = 1; i < 6; i++)
+        // {
+        //     Thread myT1 = new(Print);
+        //     myT1.Name = $"Поток-{i}";//Установка имени для каждого потока
+        //     myT1.Start();
+        // }
+
+        //   void Print()
+        // {
+        //     lock (locker)
+        //     {
+        //         x = 1;
+        //         for (int i = 1; i < 6; i++)
+        //         {
+        //             Console.WriteLine($"{Thread.CurrentThread.Name}:{x}");
+        //             x++;
+        //             Thread.Sleep(500);
+                
+        //         }
+        //     }
+        //}
+        
+        Console.WriteLine("===========Monitor==================");
+        // int x = 0;
+        // object locker = new();//Объект заглушка
+        // //Запускаем пять потоков
+        // for (int i = 1; i < 6; i++)
+        // {
+        //     Thread myT1 = new(Print);
+        //     myT1.Name = $"Поток-{i}";//Установка имени для каждого потока
+        //     myT1.Start();
+        // }
+
+        // void Print()
+        // {
+        //     bool acquiredLock = false;
+        //     try
+        //     {
+        //         Monitor.Enter(locker, ref acquiredLock);
+        //         x = 1;
+        //         for (int i = 1; i < 6; i++)
+        //         {
+        //             Console.WriteLine($"{Thread.CurrentThread.Name}:{x}");
+        //             x++;
+        //             Thread.Sleep(500);
+                
+        //         }
+        //     }
+        //     finally
+        //     {
+        //         if(acquiredLock) Monitor.Exit(locker);
+        //     }
+        // }
+
+        Console.WriteLine("===========AutoResetEvent==================");
+        // int x = 0;
+        // AutoResetEvent waitHundler = new AutoResetEvent(true);// Объект-событие
+        
+        // //Запускаем пять потоков
+        // for (int i = 1; i < 6; i++)
+        // {
+        //     Thread myT1 = new(Print);
+        //     myT1.Name = $"Поток-{i}";//Установка имени для каждого потока
+        //     myT1.Start();
+        // }
+
+        //   void Print()
+        // {
+        //     waitHundler.WaitOne();//Ожидание сигнала
+        //     x = 1;
+        //     for (int i = 1; i < 6; i++)
+        //     {
+        //         Console.WriteLine($"{Thread.CurrentThread.Name}:{x}");
+        //         x++;
+        //         Thread.Sleep(500);
+        //     }
+        //     waitHundler.Set();//Сигнализирует, что waitHundler в сигнальном состоянии
+        // }
+
+
+        Console.WriteLine("===========Мьютексы==================");
+        // int x = 0;
+        // Mutex mutexObj = new();//Создание объекта мьютекс
+        
+        // //Запускаем пять потоков
+        // for (int i = 1; i < 6; i++)
+        // {
+        //     Thread myT1 = new(Print);
+        //     myT1.Name = $"Поток-{i}";//Установка имени для каждого потока
+        //     myT1.Start();
+        // }
+
+        //   void Print()
+        // {
+        //     mutexObj.WaitOne();//Приостанавливаем поток до получения мьютекса
+        //     x = 1;
+        //     for (int i = 1; i < 6; i++)
+        //     {
+        //         Console.WriteLine($"{Thread.CurrentThread.Name}:{x}");
+        //         x++;
+        //         Thread.Sleep(500);
+        //     }
+        //     mutexObj.ReleaseMutex();//Освобождаем мьютекс
+        // }
+
+        Console.WriteLine("===========Семафоры==================");
+        
+        //Запускаем пять потоков
+        for (int i = 1; i < 6; i++)
+        {
+            Reader reader = new Reader(i);
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+
+
+    }
+}
+
+    
+
+
+
+
+
+        
+
+    
+
+
+
+
+
+
+
+
+

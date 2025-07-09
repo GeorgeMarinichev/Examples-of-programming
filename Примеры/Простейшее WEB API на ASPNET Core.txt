@@ -1,0 +1,107 @@
+//Простейшее WEB API на ASP.NET Core
+/*Модель данных: В обоих примерах используется одинаковая модель WatherForecast, которая описывает структуру данных.
+Контроллер: Контроллер WatherForecastContriller также идентичен в обоих примерах и обрабатывает HTTP GET запросы, возвращая массив прогноза погоды.*/
+
+////////////////////////////////////Традиционный подход при помощи (Startup и IHostBuilder)
+using System;
+using Microsoft.AspNetCore.Mvc;// Добавлено для использования атрибутов контроллера
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+namespace HelloWorldApi
+{
+    //Контроллер для обработки запросов
+    [ApiController]
+    [Route("[controller]")]
+    public class HelloWorldController: ControllerBase
+    {
+        [HttpGet]
+        //Модель данных для приветствия
+        public string Get() => "Hello, World!";//Возвращение приветсвия
+
+        //Новый метод для обработки корневого маршрута
+        [HttpGet("/")]
+        //Модель данных для приветствия
+        public string GetRoot() => "Hello, World!";//Возвращение приветсвия
+    }
+
+    //Класс Startup для настройки приложения
+    public class Startup
+    {
+        public void ConfigureServices(IServiceCollection services)//Метод для регистрации служб в контейнере зависимостей
+        {
+            //Добавление поддержки контроллеров MVC, позваляя обрабатывать HTTP-запросы
+            services.AddControllers();
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)//Настраивает конвеер обработки  HTTP-запросов
+        {
+            if(env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();//Включение страницы ошибок в режиме разработки
+            }
+
+            app.UseRouting();//Включение маршрутизации на основании входящих запросов URL
+
+            app.UseEndpoints(endpoints=>//
+            {
+                endpoints.MapControllers();//Настройка маршрутов для контроллеров
+            });
+        }
+    }
+
+    //Главный класс приложения
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();//Запуск приложения
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args)=>
+        Host.CreateDefaultBuilder(args)
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder.UseStartup<Startup>();//Указание класса Startup для конфигурации
+        });  
+    }   
+}
+    
+
+
+
+////////////////////////////////////Упрощенный подход при помощи (WebApplication)
+// using System;
+// using Microsoft.AspNetCore.Builder;
+// using Microsoft.Extensions.DependencyInjection;
+
+// namespace HelloWorldApi
+// {
+  
+
+//     //Главный класс приложения
+//     public class Program
+//     {
+//         public static void Main(string[] args)
+//         {
+//             // WebApplicationBuilder builder = WebApplication.CreateBuilder();
+//             // WebApplication app = builder.Build();
+
+//             // app.Map("/", ()=> "Hello, World!");
+//             // //app.Run();//Запуск приложения
+//             // await app.StartAsync();
+//             // await Task.Delay(10000);
+//             // await app.StopAsync();//
+
+//             var builder = WebApplication.CreateBuilder(args);//Создание Builder
+//             builder.Services.AddControllers();//Добавление поддержки контроллеров
+//             var app = builder.Build();//Стройка приложения
+//             app.Map("/", ()=> "Hello, World!");//Настраивание маршрута для приветсвия
+//             app.Run();//Запуск приложения
+
+//         }
+  
+//     } 
+// }

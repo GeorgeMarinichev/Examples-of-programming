@@ -1,0 +1,77 @@
+//Запуск и останвка процессов программы и файлов
+
+using System;
+using System.Diagnostics;
+using System.ComponentModel;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+namespace app70_Windows_Processes
+{
+    public class Program//Главный класс приложения
+    {
+        public static void Main(string[] args)//
+        {
+            Console.WriteLine("Старт и удаление процесса");
+           
+            //Открыть блокнот
+            Process process = Process.Start("notepad.exe");//Запуск блокнота
+            //Process process1 = Process.Start("notepad++.exe");//notepad++.exe
+
+            Console.WriteLine("Для закрытия процесса нажмите <Enter>");
+            Console.Read();//Enter
+            //Console.ReadLine();//Enter
+            //Console.ReadKey();
+            process.Kill();//Завершение процесса
+
+            Console.WriteLine("Запуск файла не связаного с процессом");
+            Process myProcess = new Process();
+            try
+            {
+                myProcess.StartInfo.UseShellExecute = true;
+                //Можно запускать любой файл, не связаный с запуском процесса
+                myProcess.StartInfo.FileName = @"C:\Users\SmartPlayer\Pictures\ФОНЫ\space.jpg";//
+                myProcess.StartInfo.CreateNoWindow = true;
+                myProcess.Start();
+                // Console.WriteLine("Для закрытия процесса нажмите <Enter>");
+                // Console.Read();//Enter
+                // myProcess.Kill();//Завершение процесса
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
+            Console.Read();
+
+            //Console.Write("Введите номер процесса: ")0;
+            //int num = int.Parse(Console.ReadLine());
+            //int num = Convert.ToInt32(Console.ReadLine());
+            //string? str = Console.ReadLine();
+            //int num = Convert.ToInt32(str);
+            //Console.WriteLine("Данные по одному конкретному процессу:{0}", num);
+            //EnumThreadForPid(num);
+
+            // Console.Write("Введите номер процесса: ");
+            // int num;
+            // while (!int.TryParse(Console.ReadLine(), out num))
+            // {
+            //     Console.WriteLine("Пожалуйста, введите корректный номер процесса.");
+            // }
+
+            //  Console.WriteLine("Для закрытия программы нажмите <E>");
+            // while(true)
+            // {
+            //     ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            //     if(keyInfo.Key == ConsoleKey.Spacebar)
+            //     {
+            //         Console.WriteLine("Выход из программы:{0}", keyInfo);
+            //         Environment.Exit(0);//
+            //     }
+            // }
+
+            
+        }
+  
+    } 
+}

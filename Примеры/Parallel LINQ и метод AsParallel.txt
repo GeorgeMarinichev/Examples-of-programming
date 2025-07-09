@@ -1,0 +1,38 @@
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Parallel LINQ и метод AsParallel");
+        //////////////////////////AsParallel///////////////////////////////////
+        int[] num1 = {1, 9, 8, 5};
+
+        var square = from n in num1.AsParallel()//Оператор
+                   select Square(n);
+        
+        foreach (var item in square)
+        {
+            Console.WriteLine(item);
+        }
+
+        Console.WriteLine("--------------------------------------------");
+        ////////////////////ForAll/////////////////////////
+        int[] num2 = {1, 9, 8, 5};
+
+        (from n in num2.AsParallel() select Square(n)).ForAll(Console.WriteLine);//С помощью оператора LINQ  
+        //num2.AsParallel().Select(n => Square(n)).ForAll(Console.WriteLine);//С помощью метода расширения 
+        //////////////////////////////////////
+        int Square(int n)//Метод Square
+        {
+            return n * n;
+        }
+
+    }
+
+}
+    
+        
+
+
+
+

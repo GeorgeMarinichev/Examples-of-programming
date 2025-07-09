@@ -1,0 +1,138 @@
+using System.Diagnostics;
+using System.Net.Http.Headers;
+using System.Security.Cryptography.X509Certificates;
+
+namespace Genesis;
+public enum Color : Byte // enum-перечесления цветов
+{
+    White,
+    Black,
+    Blue,
+    Green,
+    Yellow,
+    Orange,
+    Red
+}
+
+public class Car1 // Класс машина
+{
+    public Color color;
+    private int speed = 0;
+    public void PrintSpeed()
+    {
+        Console.WriteLine(color);
+        if (speed == 0)
+        {
+            Console.WriteLine("Стоим на месте");
+        }
+        else if (speed > 0)
+        {
+            Console.WriteLine($"Едем вперед со скоростью {speed}км/ч");
+        }
+        else if (speed < 0)
+        {
+            Console.WriteLine($"Едем назад со скоростью {speed}км/ч");
+        }
+    }
+    public void DriveForward()
+    {
+        speed = 60;
+    }
+    public void Stop()
+    {
+        speed = 0;
+    }
+    public void DriveBackward()
+    {
+        speed = -5;
+    }
+}
+class Student // Класс студент
+{
+    public Guid id;
+    public string firstName;
+    public string lastName;
+    public string middleName;
+    public int age = 0;
+    public string group = "Первый уроваень";
+    public Color color;
+
+    public void Print()
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine("Информация о студенте:");
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"id: {id}");
+        Console.WriteLine($"Фамилия: {lastName}");
+        Console.WriteLine($"Имя: {firstName}");
+        Console.WriteLine($"Отчество: {middleName}");
+        Console.WriteLine($"Возраст: {age}");
+        Console.WriteLine($"Группа: {group}");
+        Console.WriteLine($"Цвет: {color}");
+    }
+
+    public string GetFullName()
+    {
+        return $"{lastName} {firstName} {middleName}";
+    }
+}
+internal class Program ////////////////////// Основной класс программы //////////////////////////
+{
+    private static void Main(string[] args)////////////////////// Основной метод программы //////////////////////////
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Классы, методы, перечесления");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(DateTime.Now);
+
+        static Student GetStudent()
+        {
+            //var student = new Student();//Экземпляр класса способ 2
+            Student student = new();//Экземпляр класса способ 1
+            student.firstName = "George";
+            student.middleName = "Vadimovich";
+            student.lastName = "Marinichev";
+            student.age = 38;
+            student.id = Guid.NewGuid();
+            student.group = "RBT";
+            student.color = Color.Green;
+
+            return student;
+        }
+
+        Console.WriteLine("------------------------------------");
+        Student firstStudent = GetStudent();
+        firstStudent.Print();
+        firstStudent.GetFullName();
+
+        Console.WriteLine("------------------------------------");
+        Student student2 = new();
+        student2.color = Color.Yellow;
+
+        student2.Print();
+        student2.GetFullName();
+
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("--------------Car1-------------");
+        Console.ForegroundColor = ConsoleColor.Green;
+        var car1 = new Car1();
+        car1.PrintSpeed();
+        car1.DriveForward();
+        car1.PrintSpeed();
+        car1.Stop();
+        car1.PrintSpeed();
+
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("--------------Car2-------------");
+        Console.ForegroundColor = ConsoleColor.Green;
+        var car2 = new Car1();
+        car2.color = Color.Red;
+        car2.Stop();
+        car2.PrintSpeed();
+        car2.DriveBackward();
+        car2.PrintSpeed();
+        car2.Stop();
+        car2.PrintSpeed();
+
+    }
+}

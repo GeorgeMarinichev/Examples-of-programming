@@ -1,0 +1,41 @@
+using System;
+
+namespace ConsoleApplication1
+{
+    internal class Program
+    {
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("Программа два числа от 0 до 10...)");
+            while (true)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Введите первое число:");
+                int a = int.Parse(Console.ReadLine());
+                //int a = Convert.ToInt32(Console.ReadLine());
+
+                Console.WriteLine("Введите второе число:");
+                int b = int.Parse(Console.ReadLine());
+                //int b = Convert.ToInt32(Console.ReadLine());
+
+                if (a < 0 || a > 10 || b < 0 || b > 10)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Оба числа должны быть в диапазоне от 0 до 10");
+                }
+                else
+                {
+                    int c = a * b;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"{a} * {b} = " + c);
+                    break;
+                }
+            }
+            Console.ResetColor();
+            Console.ReadKey();
+
+
+
+        }
+    }
+}

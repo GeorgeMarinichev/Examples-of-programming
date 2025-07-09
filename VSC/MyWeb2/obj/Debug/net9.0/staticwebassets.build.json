@@ -1,0 +1,702 @@
+{
+  "Version": 1,
+  "Hash": "IG9syVyzsm3HNoFQGnvG7wBbUR6NZjVetpZv752j5d0=",
+  "Source": "MyWeb2",
+  "BasePath": "_content/MyWeb2",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "MyWeb2\\wwwroot",
+      "Source": "MyWeb2",
+      "ContentRoot": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\wwwroot\\",
+      "BasePath": "_content/MyWeb2",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\obj\\Debug\\net9.0\\compressed\\e164mad8c6-rxpmg2ues7.gz",
+      "SourceId": "MyWeb2",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/MyWeb2",
+      "RelativePath": "index#[.{fingerprint=rxpmg2ues7}]?.html.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\wwwroot\\index.html",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "xls8w09pzi",
+      "Integrity": "K80evAjRBOnFCIkaRJd12k0T9ewn/TirVYbHSJWWRc8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\wwwroot\\index.html"
+    },
+    {
+      "Identity": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\obj\\Debug\\net9.0\\compressed\\kcbsx84ts9-dpbp9l9x02.gz",
+      "SourceId": "MyWeb2",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/MyWeb2",
+      "RelativePath": "index2.xml#[.{fingerprint=dpbp9l9x02}]?.txt.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\wwwroot\\index2.xml.txt",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "466qzz1aip",
+      "Integrity": "RF+0Cht3cZ6y4S/fZ7VgT86vucZzcgkVXNzwINVGRIM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\wwwroot\\index2.xml.txt"
+    },
+    {
+      "Identity": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\wwwroot\\index.html",
+      "SourceId": "MyWeb2",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\wwwroot\\",
+      "BasePath": "_content/MyWeb2",
+      "RelativePath": "index#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "rxpmg2ues7",
+      "Integrity": "z+RSCPkLZ9lolk1sdIPC/3p6ZBMaiWRzZho6fVYlgC8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    },
+    {
+      "Identity": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\wwwroot\\index2.xml.txt",
+      "SourceId": "MyWeb2",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\wwwroot\\",
+      "BasePath": "_content/MyWeb2",
+      "RelativePath": "index2.xml#[.{fingerprint}]?.txt",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "dpbp9l9x02",
+      "Integrity": "fwsyVTlIsaW0hqPd2vu16747jYR2Dau/lqJ6i987ZHU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index2.xml.txt"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "index.html",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\obj\\Debug\\net9.0\\compressed\\e164mad8c6-rxpmg2ues7.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001416430595"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "705"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"K80evAjRBOnFCIkaRJd12k0T9ewn/TirVYbHSJWWRc8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 18:37:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"z+RSCPkLZ9lolk1sdIPC/3p6ZBMaiWRzZho6fVYlgC8=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-z+RSCPkLZ9lolk1sdIPC/3p6ZBMaiWRzZho6fVYlgC8="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2140"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"z+RSCPkLZ9lolk1sdIPC/3p6ZBMaiWRzZho6fVYlgC8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 18:37:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-z+RSCPkLZ9lolk1sdIPC/3p6ZBMaiWRzZho6fVYlgC8="
+        }
+      ]
+    },
+    {
+      "Route": "index.html.gz",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\obj\\Debug\\net9.0\\compressed\\e164mad8c6-rxpmg2ues7.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "705"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"K80evAjRBOnFCIkaRJd12k0T9ewn/TirVYbHSJWWRc8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 18:37:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-K80evAjRBOnFCIkaRJd12k0T9ewn/TirVYbHSJWWRc8="
+        }
+      ]
+    },
+    {
+      "Route": "index.rxpmg2ues7.html",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\obj\\Debug\\net9.0\\compressed\\e164mad8c6-rxpmg2ues7.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001416430595"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "705"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"K80evAjRBOnFCIkaRJd12k0T9ewn/TirVYbHSJWWRc8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 18:37:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"z+RSCPkLZ9lolk1sdIPC/3p6ZBMaiWRzZho6fVYlgC8=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rxpmg2ues7"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-z+RSCPkLZ9lolk1sdIPC/3p6ZBMaiWRzZho6fVYlgC8="
+        }
+      ]
+    },
+    {
+      "Route": "index.rxpmg2ues7.html",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2140"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"z+RSCPkLZ9lolk1sdIPC/3p6ZBMaiWRzZho6fVYlgC8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 18:37:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rxpmg2ues7"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-z+RSCPkLZ9lolk1sdIPC/3p6ZBMaiWRzZho6fVYlgC8="
+        }
+      ]
+    },
+    {
+      "Route": "index.rxpmg2ues7.html.gz",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\obj\\Debug\\net9.0\\compressed\\e164mad8c6-rxpmg2ues7.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "705"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"K80evAjRBOnFCIkaRJd12k0T9ewn/TirVYbHSJWWRc8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 18:37:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rxpmg2ues7"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-K80evAjRBOnFCIkaRJd12k0T9ewn/TirVYbHSJWWRc8="
+        }
+      ]
+    },
+    {
+      "Route": "index2.xml.dpbp9l9x02.txt",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\obj\\Debug\\net9.0\\compressed\\kcbsx84ts9-dpbp9l9x02.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.002469135802"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "404"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"RF+0Cht3cZ6y4S/fZ7VgT86vucZzcgkVXNzwINVGRIM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 18:33:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"fwsyVTlIsaW0hqPd2vu16747jYR2Dau/lqJ6i987ZHU=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dpbp9l9x02"
+        },
+        {
+          "Name": "label",
+          "Value": "index2.xml.txt"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-fwsyVTlIsaW0hqPd2vu16747jYR2Dau/lqJ6i987ZHU="
+        }
+      ]
+    },
+    {
+      "Route": "index2.xml.dpbp9l9x02.txt",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\wwwroot\\index2.xml.txt",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "618"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fwsyVTlIsaW0hqPd2vu16747jYR2Dau/lqJ6i987ZHU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 18:33:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dpbp9l9x02"
+        },
+        {
+          "Name": "label",
+          "Value": "index2.xml.txt"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-fwsyVTlIsaW0hqPd2vu16747jYR2Dau/lqJ6i987ZHU="
+        }
+      ]
+    },
+    {
+      "Route": "index2.xml.dpbp9l9x02.txt.gz",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\obj\\Debug\\net9.0\\compressed\\kcbsx84ts9-dpbp9l9x02.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "404"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"RF+0Cht3cZ6y4S/fZ7VgT86vucZzcgkVXNzwINVGRIM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 18:33:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dpbp9l9x02"
+        },
+        {
+          "Name": "label",
+          "Value": "index2.xml.txt.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-RF+0Cht3cZ6y4S/fZ7VgT86vucZzcgkVXNzwINVGRIM="
+        }
+      ]
+    },
+    {
+      "Route": "index2.xml.txt",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\obj\\Debug\\net9.0\\compressed\\kcbsx84ts9-dpbp9l9x02.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.002469135802"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "404"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"RF+0Cht3cZ6y4S/fZ7VgT86vucZzcgkVXNzwINVGRIM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 18:33:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"fwsyVTlIsaW0hqPd2vu16747jYR2Dau/lqJ6i987ZHU=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-fwsyVTlIsaW0hqPd2vu16747jYR2Dau/lqJ6i987ZHU="
+        }
+      ]
+    },
+    {
+      "Route": "index2.xml.txt",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\wwwroot\\index2.xml.txt",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "618"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fwsyVTlIsaW0hqPd2vu16747jYR2Dau/lqJ6i987ZHU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 18:33:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-fwsyVTlIsaW0hqPd2vu16747jYR2Dau/lqJ6i987ZHU="
+        }
+      ]
+    },
+    {
+      "Route": "index2.xml.txt.gz",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb2\\obj\\Debug\\net9.0\\compressed\\kcbsx84ts9-dpbp9l9x02.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "404"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"RF+0Cht3cZ6y4S/fZ7VgT86vucZzcgkVXNzwINVGRIM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 03 Mar 2025 18:33:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-RF+0Cht3cZ6y4S/fZ7VgT86vucZzcgkVXNzwINVGRIM="
+        }
+      ]
+    }
+  ]
+}

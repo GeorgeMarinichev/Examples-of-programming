@@ -1,0 +1,68 @@
+using System;
+using System.Diagnostics;
+using Microsoft.Extensions.FileProviders;
+
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+var argsList = string.Join(" ,", args);//Вывод аргументо командной строки
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// app.Run(async(context)=>
+// {
+//     var response = context.Response;
+//     response.ContentType = "text/html; charset=utf-8";
+//     response.Headers.ContentLanguage = "ru-RU";
+//     //response.Headers.ContentType = "text/plain; charset=utf-8";
+//     //Если обращение идет по адресу "/postuser", получаем данные формы 
+//     if(context.Request.Path == "/postuser")
+//     {
+//         var form = context.Request.Form;
+//         string name  = form["name"];
+//         string age = form["age"];
+//         await response.WriteAsync($"<div><p>Name: {name}</p><p>Age: {age}</p></div>");
+//     }
+//     else
+//     {
+//         await response.SendFileAsync(@"C:\Users\SmartPlayer\Desktop\HTML\indexTest.html");
+//     }
+//     // await context.Response.SendFileAsync(@"C:\Users\SmartPlayer\Desktop\resurs\18ca0307512bdc1330c87fb8ae7322a0.gif");
+//     // await context.Response.WriteAsync($"Доброго дня!{argsList}");
+// });
+// app.Run();
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+app.Run(async(context)=>
+{
+    var response = context.Response;
+    response.ContentType = "text/html; charset=utf-8";
+    response.Headers.ContentLanguage = "ru-RU";
+    //response.Headers.ContentType = "text/plain; charset=utf-8";
+    //Если обращение идет по адресу "/postuser", получаем данные формы 
+    if(context.Request.Path == "/postuser")
+    {
+        var form = context.Request.Form;
+        string name  = form["name"];
+        string age = form["age"];
+        string[] languages = form["languages"];
+        //Создание из массива languages одной строки
+        string langList = "";
+        foreach (var lang in languages)
+        {
+            langList += $"{lang}";
+        }
+        await response.WriteAsync($"<div><p>Name: {name}</p>" +
+                                    $"<p>Age: {age}</p>" +
+                                    $"<div>Languages: {langList}</div></div>");
+    }
+    else
+    {
+        await response.SendFileAsync(@"C:\Users\SmartPlayer\Desktop\HTML\indexTest2.html");
+    }
+});
+app.Run();
+
+
+
+
+

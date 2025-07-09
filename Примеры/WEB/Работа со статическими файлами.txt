@@ -1,0 +1,150 @@
+//////////////////////////////Работа со статическими файлами
+//////////////////////////////Установка каталога статических файлов. UseStaticFiles
+using System;
+using System.Text;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;                   //Необходимый пакет using
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Microsoft.VisualBasic;
+//////////////////////////////////////////////////////
+using Microsoft.Extensions.FileProviders;//
+//////////////////////////////////////////////////////
+
+namespace Space
+{
+    ///////////////////////////////////////Создание интерфейса сервиса
+    
+    //////////////////////////////////////////////////Установка сервисов
+    
+    class Program//Главный класс приложения
+    {  
+        static void Main(string[] args)//Главный метод точка входа
+        {
+            //////////////////////////////////Установка сервисов через метод Invoke/InvokeAsync компонентов контйнера middleware
+            
+
+            ///////////////////////////////////Получение всех маршрутов приложения(получение всех имеющиехся в приложении кончных точек)
+            // //WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);
+ 
+            // var app = builder.Build();
+
+            // app.UseStaticFiles();//Поддержка статических файлов
+
+            // app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обраьотки вызовов, если они не соответсвуют другим запросам
+            // app.Run();
+
+            //////////////////////////////Изменение пути к статическим файлам через метод UseDefaultFiles()////////
+            // WebApplicationBuilder builder = WebApplication.CreateBuilder(
+            //     new WebApplicationOptions{WebRootPath = "uploads"});//Своя папка хранения статических файлов в место папки wwwroot
+            // //var builder = WebApplication.CreateBuilder(args);
+   
+            // var app = builder.Build();
+
+            // app.UseStaticFiles();//Поддержка статических файлов
+
+            // app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обраьотки вызовов, если они не соответсвуют другим запросам
+            // app.Run();
+
+            // //////////////////////////////Статический файл по умолчанию через метод UseDefaultFiles()//////////////////////
+            // WebApplicationBuilder builder = WebApplication.CreateBuilder(
+            //     new WebApplicationOptions{WebRootPath = "uploads"});//Своя папка хранения статических файлов в место папки wwwroot
+            // //var builder = WebApplication.CreateBuilder(args);
+      
+            // var app = builder.Build();
+
+            // app.UseDefaultFiles();//Поддержка страниц HTML по умолчанию
+            // app.UseStaticFiles();//Поддержка статических файлов
+
+            // app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обраьотки вызовов, если они не соответсвуют другим запросам
+            // app.Run();
+
+            // //////////////////////////////Добавление нового имени статического файла по умолчанию //////////////////////
+            // WebApplicationBuilder builder = WebApplication.CreateBuilder(
+            //     new WebApplicationOptions{WebRootPath = "uploads"});//Своя папка хранения статических файлов в место папки wwwroot
+            // //var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+
+            // DefaultFilesOptions options = new DefaultFilesOptions();
+            // options.DefaultFileNames.Clear();//Удаление тмени фалов по умолчанию
+            // options.DefaultFileNames.Add("Hello.html");//Добавление нового имени файлов
+            
+            // app.UseDefaultFiles(options);//Поддержка страниц HTML по умолчанию
+            // app.UseStaticFiles();//Поддержка статических файлов
+
+            // app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обраьотки вызовов, если они не соответсвуют другим запросам
+            // app.Run();
+
+            //////////////////////////////Метод UseDirectoryBrowser(Просмотр содержимого каталога)//////////////////////
+            // WebApplicationBuilder builder = WebApplication.CreateBuilder(
+            //     new WebApplicationOptions{WebRootPath = "uploads"});//Своя папка хранения статических файлов в место папки wwwroot
+            // //var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+            
+            // app.UseDirectoryBrowser();//Просмотр содержимого каталога
+            // app.UseStaticFiles();//Поддержка статических файлов
+
+            // app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обраьотки вызовов, если они не соответсвуют другим запросам
+            // app.Run();
+
+            //////////////////////////////Метод UseDirectoryBrowser(Просмотр содержимого каталога свой путь)//////////////////////
+            // WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            // //var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+            
+            // app.UseDirectoryBrowser(new DirectoryBrowserOptions()//Просмотр содержимого каталога свой путь
+            // {
+            //     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"C:\Users\SmartPlayer\Desktop\VSC WEB\MyWeb\uploads")),
+            //     RequestPath = new PathString("/pages")
+            // });
+            // app.UseStaticFiles();//Поддержка статических файлов
+
+            // //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обраьотки вызовов, если они не соответсвуют другим запросам
+            // app.Run();
+
+            // ////////////////////////////Сопаставление каталогов с путями//////////////////////
+            // WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            // //var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+
+            // app.UseStaticFiles();//Поддержка статических файлов
+            // app.UseStaticFiles(new StaticFileOptions()//Обрабатывает запросы к каталогу wwwroot
+            // {
+            //     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),//http://localhost:5263/pages/index.html
+            //     RequestPath = new PathString("/pages")
+            // });
+        
+            // //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обраьотки вызовов, если они не соответсвуют другим запросам
+            // app.Run();
+
+            ////////////////////////////Метод UseFileServer()//////////////////////
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            //var builder = WebApplication.CreateBuilder(args);
+            var app = builder.Build();
+
+            //app.UseFileServer();//Объеденяет все три метода UseStaticFiles(), UseDefaultFiles(), UseDirectoryBrowser()
+
+            //app.UseFileServer(enableDirectoryBrowsing: true); //Просмотр каталогов
+
+            // app.UseFileServer(new FileServerOptions//Просмотр каталогов
+            // {
+            //     EnableDirectoryBrowsing = true,
+            //     EnableDefaultFiles = false
+            // });
+
+            app.UseFileServer(new FileServerOptions//Просмотр каталогов
+            {
+                EnableDirectoryBrowsing = true,
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),//http://localhost:5263/pages/index.html
+                RequestPath = new PathString("/pages"),
+                EnableDefaultFiles = false
+            });
+        
+            //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обраьотки вызовов, если они не соответсвуют другим запросам
+            app.Run();
+
+        }
+    }
+}

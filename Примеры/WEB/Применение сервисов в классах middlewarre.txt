@@ -1,0 +1,93 @@
+using Microsoft.AspNetCore.Http;
+using System.Diagnostics.Metrics;
+
+namespace WebApplication6
+{
+    ////////////////////////////////////////////
+    //public interface ICounter
+    //{
+    //    int Value { get; }
+    //}
+
+    public class TimeService
+    {
+        public TimeService()
+        {
+            Time = DateTime.Now.ToLongTimeString();
+        }
+        public string Time { get; }
+    }
+
+
+    public class TimerMiddleware
+    {
+        RequestDelegate next;
+        //TimeService timeService;
+
+        //public TimerMiddleware(RequestDelegate next, TimeService timeService)
+        public TimerMiddleware(RequestDelegate next)
+        {
+            this.next = next;
+            //this.timeService = timeService;
+        }
+        //public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, TimeService timeService)
+        {
+            if(context.Request.Path == "/time")
+            {
+                context.Response.ContentType = "text/html; charset = utf-8";
+                await context.Response.WriteAsync($"Текущее время: {timeService?.Time}");
+            }
+            else
+            {
+                await next.Invoke(context);
+            }
+        }
+    }
+    class Program
+    {
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("Применение сервисов в классах middlewarre");
+
+            ////AddTransient
+            var builder = WebApplication.CreateBuilder(args);
+            //builder.Services.AddTransient<TimeMiddleware>();//Добавление сервиса в коллекцию сервисов приложения
+            builder.Services.AddTransient<TimeService>();
+
+            var app = builder.Build();//Создание обЪектов WebApplication
+
+            app.UseMiddleware<TimerMiddleware>();
+
+            app.Run(async (context) => await context.Response.WriteAsync("Hello"));
+
+            app.Run();
+
+
+
+            //////AddScoped
+            //var builder = WebApplication.CreateBuilder(args);
+            //builder.Services.AddScoped<ICounter, RandomCounter>();//Добавление сервиса в коллекцию сервисов приложения
+            //builder.Services.AddScoped<CounterService>();
+
+            //var app = builder.Build();//Создание обЪектов WebApplication
+
+            //app.UseMiddleware<CounterService>();
+
+            //app.Run();
+
+
+
+            /////////AddSingleton
+            //var builder = WebApplication.CreateBuilder(args);
+            //builder.Services.AddSingleton<ICounter, RandomCounter>();//Добавление сервиса в коллекцию сервисов приложения
+            //builder.Services.AddSingleton<CounterService>();
+
+            //var app = builder.Build();//Создание обЪектов WebApplication
+
+            //app.UseMiddleware<CounterService>();
+
+            //app.Run();
+        }
+    }
+}

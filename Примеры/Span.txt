@@ -1,0 +1,82 @@
+using System;
+using System.Collections;
+using System.Collections.Immutable;//Директива
+
+namespace Genesis;
+
+internal class Program
+    {
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Span");
+
+        Span<string> ppeople0 = [];//Пустой тип
+
+        Span<string> ppeople1 = ["Tom", "Sam", "Bob"];//В данном случае Span будет хранить ссылки на три строки.
+
+        string[] mass = { "Tom", "Alice", "Bob" };
+        Span<string> massSpan = new Span<string>(mass);//Span создается на основе каких - то других наборов данных:
+
+        string[] people2 = { "Tom", "Alice", "Bob" };//Присвоение массива, и он неявно будет преобразован в Span:
+        Span<string> peopleSpan = people2;
+
+        peopleSpan[1] = "Annа";// переустановка значения элемента
+        Console.WriteLine(peopleSpan.Length);// получение длины Span
+        Console.WriteLine(peopleSpan[1]);// получение элемента
+
+        // перебор Span
+        foreach (var s in peopleSpan)
+        {
+            Console.WriteLine(s);
+        }
+ 
+
+        Console.WriteLine("==============================================");
+        //int[] temperatures =//Массив дневных температур воздуха за месяц первый вариант с применением доп. двух массивов
+        //{
+        //    10, 12, 13, 14, 15, 11, 13, 15, 16, 17,
+        //    18, 16, 15, 16, 17, 14,  9,  8, 10, 11,
+        //    12, 14, 15, 15, 16, 15, 13, 12, 12, 11
+        //};
+        //int[] firstDecade = new int[10];    // выделяем память для первой декады
+        //int[] lastDecade = new int[10];     // выделяем память для второй декады
+        //Array.Copy(temperatures, 0, firstDecade, 0, 10);    // копируем данные в первый массив
+        //Array.Copy(temperatures, 20, lastDecade, 0, 10);    // копируем данные во второй массив
+
+
+        int[] temperatures =
+        {
+            10, 12, 13, 14, 15, 11, 13, 15, 16, 17,
+            18, 16, 15, 16, 17, 14,  9,  8, 10, 11,
+            12, 14, 15, 15, 16, 15, 13, 12, 12, 11
+        };
+        Span<int> temperaturesSpan = temperatures;
+
+        Span<int> firstDecade = temperaturesSpan.Slice(0, 10);    // нет выделения памяти под данные
+        Span<int> lastDecade = temperaturesSpan.Slice(20, 10);    // нет выделения памяти под данные
+
+        temperaturesSpan[0] = 25; // меняем в temperatureSpan
+        Console.WriteLine(firstDecade[0]); //25
+
+        Console.WriteLine("==============================================");
+        //Структура ReadOnlySpan аналогична Span, только предназначена для неизменяемых данных. Например:
+
+        string text = "Hello, World";
+        string worldString = text.Substring(startIndex: 7, length: 5);// есть выделение памяти под символы
+        ReadOnlySpan<char> worldSpan = text.AsSpan().Slice(start:7, length: 5);// нет выделения памяти под символы
+
+        Console.WriteLine(worldString[0]);// выводим первый символ
+        Console.WriteLine(worldSpan[0]); // выводим первый символ
+
+        //foreach (var iteam in worldSpan)// перебор символов
+        //{
+        //    Console.Write(iteam);
+        //}
+
+    }
+
+
+
+}
+
+

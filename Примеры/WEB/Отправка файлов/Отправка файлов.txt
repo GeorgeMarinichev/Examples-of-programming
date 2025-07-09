@@ -1,0 +1,109 @@
+//Отправка файлов
+using System;
+using System.Diagnostics;
+using Microsoft.Extensions.FileProviders;
+
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+var argsList = string.Join(" ,", args);//Вывод аргументо командной строки
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// app.Run(async(context)=>
+// {
+//     //var response = context.Response;
+//     //response.Headers.ContentLanguage = "ru-RU";
+//     //response.Headers.ContentType = "text/plain; charset=utf-8";
+//     //response.ContentType = "text/html; charset=utf-8";
+
+//     await context.Response.SendFileAsync(@"C:\Users\SmartPlayer\Desktop\resurs\18ca0307512bdc1330c87fb8ae7322a0.gif");
+//     await context.Response.WriteAsync($"Доброго дня!{argsList}");
+// });
+// app.Run();
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// app.Run(async(context)=>
+// {
+//     //var response = context.Response;
+//     //response.Headers.ContentLanguage = "ru-RU";
+//     //response.Headers.ContentType = "text/plain; charset=utf-8";
+//     //response.ContentType = "text/html; charset=utf-8";
+
+//     await context.Response.SendFileAsync(@"C:\Users\SmartPlayer\Desktop\resurs\18ca0307512bdc1330c87fb8ae7322a0.gif");
+//     await context.Response.WriteAsync($"Доброго дня!{argsList}");
+// });
+// app.Run();
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// app.Run(async(context)=>
+// {
+//     //var response = context.Response;
+//     //response.Headers.ContentLanguage = "ru-RU";
+//     //response.Headers.ContentType = "text/plain; charset=utf-8";
+//     //response.ContentType = "text/html; charset=utf-8";
+
+//     context.Response.Headers.ContentType = "text/html; charset=utf-8";
+//     await context.Response.SendFileAsync(@"C:\Users\SmartPlayer\Desktop\HTML\index.html");
+// });
+// app.Run();
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// app.Run(async(context)=>
+// {
+//     //var response = context.Response;
+//     //response.Headers.ContentLanguage = "ru-RU";
+//     //response.Headers.ContentType = "text/plain; charset=utf-8";
+//     //response.ContentType = "text/html; charset=utf-8";
+
+//     //context.Response.Headers.ContentType = "text/html; charset=utf-8";
+//     context.Response.Headers.ContentDisposition = "attacchment; filename=my_";//Загрузка файла без открытия
+//     await context.Response.SendFileAsync(@"C:\Users\SmartPlayer\Desktop\resurs\18ca0307512bdc1330c87fb8ae7322a0.gif");
+// });
+// app.Run();
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// app.Run(async(context)=>
+// {
+//     //var response = context.Response;
+//     //response.Headers.ContentLanguage = "ru-RU";
+//     //response.Headers.ContentType = "text/plain; charset=utf-8";
+//     //response.ContentType = "text/html; charset=utf-8";
+
+//     var fileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory());
+//     var fileInfo = fileProvider.GetFileInfo(@"C:\Users\SmartPlayer\Desktop\resurs\18ca0307512bdc1330c87fb8ae7322a0.gif");//Получение информации в виде обЪекта IFileInfo
+//     //context.Response.Headers.ContentType = "text/html; charset=utf-8";
+//     context.Response.Headers.ContentDisposition = "attachment; filename=my_18ca0307512bdc1330c87fb8ae7322a0.gif";//Загрузка файла без открытия
+//     await context.Response.SendFileAsync(fileInfo);
+// });
+// app.Run();
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// app.Run(async(context)=>
+// {
+//     //var response = context.Response;
+//     //response.Headers.ContentLanguage = "ru-RU";
+//     //response.Headers.ContentType = "text/plain; charset=utf-8";
+//     //response.ContentType = "text/html; charset=utf-8";
+
+//     var path = context.Request.Path;
+//     var fullPath = $"html/{path}";
+//     var response = context.Response;
+
+//     response.ContentType = "text/html; charset=utf-8";
+//     if(File.Exists(fullPath))
+//     {
+//         await response.SendFileAsync(fullPath);
+//     }
+//     else
+//     {
+//         response.StatusCode = 404;
+//         await response.WriteAsync("<h2>Not Found</h2>");
+//     }
+// });
+// app.Run();
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+

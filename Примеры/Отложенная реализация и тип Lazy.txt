@@ -1,0 +1,43 @@
+using System.Globalization;//Деректива
+using System.Data;
+using Microsoft.CSharp.RuntimeBinder;
+
+namespace Genesis; // Пространство имен
+class Reader
+{
+    Lazy<Libray> libray = new Lazy<Libray>();
+    public void ReaderBook()
+    {
+        libray.Value.GetBook();
+        Console.WriteLine("Читаем бумажную книгу");
+    }
+    public void ReaderEbook()
+    {
+        Console.WriteLine("Читаем книгу на компьютере");
+    }
+}
+
+class Libray
+{
+    private string[] books = new string[99];
+    public void GetBook()
+    {
+        Console.WriteLine("Выдаем книгу читателю");
+    }
+}
+
+class Program // Основной класс программы
+{
+    
+    public static void Main(string[] args)// Основной метод программы
+    {
+        Console.WriteLine("====================<<<Отложенная реализация и тип Lazy>>>================");
+
+        Reader reader = new();
+        reader.ReaderBook();
+        reader.ReaderEbook();
+    }
+}
+
+
+

@@ -1,0 +1,58 @@
+using System.Text;//Директива
+
+namespace Genesis;
+
+internal class Program
+    {
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Класс StringBuilder");
+
+        ////////////////////////////Создание StringBuilder////////////////////////////////////////////////
+        //StringBuilder sb = new StringBuilder(); //пустой экземпляр класса StringBuilder:
+        //StringBuilder sb = new();               //пустой экземпляр класса StringBuilder:
+        //var sb = new StringBuilder();           //пустой экземпляр класса StringBuilder:
+
+        StringBuilder sb = new StringBuilder("Hello World"); //инициализировать объект определенной строкой:
+
+        //С помощью метода ToString() мы можем получить строку, которая хранится в StringBuilder:
+        Console.WriteLine(sb.ToString());//Hello World
+
+        //Либо можно просто передать объект StringBuilder:
+        Console.WriteLine(sb);    //  Hello World
+
+        Console.WriteLine($"Длина:{sb.Length}");//Длина:11
+        Console.WriteLine($"Емкость:{sb.Capacity}");//Емкость:16(по умолчанию)
+
+        StringBuilder sb1 = new(32);//Ограничение емкости
+        Console.WriteLine($"Длина:{sb1.Length} Емкость:{sb1.Capacity}");//Длина:0 Емкость:32
+
+        var sb2 = new StringBuilder("hello", 10);//Ограничение емкости
+        Console.WriteLine($"Длина:{sb2.Length} Емкость:{sb2.Capacity}");//Длина:5 Емкость:10
+
+
+        Console.WriteLine("------------------Операции со строками в StringBuilder---------------------");
+
+        var sb3 = new StringBuilder("RBT");
+        Console.WriteLine($"Длина:{sb3.Length} Емкость:{sb3.Capacity}");//Длина:3 Емкость:16(по умолчанию)
+
+        sb3.Append("Эльдорадо");
+        Console.WriteLine($"Длина:{sb3.Length} Емкость:{sb3.Capacity}");//Длина:12 Емкость:16(по умолчанию)
+        
+        Console.WriteLine(sb3); //RBTЭльдорадо
+
+        sb3.Insert(0, "Компания ");
+        Console.WriteLine(sb3); //Компания RBTЭльдорадо
+
+        sb3.Replace("Компания", "Фирма");
+        Console.WriteLine(sb3); //Фирма RBTЭльдорадо
+
+        sb3.Remove(6, 3);
+        Console.WriteLine(sb3); //Фирма Эльдорадо
+
+        string text = sb3.ToString();
+        Console.WriteLine(text);
+    }
+}
+
+

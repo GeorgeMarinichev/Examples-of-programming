@@ -1,0 +1,96 @@
+using System.Security.Cryptography.X509Certificates;
+
+using System;// Деректива
+
+
+namespace Genesis// Пространство имен
+{
+    class myClass
+    {
+        private int a;// Поля
+        private static int b;// Поля
+        private static int c;// Поля
+
+        public static int A { get; set; }// Свойства автоматические A
+
+        public int B // Свойства B
+        {
+            get { return b; }
+            set { b = value; }
+        }
+
+       public static int C // Свойства C
+       {
+        get { return c; }
+        set { c = value; }
+       }
+       
+        
+        public static void Foo()// Метод Foo
+        {
+            Console.WriteLine("Метод Foo");
+            // Bar();
+            //a = 50; // Не static !
+            b = 50;
+            c = 50;
+
+        }
+        public void Bar()// Метод Bar
+        {
+            Console.WriteLine("Метод Bar");
+            a = 100;
+            b = 100;
+            c = 100;
+            //Foo();
+        }
+        public void PrintmyClass()// Метод вывода
+        {
+            Console.WriteLine($"a:{a} b:{b} c:{c}");
+        }
+    }
+    internal class Program// Основной класс
+
+    {
+        private static void Main(string[] args)// Основной метод
+
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Классы, конструкторы, методы, свойства - static");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("----------------------------------");
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            myClass mc1 = new();
+            mc1.PrintmyClass();
+            myClass.Foo();
+            mc1.PrintmyClass();
+            mc1.Bar();
+            mc1.PrintmyClass();
+            mc1.B = 20;
+            mc1.PrintmyClass();
+            myClass.C = 15;
+            mc1.PrintmyClass();
+            myClass.A = 10;
+            mc1.PrintmyClass();
+            Console.WriteLine(myClass.A);
+
+            
+
+            
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("----------------------------------");
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            var mc2 = new myClass();
+            mc2.PrintmyClass();
+           
+           
+
+
+            
+            
+
+        }
+    }
+}

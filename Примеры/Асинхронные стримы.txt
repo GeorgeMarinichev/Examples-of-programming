@@ -1,0 +1,90 @@
+using System.Data;
+using System.Linq.Expressions;
+using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using Microsoft.VisualBasic;// Деректива поделючения пространство имен многопоточности
+
+namespace Genesis; // Пространство имен
+
+class Repository
+{
+    string[] data = {"Tom","Sam","Kate","Alice","Bob"};
+    public async IAsyncEnumerable<string> GetDataAsync()
+    {
+        for (int i = 0; i < data.Length; i++)
+        {
+            Console.WriteLine($"Получаем {i + 1} элемент");
+            await Task.Delay(500);
+            yield return data[i];
+        }
+    }
+}
+
+public interface IAsyncEnumerable<out T>
+{
+    IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default);
+}
+
+public interface IAsyncEnumerator<out T> : IAsyncDisposable
+{
+    T Current {get;}
+    ValueTask<bool> MoveNextAsync();
+}
+
+public interface IAsyncDisposable
+{
+    ValueTask DisposeAsync();
+}
+
+class Program // Основной класс программы
+{
+    public static async Task Main(string[] args)// Основной метод программы
+    {
+        //Console.SetWindowSize(80, 40);//
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("===<<<Асинхронные стримы>>>===");
+        Console.ResetColor();
+        ///////////////////////////////////////////////////////////////////////////////////////
+        // await foreach (var number in GetNumbersAsync)
+        // {
+        //     Console.WriteLine(number);
+        // }
+
+        // async IAsyncEnumerable<int> GetNumbersAsync()
+        // {
+        //     for(int i = 0; i < 10; i++)
+        //     {
+        //         await Task.Delay(100);
+        //         yield return i;
+        //     }
+        // }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        Repository repo = new Repository();
+        IAsyncEnumerable<string> data = repo.GetDataAsync();
+        await foreach (var name in data)
+        {
+             Console.WriteLine(name);
+        }
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

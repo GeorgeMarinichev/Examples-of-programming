@@ -1,0 +1,67 @@
+using System.Security;
+using static System.Console;
+
+namespace Genesis; // Пространство имен
+
+//delegate void MoveHandler();// Делегат перемещения
+
+public interface IClonable//Интерфейс клонирования
+{
+    object Clone();// Свойство
+}
+
+class Person: IClonable// Класс персона
+{
+    public string Name {get; set;}// Свойство имя
+    public int Age {get; set;}// Свойство возраст
+    public Company Work {get; set;}// Свойство компания
+    public Person(string name, int age, Company company)// Конструктор
+    {
+        Name = name;
+        Age = age;
+        Work = company;
+    }
+
+    public object Clone()
+    {
+        //return MemberwiseClone();// Вариант с поверхностным (неглубоким) копированием
+        return new Person(Name, Age, new Company(Work.Name));// Вариант с глубоким копированием
+    }
+}
+
+class Company// Класс компания
+{
+    public string Name {get; set;}
+    public Company(string name)
+    {
+        Name = name;
+    }
+}
+class Program // Основной класс программы
+{
+    
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<Интерфейс IClonable, IComparable>>>");
+
+        Person p1 = new("George", 38, new Company("RBT"));
+        Console.WriteLine(p1.Name +":"+ p1.Age +":"+ p1.Work.Name);
+        p1.Work.Name = "Valve";
+        Console.WriteLine(p1.Name +":"+ p1.Age +":"+ p1.Work.Name);
+    
+        var tom = new Person("Том", 43, new Company("Microsoft"));
+        Console.WriteLine(tom.Name +":"+ tom.Age +":"+ tom.Work.Name);
+        var bob = (Person)tom.Clone();
+        bob.Work.Name = "Google";
+        Console.WriteLine(tom.Name +":"+ tom.Age +":"+ tom.Work.Name);
+        Console.WriteLine(bob.Name +":"+ bob.Age +":"+ bob.Work.Name);
+
+        //System.Console.WriteLine("Введите число от 1, до 10");
+        //int res = int.Parse(Console.ReadLine());
+        
+    }
+}
+
+

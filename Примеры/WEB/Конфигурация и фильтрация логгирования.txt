@@ -1,0 +1,47 @@
+/////////////////////////////Конфигурация и фильтрация логгирования
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+//////////////////////////////////////////////////////////////
+using Microsoft.Extensions.Logging.Debug;
+
+namespace Space
+{
+    public class Person
+    {
+        static void Main(string[] args)
+        {
+            // /////////////////////////////////
+            // //WebApplicationBuilder builder = CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+       
+            // var loggerFactory = LoggerFactory.Create(builder=>
+            // {
+            //   builder.AddDebug();
+            //   builder.AddConsole();
+            //   //Настройка фильтров
+            //   builder.AddFilter("System", LogLevel.Information)
+            //   .AddFilter<DebugLoggerProvider>("Microsoft", LogLevel.Trace);
+              
+            // });
+            // ILogger logger = loggerFactory.CreateLogger("WebApplicatinon");//
+
+
+            // app.Run();
+        
+
+        ////////////////////Глобальная настройка логгирования
+            //WebApplicationBuilder builder = CreateBuilder();
+            var builder = WebApplication.CreateBuilder(args);
+           
+            builder.Logging.ClearProviders();//Удаление всех провайдеров
+            builder.Logging.AddConsole();//Добавление провайдера для логгирования на консоль
+          
+            var app = builder.Build();
+            
+            app.Run();
+        }
+    }  
+}

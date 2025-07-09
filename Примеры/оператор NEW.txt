@@ -1,0 +1,72 @@
+using System.Net.Http.Headers;
+using BenchmarkDotNet.Jobs;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Diagnostics.Tracing.Parsers.Clr;
+
+namespace Benchmark; // Пространство имен
+
+    class MyClass
+    {
+        new public void SayHello()
+        {
+            Console.WriteLine("Hello");
+        }
+    }
+
+    class BaseClass
+    {
+        public int Age {get; set;}
+        public void Say(string s)
+        {
+            Console.WriteLine(s);
+        }
+
+    }
+    class DerivedClass: BaseClass
+    {
+        public int Age {get;}
+
+        new public void Say(string s)
+        {
+            Console.WriteLine(s.ToUpper());
+        }
+    }
+
+    class GenericClass<T> where T : new()
+        {
+            public T GetNewT()
+            {
+                return new T();
+            }
+        }
+
+
+class Program // Основной класс программы
+{
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<NEW>>>");
+        
+        // new оператор
+        MyClass mC = new();
+        mC.SayHello();
+
+        // new модификатор
+        DerivedClass dC = new();
+        dC.Say("Hello george");
+
+        // new ограничитель
+        GenericClass<MyClass> gC = new GenericClass<MyClass>();
+        gC.GetNewT().SayHello();
+
+
+        Console.WriteLine("-------------------------------------");
+        //System.Console.WriteLine("Введите число от 1, до 7");
+        //int res = int.Parse(Console.ReadLine());
+        
+    }      
+
+}
+

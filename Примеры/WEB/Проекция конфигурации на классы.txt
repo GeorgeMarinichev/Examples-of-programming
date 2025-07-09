@@ -1,0 +1,154 @@
+/////////////////////////////Проекция конфигурации на классы
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+//////////////////////////////////////////////////////////////
+
+namespace Space
+{
+    public class Person
+    {
+        public string Name{get; set;} = "";
+        public int Age{get; set;} = 0;
+        public List<string> Languages {get; set;} = new();
+
+        public Company? Company {get; set;}
+    }
+
+    public class Company
+    {
+      public string Title {get; set;} = "";
+      public string Country {get; set;} = "";
+    }
+    //public record Person(string Name = "", int Age = 0);
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // /////////////////////////////////////////////////Получение данных конфигураци
+            // //WebApplicationBuilder builder = CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+       
+            // builder.Configuration.AddJsonFile("config3.json");
+
+            // //var person = new Person();
+            // //app.Configuration.Bind(person);//Связывание конфигурации с объектом Person
+            // //Или в место метода Bind(); можно использовать метод Get<T>();
+            // //Person person = app.Configuration.Get<Person>();//Связывание конфигурации с объектом Person
+
+            // //app.Run(async(context)=> await context.Response.WriteAsync($"Name:{person.Name} age:{person.Age}"));
+            // //app.Map("/", async(context)=> await context.Response.WriteAsync($"Name:{person.Name} age:{person.Age}"));
+            // app.Map("/", (IConfiguration appConfig)=> //привязка при получении конфигурации через механизм Dependency Injection:
+            // {
+            //   var person = appConfig.Get<Person>();// Связывание конфигурации с объектом Person
+            //   return $"Name:{person.Name} age:{person.Age}";
+            // });
+
+            // //app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            /////////////////////////////////////////////////Привязка сложных объектов
+            // //WebApplicationBuilder builder = CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+       
+            // builder.Configuration.AddJsonFile("config.json");
+
+            // var person = new Person();
+            // app.Configuration.Bind(person);//Связывание конфигурации с объектом Person
+            
+            // app.Run(async(context)=> 
+            // {
+            //     context.Response.ContentType = "text/html; charset=utf-8";
+            //     context.Response.Heading.Languanges = "ru-RU";
+            //     string name = $"<p>Name: {person.Name}</p>";
+            //     string age = $"<p>Age: {person.Age}</p>";
+            //     string company = $"<p>Company: {person.Company?.Title}</p>";
+            //     string country = $"<p>Country: {person.Company?.Country}</p>";
+
+            //     string langs = $"<p>Languages:</p><ul>";
+            //     foreach (var lang in person.Languages)
+            //     {
+            //       langs += $"<li><p>{lang}</p></li>";
+            //     }
+            //     langs += "</ul>";
+
+            //     await context.Response.WriteAsync($"{name}{age}{company}{country}{langs}");
+            // });
+
+            // app.Run();
+            
+            // app.Map("/", async(context)=>
+            // {
+            //     context.Response.ContentType = "text/html; charset=utf-8";
+            //     //context.Response.Heading.Languanges = "ru-RU";
+            //     string name = $"<p>Name: {person.Name}</p>";
+            //     string age = $"<p>Age: {person.Age}</p>";
+            //     string company = $"<p>Company: {person.Company?.Title}</p>";
+            //     string country = $"<p>Country: {person.Company?.Country}</p>";
+
+            //     string langs = $"<p>Languages:</p><ul>";
+            //     foreach (var lang in person.Languages)
+            //     {
+            //       langs += $"<li><p>{lang}</p></li>";
+            //     }
+            //     langs += "</ul>";
+
+            //     await context.Response.WriteAsync($"{name}{age}{company}{country}{langs}");
+            //     //return $"{name}{age}{company}{country}{langs}";
+            // });
+
+            //app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            //app.Run();
+
+            // /////////////////////////////////Привязка конфигурации из xml
+            // //WebApplicationBuilder builder = CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+       
+            // builder.Configuration.AddXmlFile("config.xml");
+
+            // var person = new Person();
+            // app.Configuration.Bind(person);//Связывание конфигурации с объектом Person
+            
+            // app.Run(async(context)=> 
+            // {
+            //     context.Response.ContentType = "text/html; charset=utf-8";
+            //     //context.Response.Heading.Languanges = "ru-RU";
+            //     string name = $"<p>Name: {person.Name}</p>";
+            //     string age = $"<p>Age: {person.Age}</p>";
+            //     string company = $"<p>Company: {person.Company?.Title}</p>";
+            //     string country = $"<p>Country: {person.Company?.Country}</p>";
+
+            //     string langs = $"<p>Languages:</p><ul>";
+            //     foreach (var lang in person.Languages)
+            //     {
+            //       langs += $"<li><p>{lang}</p></li>";
+            //     }
+            //     langs += "</ul>";
+
+            //     await context.Response.WriteAsync($"{name}{age}{company}{country}{langs}");
+            // });
+
+            // app.Run();
+
+           /////////////////////////////////Привязка секций конфигурации
+            //WebApplicationBuilder builder = CreateBuilder();
+            var builder = WebApplication.CreateBuilder(args);
+            var app = builder.Build();
+       
+            builder.Configuration.AddXmlFile("config.xml");
+            
+            Company company = app.Configuration.GetSection("company").Get<Company>();//Связывание конфигурации с объектом Company
+            app.Run(async(context)=> 
+            {
+              await context.Response.WriteAsync($"Company:{company.Title} Company:{company.Country}");
+            });
+
+            app.Run();
+        }
+    }  
+}

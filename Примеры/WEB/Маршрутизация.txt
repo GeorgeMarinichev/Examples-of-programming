@@ -1,0 +1,110 @@
+//Маршрутизация
+//////////////////////////////////////////////////////
+//Пример использования паттерна (DI) и "интерфейс(абстракт)" для реализации полиморфизма, позволяет легко добавлять новые реализации без изменения кода,
+//которые использую зависимости.
+//////////////////////////////////////////////////////
+using System;
+using System.Text;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;                   //Необходимый пакет using
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+//////////////////////////////////////////////////////
+
+namespace Space
+{
+    ///////////////////////////////////////Создание интерфейса сервиса
+    record class Person(string name, int age);
+    //////////////////////////////////////////////////Установка сервисов
+    
+    public class Program//Главный класс приложения
+    {  
+        public static void Main(string[] args)//Главный метод точка входа
+        {
+            //////////////////////////////////Установка сервисов через метод Invoke/InvokeAsync компонентов контйнера middleware
+            // WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            // var app = builder.Build();
+
+            // app.Map("/", ()=> "Index Page");
+            // app.Map("/about", ()=> "About Page");
+            // app.Map("/contact", ()=> "Contact Page");
+            // app.Map("/user", ()=> new Person("Tom", 37));//Возвращение объекта
+            // app.Map("/help", (context)=> Console.WriteLine("Help"));//Логгирование на консоль
+            // app.Map("/index", IndexHfndler);//Возвращаем метод
+            // app.Map("/users", UserHandler);//Возвращаем метод
+
+            // app.Map("/xxx", async (context)=>//Для получения полного доступа к контексту HttpContext
+            // {
+            //     await context.Response.WriteAsync("XXX");
+            // });
+
+            // //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            // string IndexHfndler()//
+            // {
+            //     return  "Index Page";
+            // }
+
+            // Person UserHandler()//
+            // {
+            //     return new Person("Jon", 49);
+            // }
+
+            ///////////////////////////////////Получение всех маршрутов приложения(получение всех имеющиехся в приложении кончных точек)
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            var app = builder.Build();
+
+            app.Map("/", ()=> "Index Page");
+            app.Map("/about", ()=> "About Page");
+            app.Map("/contact", ()=> "Contact Page");
+            app.Map("/user", ()=> new Person("Tom", 37));//Возвращение объекта
+            app.Map("/help", (context)=> Console.WriteLine("Help"));//Логгирование на консоль
+            app.Map("/index", IndexHfndler);//Возвращаем метод
+            app.Map("/users", UserHandler);//Возвращаем метод
+
+            app.Map("/xxx", async (context)=>//Для получения полного доступа к контексту HttpContext
+            {
+                await context.Response.WriteAsync("XXX");
+            });
+
+            // app.MapGet("/routes", (IEnumerable<EndpointDataSource> endpointDataSource)=>//Получение всех конечных точек
+            // string.Join("\n", endpointDataSource.SelectMany((source) => source.Endpoints)));
+
+            app.MapGet("/routes", (IEnumerable<EndpointDataSource> endpointDataSource)=>//Получение всех конечных точек детально
+            {
+                var sb = new StringBuilder();
+                var endpoints = endpointDataSource.SelectMany((source) => source.Endpoints);
+
+                foreach (var i in endpoints)
+                {
+                    sb.AppendLine(i.DisplayName);
+
+                    if(i is RouteEndpoint routeEndpoint)
+                    {
+                        sb.AppendLine(routeEndpoint.RoutePattern.RawText);
+                    }
+                }
+                return sb.ToString();
+            });
+
+            //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));
+            app.Run();
+
+
+
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////
+            string IndexHfndler()//
+            {
+                return  "Index Page";
+            }
+
+            Person UserHandler()//
+            {
+                return new Person("Jon", 49);
+            }
+        }
+    }
+}

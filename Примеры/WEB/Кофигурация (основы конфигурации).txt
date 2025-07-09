@@ -1,0 +1,80 @@
+/////////////////////////////Конфигурация (основы конфигурации)
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+//////////////////////////////////////////////////////////////
+
+namespace Space
+{
+    record Person(string Name, int Age);
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            /////////////////////////////////////////////////Получение данных конфигурации
+            // ////WebApplicationBuilder builder = CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);;  
+            // var app = builder.Build();
+            // //////////////////////////////////////////////////
+            // app.Map("/", ()=> "Index Page");
+            // app.Map("/about", ()=> "About Page");
+            // //////////////////////////////////////////////////
+            // //Установка настройка конфигурации
+            // app.Configuration["name"] = "Tom";
+            // app.Configuration["age"] = "39";
+
+
+            // app.Run(async(context)=>
+            // {
+            //     //Получение нстроек конфигурации
+            //     string name = app.Configuration["name"];
+            //     string age = app.Configuration["age"];
+            //     await context.Response.WriteAsync($"Name:{name} Age:{age}");
+            // });
+        
+            // //app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            ////////////////////////////////////////Добавление источника конфигурации через класс ConfigurationManager
+            // ////WebApplicationBuilder builder = CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);;  
+
+            // builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>//Установка настройка конфигурации
+            // {
+            //     {"name", "Tom"},
+            //     {"age", "37"},
+            //     {"id", "1985"}
+            // });
+            // var app = builder.Build();
+          
+            // app.Run(async(context)=>
+            // {
+            //     //Получение нстроек конфигурации
+            //     string name = app.Configuration["name"];
+            //     string age = app.Configuration["age"];
+            //     string id = app.Configuration["id"];
+            //     await context.Response.WriteAsync($"Name:{name} Age:{age} Id:{id}");
+            // });
+        
+            // //app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            ////////////////////////////////////Получение конфигурации через Dependency Injection(Внедрение зависимостей)
+            //WebApplicationBuilder builder = CreateBuilder();
+            var builder = WebApplication.CreateBuilder(args);
+            var app = builder.Build();
+
+            app.Configuration["name"] = "Tom";//Установка настройка конфигурации
+            app.Configuration["age"] = "40";//Установка настройка конфигурации
+            app.Configuration["id"] = "1985";//Установка настройка конфигурации
+          
+            //Через механизм внедрения зависимостей получим сервис IConfigurationp
+            app.Map("/", (IConfiguration appConfig)=> $"Name:{appConfig["name"]} Age:{appConfig["age"]} Id:{appConfig["id"]}");
+        
+            //app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            app.Run();
+        }
+    }  
+}

@@ -1,0 +1,77 @@
+using Microsoft.VisualBasic;// Деректива поделючения пространство имен многопоточности
+
+namespace Genesis; // Пространство имен
+
+class Program // Основной класс программы
+{
+    public static async Task Main(string[] args)// Основной метод программы
+    {
+        //Console.SetWindowSize(80, 40);//
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("===<<<Основы LINQ>>>===");
+        Console.ResetColor();
+        ///////////////////////////////////////////////////////////////////////////////////////
+        // string[] people = {"Tom", "Bob", "Sam", "Tim", "Tomas", "Bill"};// Массив имен
+
+        // var selectedPeople = new List<string>();//Создаем новый список для результатов
+
+        // foreach (var person in people)//Проходим по массиву
+        // {
+        //     if(person.ToUpper().StartsWith("B"))//Если строка начинается  с буквы "T", добавляем в список
+        //     {
+        //         selectedPeople.Add(person);
+        //     }
+        // }
+
+        // selectedPeople.Sort();//Сортируем список
+
+        // foreach (var person in selectedPeople)
+        // {
+        //     Console.WriteLine(person);
+        // }
+        /////////////////////////////////Оператор запросов LINQ///////////////////////////////////////////////
+        string[] people = { "Tom", "Bob", "Sam", "Tim", "Tomas", "Bill" };
+ 
+        // создаем новый список для результатов
+        var selectedPeople = from p in people // передаем каждый элемент из people в переменную p
+                    where p.ToUpper().StartsWith("B") //фильтрация по критерию
+                    orderby p  // упорядочиваем по возрастанию
+                    select p; // выбираем объект в создаваемую коллекцию
+        //или
+        //var selectedPeople = from p in people where p.ToUpper().StartsWith("B") orderby p select p;
+        foreach (string person in selectedPeople)
+        Console.WriteLine(person);
+
+        /////////////////////////////////Методы расширения LINQ///////////////////////////////////////////////
+        string[] people1 = {"Tom", "Bob", "Sam", "Tim", "Tomas", "Bill"};
+
+        var selectedPeople1 = people1.Where(p1 => p1.ToUpper().StartsWith("B")).OrderBy(p1=>p1);
+
+        foreach (var person in people1)
+        {
+            Console.WriteLine(person);
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////
+        int number = (from p in people1 where p.ToUpper().StartsWith("T") select p).Count();
+        Console.WriteLine(number);//3
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

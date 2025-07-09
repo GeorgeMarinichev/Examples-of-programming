@@ -1,0 +1,41 @@
+internal class Program
+{
+    static void RemoveAt(ref int[] array, int index)
+    {
+        int[] newArray = new int[array.Length - 1];
+
+        for (int i = 0; i < index; i++)
+            newArray[i] = array[i];
+
+
+        for (int j = index + 1; j < array.Length; j++)
+            newArray[j - 1] = array[j];
+        array = newArray;
+    }
+    
+    static void RemoveFirst(ref int [] array)
+    {
+        RemoveAt(ref array, 0);
+    }
+
+     static void RemoveLast(ref int [] array)
+    {
+        RemoveAt(ref array, array.Length -1);
+    }   
+
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Метод удаления элемента из массива");
+        int[] array = { 1, 9, 8, 5 };
+
+        
+        Console.WriteLine("===============================");
+        //RemoveAt(ref array, 0); // Удаление по индексу элемента массива
+        
+        //RemoveFirst(ref array); //Удаление первого элемента массива
+        
+        //RemoveLast(ref array); //Удаление последнего элемента массива
+        
+        
+    }
+}

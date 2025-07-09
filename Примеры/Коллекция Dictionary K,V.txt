@@ -1,0 +1,83 @@
+using System;
+using System.Collections;
+using System.Diagnostics;
+
+namespace Genesis;
+
+
+    internal class Program
+    {
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Коллекция Dictionary<K,V>");
+
+        //Dictionary<int, string> person = new Dictionary<int, string>();//Пустой словарь
+        //Dictionary<int, string> person = [];//Пустой словарь
+        var person = new Dictionary<int, string>();//Пустой словарь
+
+        Dictionary<int, string> animal = new Dictionary<int, string>(16);//Емкость словаря
+
+
+        //var employees = new List<string> { "Tom", "Bob", "Sam" };//Лист 
+        //Dictionary<int, string> people = new Dictionary<int, string>(employees);//Инициализация стека элементами из другой коллекции или массива
+
+        var people = new Dictionary<int, string>()//Инициализация объектов словаря
+        //{
+        //    {3, "Tom"},
+        //    {5, "Bob"},
+        //    {7, "Sam"}
+        //};
+        //Или
+        {
+            [3] = "Tom",
+            [5] = "Bob",
+            [7] = "Sam"
+        };
+        Console.WriteLine(people.Count); //Колличество элементов в словаре
+        Console.WriteLine(people.First());//Первый элемент в словаре
+        Console.WriteLine(people.Last()); //Последний элемент в словаре
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        var mike = new KeyValuePair<int, string>(76, "Mike");//Создается элемент mike с ключом 76 и значением "Mike"
+        var employees = new List<KeyValuePair<int, string>>() { mike };//этот элемент добавляется в список employees
+        var people2 = new Dictionary<int, string>(employees)//которым затем инициализируется словарь.
+        {
+        [5] = "George",
+        [6] = "Tatjna",
+        [7] = "Katj",
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        var people3 = new Dictionary<int, string>()
+        {
+            [1] = "Alice",//Инициализация словаря
+            [2] = "Britni",//Инициализация словаря
+            [3] = "Ceti"//Инициализация словаря
+        };
+        Console.WriteLine("-----------------------------");
+        foreach (var pers in people3)
+        {
+            Console.WriteLine($"Ключ:{pers.Key} значение:{pers.Value}");//Перебор элементов словаря циклом
+            Console.WriteLine(pers);//Перебор элементов словаря циклом
+        }
+
+        Console.WriteLine(people3.Count);//Колличество элементов в словаре
+        Console.WriteLine(people3.First());//Первый элемент в словаре
+        Console.WriteLine(people3.Last());//Последний элемент в словаре
+
+        /////////////////////////////////////////////////////////////////////////
+        //Условная телефонная книга
+        var phoneBook = new Dictionary<string, string>();//Пустой словарь
+        phoneBook.Add("+79964180110", "George");// добавляем элемент: ключ - номер телефона, значение - имя абонента
+        // альтернативное добавление
+        phoneBook["+7996482727"] = "Tanj";// добавляем элемент: ключ - номер телефона, значение - имя абонента
+
+        //Проверка наличия элемента по ключу-K или по значению-V
+        Console.WriteLine(phoneBook.ContainsKey("+79964180110"));//Проверка наличия элемента по ключу-K = true
+        Console.WriteLine(phoneBook.ContainsValue("Kati"));//Проверка наличия элемента по значению-V = false
+
+        phoneBook.Remove("+79964180110");
+        Console.WriteLine(phoneBook.Count);
+
+    }
+}
+

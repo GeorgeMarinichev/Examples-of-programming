@@ -1,0 +1,29 @@
+using System.Threading.Tasks;
+
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Program
+{
+    static void Main()
+    {
+
+        Console.WriteLine("Потоки и задачи");
+        for (int i = 0; i < 10; i++)
+        {
+            // Запускаем 10 задач, которые выполняются в пуле потоков.
+            Task.Run(() => DoWork(i));//Создание и запуск новой задачи в пуле потоков
+        }
+
+        Console.WriteLine("Все задачи запущены.");
+        Console.ReadLine(); // Ожидание ввода, чтобы приложение не завершилось.
+    }
+
+    static void DoWork(int taskId)
+    {
+        Console.WriteLine($"Задача {taskId} выполняется в потоке {Thread.CurrentThread.ManagedThreadId}.");
+        Thread.Sleep(2000); // Симуляция длительной работы
+        Console.WriteLine($"Задача {taskId} завершена.");
+    }
+}

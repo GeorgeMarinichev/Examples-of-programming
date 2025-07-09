@@ -1,0 +1,119 @@
+using System.Threading;
+
+namespace Genesis; // Пространство имен
+
+record class Person(string Name, int Age)
+    {
+        public void PrintT()//Метод 4
+        {
+            Console.WriteLine($"Name = {Name}");//Name = Tom
+            Console.WriteLine($"Age = {Age}");//Age = 37
+        }
+    }
+class Program // Основной класс программы
+{
+    public static void Main(string[] args)// Основной метод программы
+    {
+        // Console.WriteLine("====================<<<Многопоточность класс Thread>>>================");
+
+        // //текущий поток
+        // Thread currentThread = Thread.CurrentThread;
+
+        // Console.WriteLine($"Имя потока:{currentThread}");
+        // currentThread.Name = "Метод Main";
+        // Console.WriteLine($"Имя потока:{currentThread.Name}");
+
+        // Console.WriteLine($"Запущен ли поток:{currentThread.IsAlive}");
+        // Console.WriteLine($"Id:{currentThread.ManagedThreadId}");
+        // Console.WriteLine($"Приоритет потока:{currentThread.Priority}");
+        // Console.WriteLine($"Статус потока:{currentThread.ThreadState}");
+
+        Console.WriteLine("====================================================");
+        for(int i = 0; i < 10; i++)
+        {
+            Thread.Sleep(500);//задержка 500 миллисекунд
+            Console.WriteLine(i);
+        }
+
+        Console.WriteLine("=================Создание потоков. Делегат ThreadStart====================");
+        //public delegate void ThreadStart();//
+
+        //Thread myThread1 = new Thread(Print);
+        // Thread myThread2 = new Thread(new ThreadStart(Print));
+        // Thread myThread3 = new Thread(()=>Console.WriteLine("Hello Threads"));
+
+        // myThread1.Start();//Запускается поток myThread1
+        // myThread2.Start();//Запускается поток myThread2
+        // myThread3.Start();//Запускается поток myThread3
+
+
+        // for (int i = 0; i < 5; i++)//Действия выполняемые в главном потоке
+        // {
+        //     Console.WriteLine($"Главный поток-{i}");
+        //     Thread.Sleep(500);
+        // }
+
+
+        Console.WriteLine("=========Создание потоков. Делегат ParameterizedThreadStart=========");
+        //public delegate void ThreadStart(object? obj);//
+
+        // Thread myPThread2 = new Thread(Print1);
+        // Thread myPThread1 = new Thread(new ParameterizedThreadStart(Print1));
+        // Thread myPThread3 = new Thread(message =>Console.WriteLine(message));
+
+        // myPThread1.Start("Hello");//Запускается поток myPThread1
+        // myPThread2.Start("Привет");//Запускается поток myPThread2
+        // myPThread3.Start("Salut");//Запускается поток myPThread3
+
+        // int number = 4;
+        // Thread myTheard = new Thread(Print1);
+        // myTheard.Start(number);
+
+
+        Console.WriteLine("=================================");
+        Person tom = new Person("Tom", 37);//Экземпляр класса
+        // Thread myT1 = new Thread(PrintT);
+        // myT1.Start(person);//Person { Name = Tom, Age = 37 }
+        Thread myT1 = new Thread(tom.PrintT);
+        myT1.Start();//
+
+
+        ///////////////////////////////////////////////////////////////
+        //  void Print()//Метод 
+        // {
+        // for (int i = 0; i < 5; i++)
+        // {
+        //     Console.WriteLine($"Второй поток-{i}");
+        //     Thread.Sleep(300);
+        // }
+        // Console.WriteLine("END");
+        //}
+
+        //  void Print(object? message)//Метод 1
+        // {
+        //     Console.WriteLine(message);
+        // }
+
+        //  void Print1(object? message)//Метод 2
+        // {
+        //     if (message is int n)
+        //     {
+        //         Console.WriteLine($"n * n = {n * n}");//n * n = 16
+        //     }
+        // }
+
+        //  void PrintT(object? obj)//Метод 3
+        // {
+        //     Console.WriteLine(obj);
+        // }
+        
+    }
+}
+
+
+
+
+
+
+
+

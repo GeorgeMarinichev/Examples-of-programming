@@ -1,0 +1,127 @@
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Metadata.Ecma335;
+using System.Security;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using Genesis;
+using static System.Console;
+
+namespace Genesis; // Пространство имен
+
+public record class Pers
+{
+    public string Name {get; init;}
+    public int Age {get; init;}
+    public Pers(string name, int age)//Конструктор
+    {
+        Name = name;
+        Age = age;
+    }
+}
+
+public record class Pers1(string Name, int Age);//Класс
+public record struct Pers2(string Name, int Age);//Структура
+
+public readonly record struct Pers3(string Name, int Age);// readonly
+
+public record class Employee(string Name, int Age): Pers(Name, Age);
+
+//////////////////////////////////////////////////////////////////////////
+public record class Person1(string Name, int Age);// С автоматическим деконструктором
+// public record class Person1// class не обязательно
+// {
+//     public string Name {get; init;}
+//     public int Age {get; init;}
+//     public Person1(string name, int age)//Конструктор
+//     {
+//         Name = name;
+//         Age = age;
+//     }
+
+//     public void Deconstruct(out string name, out int age)
+//     {
+//         (name, age) = (Name, Age);
+//     }
+// }
+//////////////////////////////////////////////////////////////////////////
+public record class Person// class не обязательно
+{
+    public string Name {get; init;}
+    public Person(string name)//Конструктор
+    {
+        Name = name;
+    }
+}
+public class User// class не обязательно
+{
+    public string Name {get; init;}
+    public User(string name)
+    {
+        Name = name;
+    }
+}
+
+class Program // Основной класс программы
+{
+    
+    public static void Main(string[] args)// Основной метод программы
+    {
+        Console.WriteLine("====================<<<Records>>>================");
+       
+        var person1 = new Person("Tom");
+        Console.WriteLine(person1.Name);
+        var person2 = new Person("Tom");
+        Console.WriteLine(person2.Name);
+
+        ///////////////////////////Сравнение на равенство
+        Console.WriteLine(person1.Equals(person2));
+        Console.WriteLine(person1 == person2);
+        Console.WriteLine(person1 != person2);
+
+        var user1 = new User("Alice");
+        Console.WriteLine(user1.Name);
+        var user2 = new User("Alice");
+        Console.WriteLine(user2.Name);
+
+        Console.WriteLine(user1.Equals(user2));
+        Console.WriteLine(user1 == user2);
+        Console.WriteLine(user1!= user2);
+
+        ///////////////////////////Оператор with
+        var jn = new Pers("Jn", 47);
+        //var sam = jn{Name = "Sam"};// Ошибка!
+        var sam = jn with {};
+        Console.WriteLine($"{sam.Name}-{sam.Age}");
+
+        //////////////////////////Позиционные records
+        var person = new Person1("Dima", 40);
+
+        var (personName, personAge) = person;
+        Console.WriteLine(personName);
+        Console.WriteLine(personAge);
+
+        //////////////////////////Позиционные структуры для чтения
+        var pers1 = new Pers1("Tom", 50);// Позиционные records класс
+        //pers1.Age = 48;//Ошибка
+        //pers1.Name = "Bob";//Ошибка
+
+        var pers2 = new Pers2("Tom", 50);//Позиционные records структура
+        pers2.Age = 48;
+        pers2.Name = "Bob";
+
+        var pers3 = new Pers3("Tom", 50);//Позиционные readonly records структура 
+        //pers3.Age = 48;//Ошибка - значение свойства нельзя изменить
+        //pers3.Name = "Bob";//Ошибка - значение свойства нельзя изменить
+        Console.WriteLine(pers3);
+
+        Employee em = new("Di", 45);
+        Console.WriteLine(em);
+        Console.WriteLine(em.Age);
+
+        
+    }
+}
+
+
+

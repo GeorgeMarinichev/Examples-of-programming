@@ -1,0 +1,25 @@
+//////////////////////////////Параметры маршрута
+
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.Map("/", ()=> $"Index Page");
+app.Map("/users", ()=> $"User Page");
+app.Map("/users/{id}", (string id)=> $"User Id: {id}");//Добавить параметр
+app.Map("/users2#{id}", (string id)=> $"User2 Id: {id}");//Свой разделитель, в место "/"
+app.Map("/users3/{id?}", (string? id)=> $"User3 Id: {id??"Undefined"}");//Необязательный параметр маршрута
+app.Map("/users4/{id}/{name}", (string id, string name)=> $"User4 Id: {id} User Name: {name}");//Определение нескольких парамтров
+app.Map("/users5/{id}/{name}", HandleRequest);//Вынесение обработчика маршрута  в отдельныы метод
+app.Map("/Company/{id=177}/{name=RBT}/{job?}", (string id, string name, string? job)=> $"Company Id: {id} Company Name {name} Job: {job}");//Параметры по умолчанию
+app.Map("/Company2/{*info=177}", (string info)=> $"Company2: {info}");//Передача произвольного числа параметров(catchall-параметр)
+
+//app.MapGet("/", () => "Hello World!");
+
+//app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+app.Run();
+
+string HandleRequest(string id, string name)//Выенесение обработчика маршрута  в отдельныы метод
+{
+    return $"User5 Id: {id} User5 Name {name}";
+}
+

@@ -1,0 +1,67 @@
+using System;
+using System.Linq.Expressions;
+
+namespace ConsoleApplication1
+{
+    internal class Program
+    {
+        public static void Main(string[] args)
+        {
+            //restart:
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Программа цикл проверка на четное число...)");
+                
+                uint even, not_even;
+                int current, limit, even_s, not_even_s;
+                
+                even = 0;
+                even_s = 0;
+                not_even = 0;
+                not_even_s = 0;
+                
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                try
+                {
+                    Console.WriteLine("Введите первое число диапазона:");
+                    current = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Введите второе число диапазона::");
+                    limit = Convert.ToInt32(Console.ReadLine());
+                }
+                catch(Exception)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Не верное значение!!!");
+                    Console.ReadKey();
+                    continue;
+                    
+                }
+                while (current <= limit)
+                {
+                    if (current % 2 == 0)
+                    {
+                        even++;
+                        even_s += current;
+                    }
+                    else
+                    {
+                        not_even++;
+                        not_even_s = not_even_s + current;
+                    }
+                    current++;
+                    
+                }
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Четных чисел:{even}");
+                Console.WriteLine($"Не четных чисел:{not_even}");
+                Console.WriteLine($"Сумма четных чисел:{even_s}");
+                Console.WriteLine($"Сумма не четных чисел:{not_even_s}");
+                Console.ResetColor();
+                Console.ReadKey();
+                //goto restart;
+            }
+
+        }
+    }
+}

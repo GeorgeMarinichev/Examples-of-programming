@@ -1,0 +1,51 @@
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Отложенное и немедленное выполнение LINQ");
+        //////////////////////////Отложенное выполнение///////////////////////////////////
+        string[] people1 = {"Tom", "Bob", "Sam"};
+        var selectedPeople1 = people1.Where(s => s.Length == 3).OrderBy(s => s);
+        people1[1] = "Mike";
+        foreach (var item in selectedPeople1)
+        {
+            Console.WriteLine(item);
+        }
+
+        Console.WriteLine("------------------------------------------------------------------");
+        /////////////////////////////Немедленное выполнение///////////////////////////////////
+        string[] people2 = {"Tom", "Bob", "Sam"};
+        var selectedPeople2 = people2.Where(s => s.Length == 3).OrderBy(s => s).Count();
+        Console.WriteLine(selectedPeople2);
+        people2[1] = "Mike";
+        Console.WriteLine(selectedPeople2);
+
+        Console.WriteLine("------------------------------------------------------------------");
+        /////////////////////////////Немедленное выполнение///////////////////////////////////
+        string[] people3 = {"Tom", "Bob", "Sam"};
+        var selectedPeople3 = people3.Where(s => s.Length == 3).OrderBy(s => s);
+        Console.WriteLine(selectedPeople3.Count());
+        people3[1] = "Mike";
+        Console.WriteLine(selectedPeople3.Count());
+
+        Console.WriteLine("------------------------------------------------------------------");
+        /////////////////////////////Немедленное выполнение///////////////////////////////////
+        string[] people4 = {"Tom", "Bob", "Sam"};
+        var selectedPeople4 = people4.Where(s => s.Length == 3).OrderBy(s => s).ToList();
+        people4[1] = "Mike";
+
+        foreach (string item in selectedPeople4)
+        {
+            Console.WriteLine(item);
+        }
+
+    }
+
+}
+    
+        
+
+
+
+

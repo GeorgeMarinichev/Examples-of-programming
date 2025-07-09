@@ -1,0 +1,24 @@
+using System.Threading;
+
+namespace Maze
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.WriteLine("Console.Beep()");
+                int duration = 0;
+                int frequency = 0;
+                Console.WriteLine("Введите частоту в пределах от 37 до 32767 Гц");
+                duration = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Введите длину ноты");
+                frequency = int.Parse(Console.ReadLine());
+                Console.WriteLine($"Частота ноты:{duration} Длина ноты:{frequency}");
+                Console.Beep(duration, frequency);
+                Console.Clear();
+            }
+        }
+    }
+}

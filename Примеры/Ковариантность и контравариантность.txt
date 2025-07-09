@@ -1,0 +1,65 @@
+using System.Net.Http.Headers;
+using System.Xml.XPath;
+using BenchmarkDotNet.Jobs;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Diagnostics.Tracing.Parsers.Clr;
+
+namespace Benchmark; // Пространство имен
+
+// public delegate T MyDelegate<T>();// Делегат 0
+// public delegate R MyDelegate<T, R>(T t);// Делегат 1
+
+class Car
+{
+    public void Drive(){}
+}
+
+class Mersedes: Car
+{
+    public string ClassName;
+}
+
+//public delegate T MyDelegate<out T>();// Делегат 1 Ковариантность 
+delegate void MyDelegate<in T>(T parametr);// Делегат 1 контравариантность
+class Program // Основной класс программы
+{
+
+    static Mersedes MersedesBilder() // Под первый делегат Ковариантность 
+    {
+        return new Mersedes();
+    }
+
+    static void DriveCar(Car car)
+    {
+        Console.WriteLine(car.GetType());
+    }
+
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<Ковариантность и контравариантность>>>");
+
+        // MyDelegate<Mersedes> mersDel = new MyDelegate<Mersedes>(MersedesBilder);
+
+        // MyDelegate<Car> carDel = mersDel;// upcast
+
+        // Console.WriteLine(carDel().GetType() +" "+mersDel().GetType());
+
+        MyDelegate<Car> carDel = new MyDelegate<Car>(DriveCar);
+
+        MyDelegate<Mersedes> merDel = carDel;// downcast
+
+        carDel(new Car());
+        merDel(new Mersedes());
+
+        Console.WriteLine("-------------------------------------");
+
+          
+        //System.Console.WriteLine("Введите число от 1, до 7");
+        //int res = int.Parse(Console.ReadLine());
+        
+    }      
+
+}
+

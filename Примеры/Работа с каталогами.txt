@@ -1,0 +1,155 @@
+using System.IO;
+
+namespace Genesis
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Работа с каталогами");
+            ///////////////////Directory
+            string dirName = "C:\\";
+
+            //if (Directory.Exists(dirName))//Если папка сущеcтвует
+            //{
+            //    Console.WriteLine("Подкаталоги:");
+            //    string[] dirs = Directory.GetDirectories(dirName);
+            //    foreach (string i in dirs)
+            //    {
+            //        Console.WriteLine(i);
+            //    }
+            //    Console.WriteLine("end");
+            //}
+            //Console.WriteLine("Файлы:");
+            //string[] files = Directory.GetFiles(dirName);
+            //foreach (string i in files)
+            //{
+            //    Console.WriteLine(i);
+            //}
+
+            //Console.WriteLine("-------------------------------------------------");
+            /////////////////////DirectoryInfo
+            //var directory = new DirectoryInfo(dirName);
+
+            //if (directory.Exists)//Если папка сущеcтвует
+            //{
+            //    Console.WriteLine("Подкаталоги:");
+            //    DirectoryInfo[] dirs = directory.GetDirectories();
+            //    foreach (DirectoryInfo i in dirs)
+            //    {
+            //        Console.WriteLine(i);
+            //    }
+            //    Console.WriteLine("end");
+            //}
+
+            //Console.WriteLine("Файлы:");
+            //FileInfo[] files2 = directory.GetFiles();
+            //foreach (FileInfo i in files2)
+            //{
+            //    Console.WriteLine(i);
+            //}
+
+            Console.WriteLine("-------------------------------------------------");
+            ///////////////////Фильтрация папок и файлов
+            ///Ищем все папки book
+            //Класс Directory
+            string[] dirBook = Directory.GetDirectories(dirName, "books*.");
+           
+            //Класс DirectoryInfo
+            var directoryBook = new DirectoryInfo(dirName);
+            DirectoryInfo[] dirBook2 = directoryBook.GetDirectories("books*.");
+
+            ///Ищем все файлы с расширением exe
+            //Класс Directory
+            string[] filesExe = Directory.GetFiles(dirName, "*.exe");
+           
+            //Класс DirectoryInfo
+            var directoryExe = new DirectoryInfo(dirName);
+            FileInfo[] dirExe2 = directoryExe.GetFiles("*.exe");
+
+            Console.WriteLine("-------------------------------------------------");
+            ///////////////////Создание коталога
+            ///Ищем все папки
+            //Класс Directory
+            string path = @"C:\SomeDir";
+            string subpath = @"program\avalon";
+            if(!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            Directory.CreateDirectory($"{path}/{subpath}");
+
+            //Класс DirectoryInfo
+            string path2 = @"C:\SomeDir";
+            string subpath2 = @"program\avalon";
+            DirectoryInfo dirInfo = new DirectoryInfo(path2);
+            if (!dirInfo.Exists)
+            {
+                dirInfo.Create();
+            }
+            dirInfo.CreateSubdirectory(subpath2);
+
+
+            Console.WriteLine("-------------------------------------------------");
+            ///////////////////Получение информации о коталоге
+            ///Ищем все папки
+            //Класс Directory
+
+            //Класс DirectoryInfo
+            //string dirName1 = "C:\\Program Files";
+            string dirName1 = "C:\\SomeDir";
+
+            DirectoryInfo dirInf = new DirectoryInfo(dirName1);
+            Console.WriteLine($"Название каталога: {dirInf.Name}");
+            Console.WriteLine($"Полное название каталога: {dirInf.FullName}");
+            Console.WriteLine($"Время создания каталога: {dirInf.CreationTime}");
+            Console.WriteLine($"Корневой каталог: {dirInf.Root}");
+
+            Console.WriteLine("-------------------------------------------------");
+            ///////////////////Удаление каталога
+            ///Ищем все папки
+            //Класс Directory
+            string dirDel = @"C:\\SomeDir";
+
+            if(Directory.Exists(dirDel))
+            {
+                Directory.Delete(dirDel, true);
+                Console.WriteLine($"Каталог {dirDel} удален");
+            }
+            else
+            {
+                Console.WriteLine($"Каталог {dirDel} не существует");
+            }
+
+            //Класс DirectoryInfo
+            string dirDel2 = @"C:\\SomeDir";
+            DirectoryInfo dirInfoDel = new DirectoryInfo(dirDel2);
+            if (dirInfoDel.Exists)
+            {
+                dirInfoDel.Delete(true);
+                Console.WriteLine($"Каталог {dirDel2} удален");
+            }
+            else
+            {
+                Console.WriteLine($"Каталог {dirDel2} не существует");
+            }
+
+            Console.WriteLine("-------------------------------------------------");
+            ///////////////////Перемещение каталога
+            ///Ищем все папки
+            //Класс Directory
+            //Класс DirectoryInfo
+            string oldPath = @"C:\\SomeFolder";
+            string newPath = @"C:\\SomeDir";
+
+            DirectoryInfo dirInfoN = new DirectoryInfo(oldPath);
+            if (dirInfoN.Exists && !Directory.Exists(newPath))
+            {
+                dirInfoN.MoveTo(newPath);
+                //Bkb
+            }
+        }
+    }
+}
+
+

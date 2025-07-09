@@ -1,0 +1,72 @@
+
+class Person
+{
+    public string Name{get;}
+    public Person(string name) => Name = name;
+    public override bool Equals(object? obj)
+    {
+        if(obj is Person person) return Name == person.Name;
+        return false;
+    }
+    public override int GetHashCode()=> Name.GetHashCode();
+}
+
+    internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Объедениение, пересечение и разность коллекций");
+        //////////////////////////Разность последовательностей Метод Except()///////////////////////////////////
+        // string[] soft = {"Microsoft", "Google", "Apple"};
+        // string[] hard = {"Apple", "IBM", "Samsung"};
+
+        // var result = soft.Except(hard);
+        // foreach (string item in result)
+        // {
+        //     Console.WriteLine(item);
+        // }
+
+        //////////////////////////Пересечение последователностей///////////////////////////////////
+        // string[] soft = {"Microsoft", "Google", "Apple"};
+        // string[] hard = {"Apple", "IBM", "Samsung"};
+
+        // var result = soft.Intersect(hard);
+        // foreach (string item in result)
+        // {
+        //     Console.WriteLine(item);
+        // }
+
+        //////////////////////////Удалинеие дубликатов///////////////////////////////////
+        // string[] soft = {"Microsoft", "Google", "Apple", "Apple", "IBM", "Samsung"};
+       
+        // var result = soft.Distinct();
+        // foreach (string item in result)
+        // {
+        //     Console.WriteLine(item);
+        // }
+
+        //////////////////////////Объеденение последователностей///////////////////////////////////
+        // string[] soft = {"Microsoft", "Google", "Apple"};
+        // string[] hard = {"Apple", "IBM", "Samsung"};
+
+        // var result = soft.Union(hard);
+        // foreach (string item in result)
+        // {
+        //     Console.WriteLine(item);
+        // }
+
+         //////////////////////////Работа со сложными объектами///////////////////////////////////
+        Person[] student = {new Person("Tom"), new Person("Bob"), new Person("Sam")};
+        Person[] employees = {new Person("Tom"), new Person("Bob"), new Person("Mike")};
+
+        var people = student.Union(employees);
+        foreach (Person item in people)
+        {
+            Console.WriteLine(item);
+        }
+
+    }
+}
+
+
+

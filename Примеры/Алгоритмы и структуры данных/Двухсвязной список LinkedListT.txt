@@ -1,0 +1,83 @@
+// See https://aka.ms/new-console-template for more information
+using System;
+
+namespace Genesis;
+
+class Person
+{
+    public string Name {get;}
+    public Person(string name)
+    {
+        Name = name;
+    }
+}
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Двухсвязной список LinkedList<T>");
+
+        //LinkedList<string> people = new LinkedList<string>();//Пустой двухсвязной список
+        //LinkedList<string> people = [];//Пустой двухсвязной список
+        //var people = new LinkedList<string>();//Пустой двухсвязной список
+
+        var employees = new List<string> { "Tom", "Sam", "Bob" };
+
+        LinkedList<string> people = new LinkedList<string>(employees);//В конструктор двухсвязной передана коллекция
+
+        foreach (var item in people)
+        {
+            Console.WriteLine(item);
+        }
+
+        Console.WriteLine("===========================================");
+
+        Console.WriteLine(people.Count);//Tom Sam Bob
+        Console.WriteLine(people.First?.Value);//Tom
+        Console.WriteLine(people.Last?.Value);//Bob
+
+        Console.WriteLine("===========================================");
+        LinkedList<string> people2 = new LinkedList<string>(new[] { "Alice", "Britni", "Besi" });
+        
+        var currentNode = people2.First;
+        while(currentNode != null)//От начала до конца списка
+        {
+            Console.WriteLine(currentNode.Value);
+            currentNode = currentNode.Next;
+        }
+
+        currentNode = people2.Last;
+        while (currentNode != null)//С конца до начала списка
+        {
+            Console.WriteLine(currentNode.Value);
+            currentNode = currentNode.Previous;
+        }
+
+        Console.WriteLine("===========================================");
+
+        //LinkedList<string> people3 = [];
+        var people3 = new LinkedList<string>();//Пустой двухсвязной список
+        //people3.AddFirst("Bill");//Вставляем узел со значением Tom на последнее место
+                        //Так как в списке нет узлов, то последнее будет также и первым
+        //people3.AddLast("Richi");//Вставляем узел со значением Bob на первое место
+
+        if(people3.First != null)//Вставляем после первого узла новый узел со значением Mike
+        {
+            people3.AddAfter(people3.First, "Jn");
+        }
+
+        foreach (var item in people3)
+        {
+            Console.WriteLine(item);
+        }
+
+        Console.WriteLine("===========================================");
+        var company = new LinkedList<Person>();//Cвязанные списки из других типов
+        company.AddLast(new Person("Tom"));
+        company.AddLast(new Person("Sam"));
+        company.AddFirst(new Person("Bill"));
+
+    }
+}
+

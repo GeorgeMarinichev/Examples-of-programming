@@ -1,0 +1,124 @@
+using System.Security.Cryptography;
+
+record class Person(string Name, int Age);
+record class Company(string Name, List<Person> Staff);
+record class Course(string Title);//Учебный курс
+record class Student(string Name);//Студент
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Проекция данных");
+
+        // int[] ints = [1, 9, 8, 5];
+        // var result = ints.OrderBy(g => g);
+        // foreach (var item in result)
+        // {
+        //     Console.Write(item + " ");
+        // }
+
+        ///////////////////////////////////////////////////////////
+         var people = new List<Person>
+        {
+            new Person ("Tom", 38),
+            new Person ("Bob", 45),
+            new Person ("Sam", 30),
+            new Person ("Alice", 35)
+        };
+
+        // var names = from p in people select p.Name;//Через оператор запросов
+
+        // foreach (string n in names)
+        // {
+        //     Console.WriteLine(n);
+        // }
+        /////////////////////////////////////////////////////////////////
+        // var names = people.Select(u =>u.Name);//через метод расширения Select()
+
+        // foreach (string n in names)
+        // {
+        //     Console.WriteLine(n);
+        // }
+        ////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        // var personel = from p in people select new
+        // {
+        //     FirstName = p.Name,
+        //     Year = DateTime.Now.Year - p.Age
+        // };
+        //Или как альтернатива через метод расширения Select()
+        // var personel = people.Select(p => new
+        // {
+        //     FirstName = p.Name,
+        //     Year = DateTime.Now.Year - p.Age
+        // });
+        
+        // foreach (var p in personel)
+        // {
+        //     Console.WriteLine($"{p.FirstName} = {p.Year}");
+        // }
+        ////////////////////////////////////////////////////////////////
+        // var personel = from p in people 
+        // let name = $"Mr. {p.Name}"
+        // let year = DateTime.Now.Year - p.Age select new
+        // {
+        //     Name = name,
+        //     Year = year
+        // };
+        //Person person = new("George", 38);//
+        // var personel = people.Select(p => new
+        // {
+        //     Name =$"Mr.{p.Name}",
+        //     Year = DateTime.Now.Year - p.Age
+        // });
+        
+        // foreach (var p in personel)
+        // {
+        //     Console.WriteLine($"{p.Name} = {p.Year}");
+        // }
+
+        //////////////////////////////////////////////////////////
+        var courses = new List<Course>{new Course("C#"), new Course("Java")};
+        var students = new List<Student>{new Student("Jn"), new Student("Britni")};
+
+        var enrollments = from course in courses
+        from student in students
+        select new {Student = student.Name, Course = course.Title};
+
+        foreach (var item in enrollments)
+        {
+            Console.WriteLine($"{item.Student}-{item.Course}");
+        }
+        //////////////////////////////////////////////////////////////////////
+        var companies = new List<Company>
+        {
+            new Company("RBT", new List<Person> {new Person("Tom", 45), new Person("Sam", 35)}),
+            new Company("DNS", new List<Person> {new Person("Bob", 28), new Person("Alice", 21)}),
+        };
+        //var employees = companies.SelectMany(c => c.Staff);
+        //Или через оператор LINQ
+        var employees = from c in companies
+        from emp in c.Staff
+        select emp;
+
+         foreach (var item in employees)
+        {
+            Console.WriteLine($"{item.Name}-{item.Age}");
+        }
+        /////////////////////////////////////////////////////////////////
+        // var employeess = companies.SelectMany(c => c.Staff,
+        // (c, emp)=> new{Name = emp.Name, Age = emp.Age, Company = c.Name});
+        //Или через оператор LINQ
+        var employeess = from c in companies
+        from emp in c.Staff
+        select new {Name = emp.Name, Age = emp.Age, Company = c.Name};
+
+         foreach (var item in employeess)
+        {
+            Console.WriteLine($"{item.Name}-{item.Age}-{item.Company}");
+        }
+
+    }
+}
+
+

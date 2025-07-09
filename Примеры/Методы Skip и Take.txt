@@ -1,0 +1,82 @@
+record class Person(string Name, int Age);
+    internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Ìועמהû Skip ט Take");
+        //////////////////////////Ìועמהû Skip()///////////////////////////////////
+        //Person[] people = {new Person("Tom", 27), new Person("Bob", 38), new Person("Sam", 45)};
+        string[] people = {"Tom", "Bob", "Sam", "Mike"};
+        var result = people.Skip(2);
+
+        foreach (var item in result)
+        {
+            Console.WriteLine(item);//
+        }
+        
+        //////////////////////////Ìועמהû SkipLast()///////////////////////////////////
+        //Person[] people1 = {new Person("Tom", 27), new Person("Bob", 38), new Person("Sam", 45)};
+        string[] people1 = {"Tom", "Bob", "Sam", "Mike"};
+        var result1 = people1.SkipLast(2);
+
+        foreach (var item in result1)
+        {
+            Console.WriteLine(item);//
+        }
+
+        //////////////////////////Ìועמהû SkipWhile()///////////////////////////////////
+        //Person[] people2 = {new Person("Tom", 27), new Person("Bob", 38), new Person("Sam", 45)};
+        string[] people2 = {"Tom", "Bob", "Sam", "Mike"};
+        var result2 = people2.SkipWhile(p => p.Length == 3);
+
+        foreach (var item in result2)
+        {
+            Console.WriteLine(item);//
+        }
+        Console.WriteLine("======================================================");//
+        //////////////////////////Ìועמהû Take()///////////////////////////////////
+        //Person[] people3 = {new Person("Tom", 27), new Person("Bob", 38), new Person("Sam", 45)};
+        string[] people3 = {"Tom", "Bob", "Sam", "Mike"};
+        var result3 = people3.Take(3);
+
+        foreach (var item in result3)
+        {
+            Console.WriteLine(item);//
+        }
+
+        //////////////////////////Ìועמהû TakeLast()///////////////////////////////////
+        //Person[] people4 = {new Person("Tom", 27), new Person("Bob", 38), new Person("Sam", 45)};
+        string[] people4 = {"Tom", "Bob", "Sam", "Mike"};
+        var result4 = people4.TakeLast(3);
+
+        foreach (var item in result4)
+        {
+            Console.WriteLine(item);//
+        }
+
+        //////////////////////////Ìועמהû TakeWhile()///////////////////////////////////
+        //Person[] people5 = {new Person("Tom", 27), new Person("Bob", 38), new Person("Sam", 45)};
+        string[] people5 = {"Tom", "Bob", "Sam", "Mike"};
+        var result5 = people5.TakeWhile(P => P.Length == 3);
+
+        foreach (var item in result5)
+        {
+            Console.WriteLine(item);//
+        }
+
+        //////////////////////////Ïמסענאםטקםûי גûגמה///////////////////////////////////
+        //Person[] people6 = {new Person("Tom", 27), new Person("Bob", 38), new Person("Sam", 45)};
+        string[] people6 = {"Tom", "Bob", "Sam", "Mike", "Kate", "Alice"};
+        var result6 = people6.Skip(3).Take(2);
+
+        foreach (var item in result6)
+        {
+            Console.WriteLine(item);//
+        }
+
+    }
+        
+}
+
+
+

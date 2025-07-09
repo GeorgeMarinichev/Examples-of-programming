@@ -1,0 +1,82 @@
+namespace Cosmos
+{
+    internal class Program
+    {
+        static void Bar1(object[] x) // Метод object с циклом foreach
+        {
+            foreach (object i in x)
+            {
+                Console.WriteLine(i);
+            }   
+        }
+        static void Bar1(int[] x) // Метод int с циклом foreach
+        {
+            foreach (var i in x)
+            {
+                Console.WriteLine(i);
+            }
+        }
+        /// ////////////////////////////////////////////////////////////////////////////////
+        static void Bar2(object[] x) // Метод object с циклом for
+        {
+            for (var i = 0; i < x.Length; i ++)
+            {
+                Console.WriteLine(x[i]);
+            }
+        }
+        static void Bar2(int[] x) // Метод int с циклом for
+        {
+            for (var i = 0; i < x.Length; i++)
+            {
+                Console.WriteLine(x[i]);
+            }
+        }
+        
+        /////////////////////////////////////////////////////////////////////////////////////
+        
+        static void Bar3(object [] x, int i = 0) // Метод с рекурсивной функцией
+        {
+            if (i < x.Length)
+            {
+                Console.WriteLine(x[i]);
+                Bar3(x, i + 1);
+            }
+            //return;// Выход из рекурсии
+        }
+        static void Bar3(int[] x, int i = 0) // Метод с рекурсивной функцией
+        {
+            if (i < x.Length)
+            {
+                Console.WriteLine(x[i]);
+                Bar3(x, i + 1);
+            }
+            //return;// Выход из рекурсии
+        }
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("<<< Рекурсивные функции аналог циклов >>>");
+
+            string[] massStr = { "g", "e", "o", "r", "g", "e" };
+
+            int[] massInt = {1, 9, 8, 5 };
+
+            Console.WriteLine("Цикл foreach:");
+            Bar1(massStr);
+            Console.WriteLine("========================================");
+            Bar1(massInt);
+
+            Console.WriteLine("Цикл for:");
+            Bar2(massStr);
+            Console.WriteLine("========================================");
+            Bar2(massInt);
+
+            Console.WriteLine("Цикл рекурсивной функцией:");
+            Bar3(massStr);
+            Console.WriteLine("========================================");
+            Bar3(massInt);
+
+
+        }
+    }
+}

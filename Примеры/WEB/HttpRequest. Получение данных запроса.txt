@@ -1,0 +1,86 @@
+namespace WebApplication3
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+
+            Console.WriteLine("HttpRequest. Получение данных запроса");
+            //////////////////////////Получение заголовков запроса
+            //var builder = WebApplication.CreateBuilder(args);
+            //var app = builder.Build();
+
+            ////app.MapGet("/", () => "Hello World!");
+            //app.Run(async (context) =>
+            //{
+            //    context.Response.ContentType = "text/html; charset=utf-8";
+            //    var stringBuilder = new System.Text.StringBuilder("<table>");
+            //    foreach(var h in context.Response.Headers)
+            //    {
+            //        stringBuilder.Append($"<tr><td>{h.Key}</td><td>{h.Value}</td></tr>");
+            //    }
+            //    stringBuilder.Append("</table>");
+            //    await context.Response.WriteAsync(stringBuilder.ToString());
+            //});
+            //app.Run();
+            //
+            //
+            //var builder = WebApplication.CreateBuilder(args);
+            //var app = builder.Build();
+            ////app.MapGet("/", () => "Hello World!");
+            //app.Run(async (context) =>
+            //{
+            //    var acceptHeaderValue = context.Request.Headers["Accept"];
+            //    await context.Response.WriteAsync($"Accept: {acceptHeaderValue}");
+            //});
+            //app.Run();
+
+
+            //////////////////////////Получение пути запроса
+            //var builder = WebApplication.CreateBuilder();
+            //var app = builder.Build();
+            //app.Run(async(c)=> await c.Response.WriteAsync($"Path: {c.Request.Path}"));
+            //app.Run();
+            //
+            //
+            //var builder = WebApplication.CreateBuilder();
+            //var app = builder.Build();
+            //app.Run(async (c) =>
+            //{
+            //    var path = c.Request.Path;
+            //    var n = DateTime.Now;
+            //    var r = c.Response;
+            //    if (path == "/date")
+            //        await r.WriteAsync($"Date: {n.ToShortDateString()}");
+            //    else if (path == "/time")
+            //        await r.WriteAsync($"Date: {n.ToShortTimeString()}");
+            //    else
+            //        await r.WriteAsync("HELLO METANIT.COM");
+            //});
+            //app.Run();
+
+            //////////////////////////Строка запроса
+            //var builder = WebApplication.CreateBuilder();
+            //var app = builder.Build();
+            //app.Run(async (c) =>
+            //{
+            //    c.Response.ContentType = "text/html; charset=utf-8";
+            //    await c.Response.WriteAsync($"<p>Path: {c.Request.Path}</p>" +
+            //        $"<p>QueryString: {c.Request.QueryString}</p>");
+            //});
+            //app.Run();
+            //
+            //
+            var builder = WebApplication.CreateBuilder();
+            var app = builder.Build();
+            app.Run(async (context) =>
+            {
+                string name = context.Request.Query["name"];
+                string age = context.Request.Query["age"];
+
+                await context.Response.WriteAsync($"{name}-{age}");
+            });
+            app.Run();
+        }
+    }
+}

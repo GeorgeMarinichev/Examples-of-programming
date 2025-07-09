@@ -1,0 +1,132 @@
+//Различные структуры данных для хранения объектов класса Person
+using System;
+using System.Reflection.Metadata;
+using System.Collections;
+using System.Collections.Generic;
+
+
+namespace Space
+{
+     class Person
+    {
+        public int Id {get; set;} = 0;
+        public string Name {get; set;} = null;
+        public int Age {get; set;} = 0;
+    }
+
+    class Program
+    {
+        //Обычный массив
+        Person[] peopleArray = new Person[]
+        {
+            new Person { Id = 1, Name = "George", Age = 39 },
+            new Person { Id = 2, Name = "Alice", Age = 28 },
+            new Person { Id = 3, Name = "Tom", Age = 55 },
+        };
+
+        //Массив с использованием инициализаторов
+        Person[] peopleArrayInit = 
+        {
+            new Person { Id = 1, Name = "George", Age = 39 },
+            new Person { Id = 2, Name = "Alice", Age = 28 },
+            new Person { Id = 3, Name = "Tom", Age = 55 },
+        };
+
+        //Список (List)
+        List<Person> peopleList = new List<Person>
+        {
+            new Person { Id = 1, Name = "George", Age = 39 },
+            new Person { Id = 2, Name = "Alice", Age = 28 },
+            new Person { Id = 3, Name = "Tom", Age = 55 },
+        };
+
+        //ArrayList (необобщенная коллекция)
+        ArrayList peopleArrayList = new ArrayList
+        {
+            new Person { Id = 1, Name = "George", Age = 39 },
+            new Person { Id = 2, Name = "Alice", Age = 28 },
+            new Person { Id = 3, Name = "Tom", Age = 55 },
+        };
+
+        //Словарь (Dictionary)
+        Dictionary<int, Person> peopleDictionary = new Dictionary<int, Person>
+        {
+            { 1, new Person { Id = 1, Name = "George", Age = 39 } },
+            { 2, new Person { Id = 2, Name = "Alice", Age = 28 } },
+            { 3, new Person { Id = 3, Name = "Tom", Age = 55 } },
+        };
+
+        //HashSet (уникальные элементы)
+        HashSet<Person> peopleHashSet = new HashSet<Person>
+        {
+            new Person { Id = 1, Name = "George", Age = 39 },
+            new Person { Id = 2, Name = "Alice", Age = 28 },
+            new Person { Id = 3, Name = "Tom", Age = 55 },
+        };
+
+        //Queue (очередь)
+        // Queue<Person> peopleQueue = new Queue<Person>();
+        // peopleQueue.Enqueue(new Person { Id = 1, Name = "George", Age = 39 });
+        // peopleQueue.Enqueue(new Person { Id = 2, Name = "Alice", Age = 28 });
+        // peopleQueue.Enqueue(new Person { Id = 3, Name = "Tom", Age = 55 });
+
+        //Stack (стек)
+        // Stack<Person> peopleStack = new Stack<Person>();
+        // peopleStack.Push(new Person { Id = 1, Name = "George", Age = 39 });
+        // peopleStack.Push(new Person { Id = 2, Name = "Alice", Age = 28 });
+        // peopleStack.Push(new Person { Id = 3, Name = "Tom", Age = 55 });
+
+        static void Main(string[] args)
+        {
+            List<Person> people = new List<Person>//
+            {
+            new Person {Id = 1, Name = "George", Age = 39},
+            new Person {Id = 2, Name = "Alice", Age = 28},
+            new Person {Id = 3, Name = "Tom", Age = 55},
+            };
+
+            Console.WriteLine("Введите имя:");
+            var name = Console.ReadLine();
+
+            // Запрашиваем возраст у пользователя
+            Console.WriteLine("Введите возраст:");
+            //int age = int.Parse(Console.ReadLine()); // Преобразуем введенное значение в int
+            int age = Convert.ToInt32(Console.ReadLine()); // Преобразуем введенное значение в int
+
+            // Определяем следующий Id
+            int nextId = people.Count + 1; // Увеличиваем количество людей на 1 для получения следующего Id
+            
+            // Добавляем нового человека с заданными Id и Age
+            people.Add(new Person { Id = nextId, Name = name, Age = age });
+
+            
+            // Выводим всех людей
+            Console.WriteLine("Список людей:");
+            foreach (var item in people)
+            {
+                Console.WriteLine($"Id: {item.Id}, Имя: {item.Name}, Возраст: {item.Age}");
+            }
+
+
+            //Where: Это метод расширения LINQ (Language Integrated Query), который используется для фильтрации 
+            //элементов в коллекции на основе заданного условия. Он принимает в качестве параметра предикат — функцию, 
+            //которая возвращает true или false для каждого элемента.
+
+            //p => p.Age >= 18: Это лямбда-выражение, которое определяет условие фильтрации. 
+            //Здесь p — это каждый элемент коллекции people, и условие проверяет, является ли возраст 
+            //(Age) этого элемента больше или равным 18. Если условие истинно, элемент будет включен в результирующую коллекцию.
+
+            //ToList(): Это метод, который преобразует результат, возвращаемый методом Where, 
+            //в список (List). Он создает новый список, содержащий все элементы, которые соответствуют условию фильтрации.
+            
+            // Выводим список взрослых
+            Console.WriteLine("Список взрослых:");
+            var adults = people.Where(p => p.Age >= 18).ToList();//
+            foreach (var item in adults)
+            {
+                Console.WriteLine($"Id: {item.Id}, Имя: {item.Name}, Возраст: {item.Age}");
+            }
+    
+        }
+    }
+}

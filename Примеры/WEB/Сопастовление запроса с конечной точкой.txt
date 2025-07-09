@@ -1,0 +1,65 @@
+//////////////////////////////Сопастовление запроса с конечной точкой
+//////////////////////////////////////////////////////
+using System;
+using System.Text;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;                   //Необходимый пакет using
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Microsoft.VisualBasic;
+//////////////////////////////////////////////////////
+
+namespace Space
+{
+    ///////////////////////////////////////Создание интерфейса сервиса
+    
+    //////////////////////////////////////////////////Установка сервисов
+    
+    class Program//Главный класс приложения
+    {  
+        static void Main(string[] args)//Главный метод точка входа
+        {
+            //////////////////////////////////Установка сервисов через метод Invoke/InvokeAsync компонентов контйнера middleware
+            
+
+            ///////////////////////////////////Получение всех маршрутов приложения(получение всех имеющиехся в приложении кончных точек)
+            //WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            var builder = WebApplication.CreateBuilder(args);
+
+            //builder.Services.AddTransient<TimeService>();//Добавление сервиса
+
+            var app = builder.Build();
+
+            app.Map("/", ()=> IndexHandler());
+            app.Map("/time", ()=> TimeService());
+            app.Map("/random", ()=> RandomService());
+
+            app.Map("/hello", ()=> "Hello, GEORGE");//Шаблон маршрута конкретный
+            app.Map("/{message}", (string message)=> $"Message: {message}");//Шаблон маршрута общий
+
+            app.Map("/{controller}/Index/5", (string controller)=> $"Controller: {controller}");
+            app.Map("/home/{action}/id", (string action)=> $"Action: {action}");
+
+            //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обраьотки вызовов, если они не соответсвуют другим запросам
+            app.Run();
+
+            string TimeService()//
+            {
+                return DateTime.Now.ToLongTimeString();
+            }
+
+            string IndexHandler()//
+            {
+                return  "Index Page";
+            }
+
+            int RandomService()//
+            {
+                int value;
+                return value = new Random().Next(0, 1000);
+            }
+
+        }
+    }
+}

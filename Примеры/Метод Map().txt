@@ -1,0 +1,115 @@
+//////////////////////////////Метод Map();
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+//app.MapGet("/", () => "Hello World!");
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// app.Map("/date", appBuilder=>
+// {
+//     var date = DateTime.Now.ToShortDateString();
+//     //Логгирование данных и вывод в консоль
+//     appBuilder.Use(async(context, next)=>
+//     {
+//         Console.WriteLine($"Date:{date}");
+//         await next();//Вызов слкдующего middleware
+//     });
+//     appBuilder.Run(async context=> await context.Response.WriteAsync($"Date:{date}"));
+// });
+
+// app.Map("/time", appBuilder=>
+// {
+//     var time = DateTime.Now.ToShortTimeString();
+//     //Логгирование данных и вывод в консоль
+//     appBuilder.Use(async(context, next)=>
+//     {
+//         Console.WriteLine($"Time:{time}");
+//         await next();//Вызов слкдующего middleware
+//     });
+//     appBuilder.Run(async context=> await context.Response.WriteAsync($"Time:{time}"));
+// });
+
+// app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANITT.COM"));
+
+// app.Run();
+
+////////////////////////////////////////////////////////Два резветвления
+// app.Map("/index", appBuilder=>
+// {
+//     appBuilder.Run(async context =>
+//     {
+//         System.Console.WriteLine("Index Page");
+//         await context.Response.WriteAsync("Index Page");
+//     });
+// });
+
+// app.Map("/about", appBuilder=>
+// {
+//     appBuilder.Run(async context =>
+//     {
+//         System.Console.WriteLine("About Page");
+//         await context.Response.WriteAsync("About Page");
+//     });
+// });
+// app.Run(async(context)=> await context.Response.WriteAsync("Page Not Found"));
+// //app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANITT.COM"));
+// app.Run();
+
+
+////////////////////////////////////////////////////////Отдельные методы
+// app.Map("/index", Index);
+// app.Map("/about", About);
+
+// app.Run(async(context)=> await context.Response.WriteAsync("Page Not Found"));
+// //app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANITT.COM"));
+// app.Run();
+
+// void Index(IApplicationBuilder appBuilder)
+// {
+//     appBuilder.Run(async context =>
+//     {
+//         System.Console.WriteLine("Index Page");
+//         await context.Response.WriteAsync("Index Page");
+//     });
+// }
+
+// void About(IApplicationBuilder appBuilder)
+// {
+//     appBuilder.Run(async context =>
+//     {
+//         System.Console.WriteLine("About Page");
+//         await context.Response.WriteAsync("About Page");
+//     });
+// }
+
+
+///////////////////////////////////////////////////////Вложенные методы
+app.Map("/home", appBuilder =>
+{
+    appBuilder.Map("/index", Index);
+    appBuilder.Map("/about", About);
+    appBuilder.Run(async (context) => await context.Response.WriteAsync("Home Page"));
+});
+
+//app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANITT.COM"));
+app.Run(async(context)=> await context.Response.WriteAsync("Page Not Found"));
+app.Run();
+
+void Index(IApplicationBuilder appBuilder)
+{
+    appBuilder.Run(async context =>
+    {
+        System.Console.WriteLine("Index Page");
+        await context.Response.WriteAsync("Index Page");
+    });
+}
+
+void About(IApplicationBuilder appBuilder)
+{
+    appBuilder.Run(async context =>
+    {
+        System.Console.WriteLine("About Page");
+        await context.Response.WriteAsync("About Page");
+    });
+}

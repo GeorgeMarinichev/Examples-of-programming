@@ -1,0 +1,48 @@
+///////////////////////////Переадресация в Results API
+using System;
+using System.Text.Json.Serialization;
+
+
+namespace Space
+{
+    // class Person
+    // {
+    //     public string Name {get; set;} = "";
+    //     public int Age {get; set;} = 0;
+    // }
+
+    record class Person(string Name, int Age);
+
+   
+    internal class Program
+    {
+        private static void Main(string[] args)
+        {
+            ///////////Метод LocalRedirect(); для переадресации на локальный адрес
+            //////////////Обращение по пути "/old" будет осуществляться редирект на адрес "/new"(метод LocalRedirect())
+            // var builder = WebApplication.CreateBuilder();
+            // var app = builder.Build();
+         
+            // app.Map("/old", () => Results.LocalRedirect("/new"));
+            // app.Map("/new", ()=> "New Adres");
+            // app.Map("/", () => "Hello, World!");
+
+            // app.Run();
+
+            ////////////Метод Redirect(); также осуществляет переадресацию и принимает те же параметры, 
+            // что и LocalRedirect(), только адрес для переадресации может не только локальным, но и внешним:
+            // var builder = WebApplication.CreateBuilder();
+            // var app = builder.Build();
+         
+            // app.Map("/old", () => Results.Redirect("https://metanit.com"));//Внешний сайт
+            // //app.Map("/new", ()=> "https://metanit.com");//Внешний сайт
+            // app.Map("/", () => "Hello, World!");
+
+            // app.Run();
+
+            ///////////Метод RedirectToRoute() выполняет переадресацию на определенный маршрут:
+            
+            
+        }
+    }
+}

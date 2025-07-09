@@ -1,0 +1,189 @@
+using System;
+using System.Collections;
+using System.Collections.Immutable;//Директива
+
+namespace Genesis;
+
+internal class Program
+    {
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Строки и класс System.String(методы)");
+
+        ////////////////////////////Создание строк/////////////////////////////////// 
+        //string st1 = "HELLO";
+        //Console.WriteLine(st1);//HELLO
+        //string st2 = new String('a', 6);
+        //Console.WriteLine(st2);// aaaaaa
+        //string st3 = new String(new char[]{ 'W', 'O', 'R', 'L', 'D' });
+        //Console.WriteLine(st3);//WORLD
+        //string st4 = new String(new char[] { 'W', 'O', 'R', 'L', 'D' }, 0, 2);
+        //Console.WriteLine(st4);//WO
+
+        //Console.WriteLine("------------------Строка как набор символов---------------------");
+        //string message = "hello";
+        //Console.WriteLine(message.Length);//5
+        //char firesChar = message[1];
+        //Console.WriteLine(firesChar);//e
+
+        //Console.WriteLine("-------------------Перебор строк--------------------");
+        ////Класс String реализует интерфейс IEnumerable, благодаря чему строку можно перебрать в цикле foreach как набор объектов char.
+        //foreach (var item in message)
+        //{
+        //    Console.WriteLine(item);
+        //}
+
+        //for (int i = 0; i < message.Length; i++ )
+        //{
+        //    Console.WriteLine(message[i]);
+        //}
+
+        //Console.WriteLine("--------------------Сравнение строк------------------");
+        //string message1 = "hello";
+        //string message2 = "hello";
+        //Console.WriteLine(message1 == message2);//True
+
+        //Console.WriteLine("--------------------Многострочные строки------------------");
+        //Print();
+        //PrintValue("George");
+
+        //void Print()
+        //{
+        //    string text = """"Print()"""";
+        //    Console.WriteLine(text);
+        //}
+
+        //void PrintValue(string val)
+        //{
+        //    string text = $"Hello {val}";
+     
+        //    Console.WriteLine(text);
+        //}
+
+        //Console.WriteLine("--------------------Объединение строк------------------");
+        ////Конкатенация строк или объединение может производиться как с помощью операции +, так и с помощью метода Concat:
+        //string s1 = "Hello";
+        //string s2 = "World";
+
+        //string s3 = s1 + " " + s2;
+        //Console.WriteLine(s3);
+
+        //string s4 = string.Concat(s3, "!!!");
+        //Console.WriteLine(s4);
+
+        //////////////////////////////////////////////////////////////////////////////
+        //string s5 = "apple";
+        //string s6 = "a day";
+        //string s7 = "keeps";
+        //string s8 = "a doctor";
+        //string s9 = "away";
+        //string[] values = new string[] { s5, s6, s7, s8, s9 };
+
+        //string s10 = string.Join(" ", values);
+        //Console.WriteLine(s10); // apple a day keeps a doctor away
+
+
+
+        Console.WriteLine("--------------------Сравнение строк------------------");
+        //Для сравнения строк применяется статический метод Compare:
+        //string s1 = "Hello";
+        //string s2 = "Hello";
+        ////string s2 = "World";
+
+        //int res = string.Compare(s1, s2);
+        //Console.WriteLine(res);
+
+        //if (res < 0)
+        //{
+        //    Console.WriteLine("Строка s1 перед строкой s2");
+        //}
+        //else if(res > 0) 
+        //{
+        //    Console.WriteLine("Строка s1 стоит после строки s2");
+        //}
+        //else
+        //{
+        //    Console.WriteLine("Строки s1 и s2 идентичны");
+        //}
+
+        Console.WriteLine("--------------------Поиск в строке------------------");
+        //С помощью метода IndexOf мы можем определить индекс первого вхождения отдельного символа или подстроки в строке:
+        //string s1 = "George";
+        //char ch = 'g';
+        //int indexOfChar = s1.IndexOf(ch);
+        //Console.WriteLine(indexOfChar);//4
+
+        //string substring = "g";
+        //int indexOfSubstring = s1.IndexOf(substring);
+        //Console.WriteLine(indexOfSubstring);
+
+        Console.WriteLine("--------------------Разделение строк------------------");
+        //С помощью функции Split мы можем разделить строку на массив подстрок.
+        //В качестве параметра функция Split принимает массив символов или строк, которые и будут служить разделителями.
+        //Например, подсчитаем количество слов в сроке, разделив ее по пробельным символам:
+        //string text = "И по этому так все отлично произошло";
+        //string[] worlds = text.Split(new char[] {' '});
+        //string[] worlds = text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);//StringSplitOptions.RemoveEmptyEntries говорит, что надо удалить все пустые подстроки.
+        //Console.WriteLine(worlds.Length);//7
+
+        //foreach (var item in worlds)
+        //{
+        //    Console.WriteLine(item);
+        //}
+
+        Console.WriteLine("--------------------Обрезка строки------------------");
+        //Для обрезки начальных или концевых символов используется функция Trim:
+        //string text = "Hello World";
+        //text = text.Trim();
+        //Console.WriteLine(text);
+        //text = text.Trim(new char[] { 'H', 'd'});
+        //Console.WriteLine(text);
+
+        //string text2 = "Хороший день";
+        //// обрезаем начиная с третьего символа
+        //text2 = text2.Substring(2);
+        //// результат "роший день"
+        //Console.WriteLine(text2);
+        //// обрезаем сначала до последних двух символов
+        //text2 = text2.Substring(0, text2.Length - 2);
+        //// результат "роший де"
+        //Console.WriteLine(text2);
+
+        Console.WriteLine("--------------------Вставка------------------");
+        //Для вставки одной строки в другую применяется функция Insert:
+        //string text = "Хороший день!";
+        //string substring = "замечательный ";
+
+        //text = text.Insert(8, substring);
+        //Console.WriteLine(text);//Хороший замечательный день!
+
+        Console.WriteLine("--------------------Вставка------------------");
+        //Удаление строк
+        //string text = "Хороший день!";
+        //int end = text.Length - 1;
+        //Console.WriteLine(text);
+        //text = text.Remove(end);
+        //Console.WriteLine(text);
+        //text = text.Remove(0,2);
+        //Console.WriteLine(text);
+
+        Console.WriteLine("--------------------Замена------------------");
+        //Чтобы заменить один символ или подстроку на другую, применяется метод Replace:
+        //string text = "Хороший день";
+        //text = text.Replace("Хороший", "Классный");
+        //Console.WriteLine(text);//Классный день
+
+        //text = text.Replace("д", "п");
+        //Console.WriteLine(text);//Классный день
+
+        Console.WriteLine("--------------------Смена регистра------------------");
+        //Для приведения строки к верхнему и нижнему регистру используются соответственно функции ToUpper() и ToLower():
+        string text = "hello";
+        text = text.ToUpper();
+        Console.WriteLine(text);
+        text = text.ToLower();
+        Console.WriteLine(text);
+    }
+}
+
+

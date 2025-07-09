@@ -1,0 +1,69 @@
+namespace WebApplication3
+{
+    public record class Person(string Name, int Age);//record class Person
+    //public class Person(string Name, int Age);// Класс Person
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+
+            //Console.WriteLine("Отправка и получение json");
+
+            //Отправка метод WriteAsJsonAsync()
+            //var builder = WebApplication.CreateBuilder();
+            //var app = builder.Build();
+            //app.Run(async (context) =>
+            //{
+            //    Person tom = new("Tom", 22);
+            //    await context.Response.WriteAsJsonAsync(tom);
+            //});
+            //app.Run();
+
+
+            //Отправка обычный метод WriteAsync()
+            //var builder = WebApplication.CreateBuilder();
+            //var app = builder.Build();
+            //app.Run(async (context) =>
+            //{
+            //    var response = context.Response;
+            //    response.Headers.ContentType = "application/json; charset=utf-8";
+            //    Person tom = new("Tom", 22);
+            //    await response.WriteAsync("{\"name\":\"George\", \"age\":39}");
+            //});
+            //app.Run();
+
+
+            //Получение метод ReadFromJsonAsync()
+            var builder = WebApplication.CreateBuilder();
+            var app = builder.Build();
+            app.Run(async (context) =>
+            {
+                var response = context.Response;
+                var request = context.Request;
+                if (request.Path == "/api/user")
+                {
+                    var message = "Некорректные данные"; //
+                    try
+                    {
+                        var person = await request.ReadFromJsonAsync<Person>();
+                        if (person != null)
+                        {
+                            message = $"Name:{person.Name} Age:{person.Age}";
+                        }
+                    }
+                    catch { }
+                    await response.WriteAsJsonAsync(new { text = message });
+                }
+                else
+                {
+                    response.ContentType = "text/html; charset=utf-8";
+                    await response.SendFileAsync("html/contact.html");
+                }
+            });
+            app.Run();
+
+
+
+        }
+    }
+}

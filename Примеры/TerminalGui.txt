@@ -1,0 +1,64 @@
+using System;
+using Terminal.Gui; //Деректива подключение библиотеки через пакет dotnet add package Terminal.Gui
+
+namespace Space
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Title = "Тестирование Terminal.Gui";
+            Console.WriteLine("Тестирование Terminal.Gui");
+
+            Application.Init(); //Инициализация приложения
+            var top = Application.Top; //Получение ссылки на главный объект приложения
+
+            var win = new Window("Mouse Interaction Example") //Создание нового окна с заголовком
+            {
+                //Установка ширины и высоты окна, чтобы оно заполняло всю доступную часть
+                Width = Dim.Fill(),
+                Height = Dim.Fill()
+            };
+
+            var label = new Label("Click anywhere in the window!") //Создание метки , которая будет отображать текст
+            {
+                X = Pos.Center(), //Установка позиции метки по центру окна по оси X
+                Y = Pos.Center()  //Установка позиции метки по центру окна по оси X
+            };
+
+            var button = new Button("Start")
+            {
+                X = Pos.Center(), //Установка позиции кнопки по центру окна по оси X
+                Y = Pos.Center() + 1 //Установка позиции кнопки по центру окна по оси X
+            };
+
+            var positionLabel = new Label("Позиция курсора мыши:")
+            {
+                X = Pos.Center(),
+                Y = Pos.Center() - 10
+            };
+            positionLabel.Text = $"X: Y:";//Кординаты курсора мыши
+
+            //Обработка событий мышью для окна
+            button.Clicked += () =>
+            {
+                if (button.Text == "Start")
+                {
+                    button.Text = "Stop";
+                }
+                else
+                {
+                    button.Text = "Start";
+                }
+
+            };
+
+            win.Add(positionLabel, label, button); //Добавление метки в окно
+            top.Add(win); //Добавление окна в главный объект приложения
+
+            Application.Run();//Запуск приложения
+            //Application.Quit(); //Завершение приложения.
+
+        }
+    }
+}

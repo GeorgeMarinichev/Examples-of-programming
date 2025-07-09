@@ -1,0 +1,17 @@
+C:\Users\SmartPlayer\Desktop\Super\bin\Debug\net8.0-windows\Super.exe
+C:\Users\SmartPlayer\Desktop\Super\bin\Debug\net8.0-windows\Super.deps.json
+C:\Users\SmartPlayer\Desktop\Super\bin\Debug\net8.0-windows\Super.runtimeconfig.json
+C:\Users\SmartPlayer\Desktop\Super\bin\Debug\net8.0-windows\Super.dll
+C:\Users\SmartPlayer\Desktop\Super\bin\Debug\net8.0-windows\Super.pdb
+C:\Users\SmartPlayer\Desktop\Super\obj\Debug\net8.0-windows\Super.Form1.resources
+C:\Users\SmartPlayer\Desktop\Super\obj\Debug\net8.0-windows\Super.csproj.GenerateResource.cache
+C:\Users\SmartPlayer\Desktop\Super\obj\Debug\net8.0-windows\Super.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\SmartPlayer\Desktop\Super\obj\Debug\net8.0-windows\Super.AssemblyInfoInputs.cache
+C:\Users\SmartPlayer\Desktop\Super\obj\Debug\net8.0-windows\Super.AssemblyInfo.cs
+C:\Users\SmartPlayer\Desktop\Super\obj\Debug\net8.0-windows\Super.csproj.CoreCompileInputs.cache
+C:\Users\SmartPlayer\Desktop\Super\obj\Debug\net8.0-windows\Super.dll
+C:\Users\SmartPlayer\Desktop\Super\obj\Debug\net8.0-windows\refint\Super.dll
+C:\Users\SmartPlayer\Desktop\Super\obj\Debug\net8.0-windows\Super.pdb
+C:\Users\SmartPlayer\Desktop\Super\obj\Debug\net8.0-windows\Super.genruntimeconfig.cache
+C:\Users\SmartPlayer\Desktop\Super\obj\Debug\net8.0-windows\ref\Super.dll
+C:\Users\SmartPlayer\Desktop\Super\obj\Debug\net8.0-windows\Super.Form2.resources

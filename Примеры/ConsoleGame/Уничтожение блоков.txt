@@ -1,0 +1,164 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+
+namespace ShootingGame
+{
+    class Program
+    {
+        // Позиция игрока
+        static int playerX = 37;
+        static int playerY = 20;
+        // Списки для хранения позиций пуль и блоков
+        static List<int> bulletsX = new List<int>();
+        static List<int> bulletsY = new List<int>();
+        static List<int> blocksX = new List<int>();
+        static List<int> blocksY = new List<int>();
+        static bool gameRunning = true; // Флаг для запуска игры
+        static Random rand = new Random(); // Генератор случайных чисел
+        static bool moveBlocksDown = false; // Флаг для движения блоков вниз
+        static int blockFallDelay = 500; // Задержка между падениями блоков (в миллисекундах)
+        static int destroyedBlocksCount = 0; // Счетчик уничтоженных блоков
+
+        static void Main(string[] args)
+        {
+            Console.Title = $"Блоков уничтожено:{destroyedBlocksCount}";
+            Console.CursorVisible = false; // Скрыть курсор
+            Thread inputThread = new Thread(new ThreadStart(GetInput)); // Поток для обработки ввода
+            inputThread.Start();
+
+            while (gameRunning)
+            {
+                Draw(); // Отрисовка игры
+                if (moveBlocksDown)
+                {
+                    UpdateBlocks(); // Обновляем блоки только если флаг установлен
+                }
+                UpdateBullets(); // Обновляем пули
+                CheckCollisions(); // Проверяем столкновения
+                Thread.Sleep(1000); // Задержка для управления скоростью игры
+            }
+
+            // Вывод количества уничтоженных блоков
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine($"Игра окончена! Уничтожено блоков: {destroyedBlocksCount}");
+        }
+
+        static void Draw()
+        {
+            Console.Clear(); // Очистка консоли
+
+            // Рисуем игрока
+            Console.SetCursorPosition(playerX, playerY);
+            Console.Write("<=O=>"); // Игрок
+
+            // Рисуем пули
+            for (int i = 0; i < bulletsX.Count; i++)
+            {
+                Console.SetCursorPosition(bulletsX[i], bulletsY[i]);
+                Console.Write("*"); // Пуля
+            }
+
+            // Рисуем блоки
+            for (int i = 0; i < blocksX.Count; i++)
+            {
+                Console.SetCursorPosition(blocksX[i], blocksY[i]);
+                Console.Write("###"); // Блок
+            }
+        }
+
+        static void UpdateBlocks()
+        {
+            for (int i = blocksY.Count - 1; i >= 0; i--)
+            {
+                blocksY[i]++; // Двигаем блоки вниз
+
+                // Проверка на выход за пределы экрана
+                if (blocksY[i] >= 23) // Если блок выходит за нижнюю границу
+                {
+                    Console.SetCursorPosition(blocksX[i], blocksY[i]);
+                    Console.Write(" "); // Удаляем блок
+                    blocksX.RemoveAt(i);
+                    blocksY.RemoveAt(i);
+                }
+            }
+            Thread.Sleep(blockFallDelay); // Задержка для замедления падения блоков
+        }
+
+        static void UpdateBullets()
+        {
+            for (int i = bulletsY.Count - 1; i >= 0; i--)
+            {
+                bulletsY[i]--; // Двигаем пулю вверх
+
+                // Удаляем пулю, если она вышла за пределы экрана
+                if (bulletsY[i] < 1)
+                {
+                    bulletsX.RemoveAt(i);
+                    bulletsY.RemoveAt(i);
+                }
+            }
+        }
+
+        static void GenerateBlock()
+        {
+            int blockX = rand.Next(1, 78); // Позиция по X
+            blocksX.Add(blockX);
+            blocksY.Add(1); // Все блоки начинаются с верхней части экрана
+        }
+
+        static void CheckCollisions()
+        {
+            for (int i = bulletsY.Count - 1; i >= 0; i--)
+            {
+                for (int j = blocksY.Count - 1; j >= 0; j--)
+                {
+                    // Проверка на столкновение пули и блока
+                    if (bulletsX[i] == blocksX[j] && bulletsY[i] == blocksY[j])
+                    {
+                        // Уничтожаем блок и пулю
+                        blocksX.RemoveAt(j);
+                        blocksY.RemoveAt(j);
+                        bulletsX.RemoveAt(i);
+                        bulletsY.RemoveAt(i);
+                        destroyedBlocksCount++; // Увеличиваем счетчик уничтоженных блоков
+                        break; // Выходим из внутреннего цикла
+                    }
+                }
+            }
+        }
+
+        static void GetInput()
+        {
+            while (gameRunning)
+            {
+                if (Console.KeyAvailable)
+                {
+                    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                    if (keyInfo.Key == ConsoleKey.LeftArrow && playerX > 1)
+                    {
+                        playerX--; // Движение влево
+                    }
+                    else if (keyInfo.Key == ConsoleKey.RightArrow && playerX < 76)
+                    {
+                        playerX++; // Движение вправо
+                    }
+                    else if (keyInfo.Key == ConsoleKey.UpArrow)
+                    {
+                        GenerateBlock(); // Генерация нового блока при нажатии "вверх"
+                        moveBlocksDown = true; // Устанавливаем флаг для движения блоков вниз
+                    }
+                    else if (keyInfo.Key == ConsoleKey.Spacebar)
+                    {
+                        bulletsX.Add(playerX + 2); // Пуля появляется в центре игрока
+                        bulletsY.Add(playerY - 1); // Пуля начинается чуть выше игрока
+                    }
+                    else if (keyInfo.Key == ConsoleKey.Escape)
+                    {
+                        gameRunning = false; // Выход из игры
+                    }
+                }
+            }
+        }
+    }
+}

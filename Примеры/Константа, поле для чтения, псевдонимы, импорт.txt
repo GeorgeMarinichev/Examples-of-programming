@@ -1,0 +1,84 @@
+using static System.Console;
+using System.Net.Http.Headers; // Деректива
+
+using User = Genesis.Person;
+using System.Runtime.Serialization;
+
+namespace Genesis; // Пространство имен
+
+class Person // Класс хранилище
+{
+    public const string TYPE = "Person";
+    public readonly string name = "Undifined";
+    static int counter = 0;// Поле
+    public int age = 0;// Поле
+    static int retirementAge = 65;// Поле
+    public static int RetirementAge // Свойства
+    {
+        get { return retirementAge; }
+        //set { retirementAge = value; }
+        //set { if (value > 1 $$ value < 100 ) retirementAge = value; }
+    }
+    
+    static Person() // Конструкор static
+    {
+        Console.WriteLine("Конструкор static");
+    }
+
+    public Person()// Конструкор пустой
+    {
+        counter++;
+        Console.WriteLine($"Вызов конструктора класса {TYPE}: {name} №{counter}:");
+    }
+    
+    public Person(int age) // Конструкор 1
+    {
+        this.age = age;
+    }
+
+    public Person(int age, string name) // Конструкор 1
+    {
+        this.age = age;
+        this.name = name;
+    }
+
+    public void CheckAge()// CheckAge
+    {
+        if(age > retirementAge)
+        {
+            Console.WriteLine($"Возраст:{age} Уже на пенсии");
+        }
+        else if(age < retirementAge)
+        {
+            Console.WriteLine($"Возраст:{age} До пенсии осталось: {retirementAge - age}");
+        }
+    }
+}
+
+internal class Program // Основной класс программы
+{
+    private static void Main(string[] args)// Основной метод программы
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine("Константа,поле для чтения, псевдонимы, импорт");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(DateTime.Now);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("-----------------------------");
+        Console.ForegroundColor = ConsoleColor.Green;
+
+        Person p1 = new(38, "George"); // Экземпляр класса
+        p1.CheckAge();
+        p1.age = 70;
+        p1.CheckAge();
+        //Console.WriteLine(Person.TYPE);
+        //Console.WriteLine(p1.name);
+        WriteLine();
+        new Person();
+        new Person();
+        new Person();
+        new Person();
+        var p2 = new User();
+        p2.age = 12;
+    }
+}

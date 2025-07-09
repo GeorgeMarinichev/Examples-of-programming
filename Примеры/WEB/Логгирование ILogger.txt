@@ -1,0 +1,62 @@
+//////////////////////////////Логгирование ILogger
+//////////////////////////////////////////////////////////////////////////////////
+using System;
+using System.Text;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;                   //Необходимый пакет using
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;//
+using Microsoft.VisualBasic;
+using Microsoft.Extensions.FileProviders;//
+//////////////////////////////////////////////////////
+
+namespace Space
+{
+    class Program//Главный класс приложения
+    {  
+        static void Main(string[] args)//Главный метод точка входа
+        {
+            /////////////////////////////////////////////////////////////////////////
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            var app = builder.Build();
+
+            // app.Run(async(context)=> 
+            // {
+            //     app.Logger.LogInformation($"Processing request {context.Request.Path}");//Вывод логгов на консоль
+            //     await context.Response.WriteAsync("Hello, METANIT.COM");
+            // });
+
+            
+            // app.Map("/hello",(ILogger<Program> logger)=>//Через внедрение зависимостей(Dependency injection)
+            // {
+            //     logger.LogInformation($"Path: /hello Time:{DateTime.Now.ToLongDateString()}");//Вывод логгов на консоль
+            //     return "Hello, METANIT.COM";
+            // });
+
+            // app.Map("/hello",(ILogger<Program> logger)=>//Через внедрение зависимостей(Dependency injection)
+            // {
+            //     logger.LogInformation($"Path: /hello Time:{DateTime.Now.ToLongDateString()}");//Вывод логгов на консоль
+            //     return "Hello, METANIT.COM";
+            // });
+
+            app.Run(async(context)=>//Вывод всех методов расширения
+            {
+                var path = context.Request.Path;
+                app.Logger.LogCritical($"LogCritical:{path}");
+                app.Logger.LogDebug($"LogDebug:{path}");
+                app.Logger.LogError($"LogError:{path}");
+                app.Logger.LogInformation($"LogInformation:{path}");
+                app.Logger.LogTrace($"LogTrace:{path}");
+                app.Logger.LogWarning($"LogWarning:{path}");
+                await context.Response.WriteAsync("Hello, METANIT.COM");
+            });
+
+            //app.UseMiddleware<PersonMiddleware>();//Метод HTTP-запросов UseMiddleware<T>()
+            //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обработки вызовов, если они не соответсвуют другим запросам
+            app.Run();
+
+
+        }
+    }
+}

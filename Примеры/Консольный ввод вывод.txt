@@ -1,0 +1,51 @@
+Console.WriteLine("Консольный ввод/вывод");
+
+// //Метод Write
+// Console.Write("Строка-1");
+// Console.Write("Строка-2");
+
+// //Метод WriteLine
+// Console.WriteLine("Строка-1");
+// Console.WriteLine("Строка-2");
+// //Console.WriteLine("{1}:{2}:{3}", a, b, c);//Форматирование
+
+//Метод Read
+Console.WriteLine("Нажмите любую клавишу:");
+int key1 = Console.Read();
+Console.WriteLine($"Код нажатой клавиши:{key1}");
+Console.WriteLine("Символьное представление:" + Convert.ToChar(key1));
+
+//Метод ReadLine
+Console.WriteLine("Введите имя, и нажмите Enter");
+string name = Console.ReadLine();
+Console.WriteLine($"Ваше имя:{name}");
+
+Console.WriteLine("Введите возраст, и нажмите Enter");
+int age = Convert.ToInt32(Console.ReadLine());
+//int age = int.Parse(Console.ReadLine());
+Console.WriteLine($"Ваш возраст:{age}");
+
+//Метод ReaKey
+Console.WriteLine("Нажмите любую клавишу");
+var key2 = Console.ReadKey();
+Console.WriteLine($"key2:{key2}");
+Console.WriteLine($"key2.Key:{key2.Key}");
+Console.WriteLine($"key2.KeyChar:{key2.KeyChar}");
+
+// int num;
+// num = 0;
+// num = Convert.ToInt32(Console.ReadLine());
+// Console.WriteLine(num);
+
+// switch(num)
+// {
+//     case 1:
+//         Console.WriteLine("case:1");
+//         break;
+//     case 2:
+//         Console.WriteLine("case:2");
+//         break;
+//     default:
+//         Console.WriteLine("case:0");
+//     break;
+// }

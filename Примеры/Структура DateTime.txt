@@ -1,0 +1,62 @@
+//using System.Text.RegularExpressions;//Директива
+
+namespace Genesis;
+
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Структура DateTime");
+
+        ////////////////////////////Работа с датами и временем//////////////////////////////////////
+        //Для работы с датами и временем в .NET предназначена структура DateTime.
+        //Она представляет дату и время от 00:00:00 1 января 0001 года до 23:59:59 31 декабря 9999 года.
+
+        //DateTime dateTime = new DateTime();
+        //DateTime dateTime = new ();
+        var dateTime = new DateTime();
+        Console.WriteLine(dateTime);//01.01.0001 0:00:00
+        Console.WriteLine(DateTime.MinValue);
+        Console.WriteLine(DateTime.MaxValue);
+
+        DateTime date1 = new(1985, 10, 01);
+        Console.WriteLine(date1);//01.10.1985 0:00:00
+
+        DateTime date2 = new DateTime(1996, 11, 09, 20, 45, 27); // год - месяц - день - час - минута - секунда
+        Console.WriteLine(date2); //09.11.1996 20:45:27
+
+        Console.WriteLine(DateTime.Now);//датa и время компьютера
+        Console.WriteLine(DateTime.UtcNow);//по Гринвичу (GMT) 
+        Console.WriteLine(DateTime.Today);//только текущая дата
+
+        Console.WriteLine(DateTime.Now.DayOfWeek);//день недели
+        Console.WriteLine(DateTime.Now.DayOfYear);//день в году
+
+        DateTime someDate = new DateTime(1582, 10, 5);
+        Console.WriteLine(someDate.DayOfWeek);//Tuesday - день недели
+
+
+        Console.WriteLine("==================Операции с DateTime=======================");
+        DateTime dateTime1 = new DateTime(1985, 10, 01);
+
+        Console.WriteLine(dateTime1.AddYears(39));//01.10.2024 0:00:00
+        Console.WriteLine(dateTime1.AddDays(3));//04.10.1985 0:00:00 дни +
+        Console.WriteLine(dateTime1.AddHours(-10));//30.09.1985 14:00:00 часы -
+
+        DateTime dateTime2 = new DateTime(2015, 7, 20, 15, 30, 25); // 20.07.2015 15:30:25
+        Console.WriteLine(dateTime2.Subtract(dateTime1)); // 10884.15:30:25
+
+
+        Console.WriteLine("==================методы форматирования дат=======================");
+        DateTime dateTime3 = new DateTime(1985, 10, 01);
+        Console.WriteLine(dateTime3.ToLocalTime()); // 01.10.1985 4:00:00 (UTC)
+        Console.WriteLine(dateTime3.ToUniversalTime()); // 30.09.1985 20:00:00 (GMT)
+        Console.WriteLine(dateTime3.ToLongDateString()); // 1 октября 1985 г.
+        Console.WriteLine(dateTime3.ToShortDateString()); // 01.10.1985
+        Console.WriteLine(dateTime3.ToLongTimeString()); // 0:00:00
+        Console.WriteLine(dateTime3.ToShortTimeString()); // 0:00
+
+    }
+}
+
+

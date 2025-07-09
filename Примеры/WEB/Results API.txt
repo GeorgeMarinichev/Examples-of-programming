@@ -1,0 +1,57 @@
+/////////////////////////////Results API
+using System;
+
+
+namespace Space
+{
+    class Person
+    {
+        public string Name {get; set;} = "";
+        public int Age {get; set;} = 0;
+    }
+
+   
+    internal class Program
+    {
+        private static void Main(string[] args)
+        {
+        //    ////////////////////////
+        //     var builder = WebApplication.CreateBuilder();
+        //     var app = builder.Build();
+
+
+        //     // app.Map("/hello", () => Results.Text("Hello, ASP.NET Core"));
+        //     app.Map("/hello", () => SendHello());
+        //     app.Map("/", ()=> "Hello");
+
+        //     app.Run(async (context) => 
+        //     {
+        //         await Results.Text("Hello, ASP.NET Core").ExecuteAsync(context);
+        //         //await context.Response.WriteAsync("Hello");
+        //     });
+
+        //     app.Run();
+
+            //Хотя Results API в большей степени предназначено для использования в конечных точках 
+            // ASP.NET Core, те же методы могут применяться для отправки ответа и в обычных 
+            // компонентах middleware. Например:
+            var builder = WebApplication.CreateBuilder();
+            var app = builder.Build();
+
+            app.Run(async (context) => 
+            {
+                //await Results.Text("Hello, ASP.NET Core").ExecuteAsync(context);
+                await SendHello().ExecuteAsync(context);//Как отдельный метод
+                //await context.Response.WriteAsync("Hello");
+            });
+
+            app.Run();
+            
+        }
+
+        static IResult SendHello()
+        {
+            return Results.Text("Hello, ASP.NET Core");
+        }
+    }
+}

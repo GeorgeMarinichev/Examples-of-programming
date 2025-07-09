@@ -1,0 +1,88 @@
+using System.Threading.Tasks;// Деректива поделючения пространство имен многопоточности
+
+namespace Genesis; // Пространство имен
+
+class MyClass//Класс
+{       
+    public void Method()//Метод
+    {
+        Console.WriteLine("1985"); 
+    }
+}
+class Program // Основной класс программы
+{ 
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //Console.SetWindowSize(80, 40);//
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("======<<<Задачи продолжения или continuation task>>>=====");
+        Console.ResetColor();
+        //////////////////////////////////////////////////////////////////////////////////
+        // Task task1 = new Task(()=>
+        // {
+        //     Console.WriteLine($"ID задачи: {Task.CurrentId}");
+        // });
+        // //Задача продолжения -task2 выполняется после task1
+        // Task task2 = task1.ContinueWith(PrintTask);
+        // task1.Start();
+
+        // //Ожидание окончания второй задачи
+        // task2.Wait();
+        // Console.WriteLine("Конец метода Main");
+
+        // void PrintTask(Task t)
+        // {
+        //     Console.WriteLine($"ID задачи: {Task.CurrentId}");
+        //     Console.WriteLine($"ID задачи: {t.Id}");
+        //     Thread.Sleep(3000);//
+        // }
+        ///////////////////////////////////////////////////////////////////////////////////
+        // Task<int> sumTask = new Task<int>(()=> Sum(4, 5));//Первая задача
+        // //Задача продолжения
+        // Task printTask = sumTask.ContinueWith(task => PrintResult(task.Result));
+        // sumTask.Start();
+       
+        // //Ожидание окончания второй задачи
+        // printTask.Wait();
+        // Console.WriteLine("Конец метода Main");
+
+        // int Sum(int a, int b) => a + b;
+        // void PrintResult(int sum)=> Console.WriteLine($"Sum:{sum}");
+        ////////////////////////////////////////////////////////////////////////////////////
+        Task task1 = new Task(()=> Console.WriteLine($"Task1:{Task.CurrentId}"));//Первая задача
+
+        Task task2 = task1.ContinueWith(t =>
+            Console.WriteLine($"Task2:{Task.CurrentId}:{t.Id}"));//Задача продолжения2
+        
+        Task task3 = task2.ContinueWith(t =>
+            Console.WriteLine($"Task3:{Task.CurrentId}:{t.Id}"));//Задача продолжени3
+        
+        Task task4 = task3.ContinueWith(t => Console.WriteLine($"Task3:{Task.CurrentId}:{t.Id}"));//Задача продолжения4
+
+        task1.Start();
+
+        task4.Wait();// Ожидание завершения продолжения
+        Console.WriteLine("Конец метода Main");
+
+        
+    }
+}
+
+    
+
+
+
+
+
+        
+
+    
+
+
+
+
+
+
+
+
+

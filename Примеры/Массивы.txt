@@ -1,0 +1,59 @@
+using System;
+using System.CodeDom.Compiler;
+
+namespace ConsoleApplication1
+{
+    internal class Program
+    {
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("Массивы");
+            int[] o;
+            o = new int[6];
+            //o = new int[6]{1,2,3,4,5,6};
+            o[0] = 1;
+            o[1] = 2;
+            o[2] = 3;
+            o[3] = 4;
+            o[4] = 5;
+            o[5] = 6;
+            Console.ForegroundColor = ConsoleColor.Yellow;// устанавливаем цвет
+            Console.WriteLine("Одномерный массив "+ o.Length);
+            Console.WriteLine("индекс "+ o[0]);
+            Console.WriteLine("последний элемент списка коллекции "+ o[o.Length -1]);
+            //Console.WriteLine("последний элемент списка коллекции "+ o[^1]);
+
+            int[,] d = new int[2, 3] {{1, 2, 3}, {4, 5, 6}};
+            Console.ForegroundColor = ConsoleColor.Green;// устанавливаем цвет
+            Console.WriteLine("Двухмерный массив "+ d.Length);
+            Console.WriteLine("индекс "+ d[1,0]);
+            Console.WriteLine("До изменения "+ d[1,1]);
+            d[1, 1] = 777;
+            Console.WriteLine("После изменения "+ d[1,1]);
+            
+            int[,] m = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+            Console.ForegroundColor = ConsoleColor.Magenta;// устанавливаем цвет
+            Console.WriteLine("Многомерный массив "+ m.Length);
+            Console.WriteLine("индекс "+ m[0,2]);
+            Console.WriteLine("строки " + m.GetLength(0) + " элементы " + m.GetLength(1));
+
+            int[,,] t = new int[5, 5, 5];//{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+            Console.ForegroundColor = ConsoleColor.Blue;// устанавливаем цвет
+            Console.WriteLine("Трехмерный массив "+ t.Length);
+            Console.WriteLine("индекс "+ t[1,2,3]);
+            Console.WriteLine("строки " + t.GetLength(0) + " элементы " + t.GetLength(1));
+
+            int [] [] z = new int[4][];
+            z[0] = new int[]{1};
+            z[1] = new int[] {2, 3};
+            z[2] = new int[] {3, 4, 5};
+            z[3] = new int[] {6,7,8,9};
+            Console.ForegroundColor = ConsoleColor.Red;// устанавливаем цвет
+            Console.WriteLine("Массив массивов(Зубчатый массив) "+ z.Length);
+            Console.WriteLine("индекс "+ z[2][0]);
+            
+            Console.ResetColor();
+            Console.ReadKey();
+        }
+    }
+}

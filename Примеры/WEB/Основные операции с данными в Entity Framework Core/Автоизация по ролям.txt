@@ -1,0 +1,156 @@
+////////////////////////////Автоизация по ролям
+
+using System;
+using Microsoft.AspNetCore.Authorization;//Деректива для аутентификации
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Collections.Generic;
+
+// Не обходимый пакет NuGet: Microsoft.AspNetCore.Authentication.JwtBearer, для аутентификации на основе jwt-токенов.
+
+namespace Space
+{
+    //record class Person(string Email, string Password);//Для представления пользователя в приложении
+    class Person
+    {
+        public string Password { get; set;}
+        public string Email { get; set;}
+        public Role Role { get; set;}
+        public Person(string password, string email, Role role )
+        {
+            Password = password;
+            Email = email;
+            Role = role;
+        }
+    }
+
+    class Role
+    {
+        public string Name {get; set;}
+        public Role(string name)
+        {
+            Name = name;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var adminRole = new Role("admin");
+            var userRole = new Role("user");
+
+            var people = new List<Person>
+            {
+                new Person("1985", "george@mail.com", adminRole),
+                new Person("666", "tom@mail.com", userRole)
+            };
+
+            var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)//Добавление сервисов аутентификации
+                .AddCookie((options)=>
+                {
+                    options.LoginPath = "/login";//Путь направления не аутентифицированного пользователя
+                    options.AccessDeniedPath = "/accessdenied";//Путь направления аутентифицированного пользователя без доступа к ресурсу
+                });
+            builder.Services.AddAuthorization();//Добавление сервисов авторизации
+        
+            var app = builder.Build();
+
+            app.UseAuthentication();//Добавление middleware аутентификации
+            app.UseAuthorization();//Добавление middleware авторизации
+
+
+            app.MapGet("/accessdenied", async(HttpContext context) =>
+            {
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsync("Access Denied");
+            });
+
+            app.MapGet("/login", async(HttpContext context) =>
+            {
+                context.Response.ContentType = "text/html; charset=utf-8";
+                //HTML-форма для ввода логина и пароля
+                string loginForm =@"<!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset='utf-8'/>
+                    <title>METANIT.COM</title>
+                </head>
+                <body>
+                    <h2>Login Form</h2>
+                    <form method='post'>
+                        <p>
+                            <label>Email</label><br />
+                            <input name='email' />
+                        </p>
+                        <p>
+                            <label>Password</label><br />
+                            <input type='password' name='password' />
+                        </p>
+                        <input type='submit' value='Login' />
+                    </form>
+                </body>
+                </html>";
+                await context.Response.WriteAsync(loginForm);
+            });
+
+            app.MapPost("/login", async(string? returnUrl, HttpContext context)=>
+            {
+                //Получаем из формы email пароль
+                var form = context.Request.Form;
+                //Если email и/или пароль не установлены, посылается статус код 400
+                if(!form.ContainsKey("email") || !form.ContainsKey("password"))
+                {
+                    Results.BadRequest("Email и/или пароль не установлены");
+                }
+
+                string email = form["email"];
+                string password = form["password"];
+
+                //Нахождение пользователя
+                Person? person = people.FirstOrDefault(p => p.Email == email && p.Password == password);
+                if(person is null)//Если пользователь не найден, отправляется статус код 401
+                {
+                    return Results.Unauthorized();
+                }
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Email),
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, person.Role.Name)
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims,"Cookies");//Создание идентичности с типом аутентификации(Undefined-неопределенный). Это может быть произвольная строка
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);//Создание обьекта принимающего идентичность claimsIdentity
+                //Установка футентификации куки
+                await context.SignInAsync(claimsPrincipal);
+                return Results.Redirect(returnUrl ??"/");
+            });
+
+            //Доступ только для ролли admin
+            app.Map("/admin", [Authorize(Roles = "admin")]()=> "Admin Panel");
+
+            //Доступ только для ролли admin и user
+            app.Map("/", [Authorize(Roles = "admin, user")](HttpContext context)=>
+            {
+                var login = context.User.FindFirst(ClaimsIdentity.DefaultNameClaimType);
+                var role = context.User.FindFirst(ClaimsIdentity.DefaultRoleClaimType);
+                return $"Name:{login?.Value}\nRole:{role?.Value}";
+            });
+
+            app.MapGet("/logout", async(HttpContext context) =>
+            {
+                await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                return "Данные удалены";
+            });
+
+            // //app.Map("/", () => "Hello World!");
+            app.Run();
+
+        }
+    }
+}
+

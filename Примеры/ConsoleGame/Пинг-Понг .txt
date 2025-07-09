@@ -1,0 +1,143 @@
+using System;
+using System.Threading;
+
+namespace PingPongGame
+{
+    class Program
+    {
+        static int ballX = 40;
+        static int ballY = 12;
+        static int ballDirectionX = 1;
+        static int ballDirectionY = 1;
+        static int paddle1Y = 10;
+        static int paddle2Y = 10;
+        static int score1 = 0;
+        static int score2 = 0;
+        static bool gameRunning = true;
+
+        static void Main(string[] args)
+        {
+            Console.Title = "Пинг-Понг";
+            Console.CursorVisible = false; // Скрыть курсор
+            Thread inputThread = new Thread(new ThreadStart(GetInput));
+            inputThread.Start();
+
+            while (gameRunning)
+            {
+                Draw();
+                UpdateBall();
+                Thread.Sleep(100); // Задержка для управления скоростью игры
+            }
+
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine("Игра окончена! Игрок 1: {0} - Игрок 2: {1}", score1, score2);
+        }
+
+        static void Draw()
+        {
+            Console.Clear();
+            // Рисуем верхнюю границу
+            for (int i = 0; i < 80; i++)
+            {
+                Console.SetCursorPosition(i, 0);
+                Console.Write("-");
+            }
+
+            // Рисуем нижнюю границу
+            for (int i = 0; i < 80; i++)
+            {
+                Console.SetCursorPosition(i, 24);
+                Console.Write("-");
+            }
+
+            // Рисуем ракетки
+            for (int i = 0; i < 4; i++)
+            {
+                Console.SetCursorPosition(2, paddle1Y + i);
+                Console.Write("|");
+                Console.SetCursorPosition(77, paddle2Y + i);
+                Console.Write("|");
+            }
+
+            // Рисуем мяч
+            Console.SetCursorPosition(ballX, ballY);
+            Console.Write("o");
+
+            // Рисуем счет
+            Console.SetCursorPosition(35, 0);
+            Console.Write("Счет: {0} - {1}", score1, score2);
+        }
+
+        static void UpdateBall()
+        {
+            ballX += ballDirectionX;
+            ballY += ballDirectionY;
+
+            // Проверка на столкновение с верхней и нижней границей
+            if (ballY <= 1 || ballY >= 23)
+            {
+                ballDirectionY *= -1; // Изменяем направление по Y
+            }
+
+            // Проверка на столкновение с ракетками
+            if (ballX == 3 && ballY >= paddle1Y && ballY <= paddle1Y + 3)
+            {
+                ballDirectionX *= -1; // Изменяем направление по X
+            }
+            else if (ballX == 76 && ballY >= paddle2Y && ballY <= paddle2Y + 3)
+            {
+                ballDirectionX *= -1; // Изменяем направление по X
+            }
+
+            // Проверка на выход за границы
+            if (ballX <= 0)
+            {
+                score2++; // Игрок 2 получает очко
+                ResetBall();
+            }
+            else if (ballX >= 80)
+            {
+                score1++; // Игрок 1 получает очко
+                ResetBall();
+            }
+        }
+
+        static void ResetBall()
+        {
+            ballX = 40;
+            ballY = 12;
+            ballDirectionX *= -1; // Изменяем направление
+        }
+
+        static void GetInput()
+        {
+            while (gameRunning)
+            {
+                if (Console.KeyAvailable)
+                {
+                    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                    if (keyInfo.Key == ConsoleKey.W && paddle1Y > 1)
+                    {
+                        paddle1Y--; // Движение ракетки 1 вверх
+                    }
+                    else if (keyInfo.Key == ConsoleKey.S && paddle1Y < 20)
+                    {
+                        paddle1Y++; // Движение ракетки 1 вниз
+                    }
+                    else if (keyInfo.Key == ConsoleKey.UpArrow && paddle2Y > 1)
+                    {
+                        paddle2Y--; // Движение ракетки 2 вверх
+                    }
+                    else if (keyInfo.Key == ConsoleKey.DownArrow && paddle2Y < 20)
+                    {
+                        paddle2Y++; // Движение ракетки 2 вниз
+                    }
+                    else if (keyInfo.Key == ConsoleKey.Escape)
+                    {
+                        gameRunning = false; // Выход из игры
+                    }
+                }
+            }
+        }
+    }
+}

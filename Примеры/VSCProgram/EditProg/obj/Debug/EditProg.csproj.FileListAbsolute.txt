@@ -1,0 +1,10 @@
+C:\Users\SmartPlayer\Desktop\EditProg\bin\Debug\EditProg.exe.config
+C:\Users\SmartPlayer\Desktop\EditProg\bin\Debug\EditProg.exe
+C:\Users\SmartPlayer\Desktop\EditProg\bin\Debug\EditProg.pdb
+C:\Users\SmartPlayer\Desktop\EditProg\obj\Debug\EditProg.csproj.AssemblyReference.cache
+C:\Users\SmartPlayer\Desktop\EditProg\obj\Debug\EditProg.Form1.resources
+C:\Users\SmartPlayer\Desktop\EditProg\obj\Debug\EditProg.Properties.Resources.resources
+C:\Users\SmartPlayer\Desktop\EditProg\obj\Debug\EditProg.csproj.GenerateResource.cache
+C:\Users\SmartPlayer\Desktop\EditProg\obj\Debug\EditProg.csproj.CoreCompileInputs.cache
+C:\Users\SmartPlayer\Desktop\EditProg\obj\Debug\EditProg.exe
+C:\Users\SmartPlayer\Desktop\EditProg\obj\Debug\EditProg.pdb

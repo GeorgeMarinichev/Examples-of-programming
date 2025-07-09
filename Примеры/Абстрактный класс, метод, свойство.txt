@@ -1,0 +1,98 @@
+
+using System.Diagnostics;
+using static System.Console; // Импорт
+// using Print = System.Console; // Псевдонимы
+using User = Genesis.Player;
+
+namespace Genesis; // Пространство имен
+
+abstract class Weapon
+{
+    public abstract int Damage{get;}
+    public abstract void Fire();
+    public void ShowInfo()
+    {
+        WriteLine($"{GetType().Name} Урон:{Damage}");
+    }
+
+}
+
+class Gun : Weapon
+{
+    public override int Damage {get{return 5;}}
+    public override void Fire()
+    {
+        //throw new NotImplementedException();
+        WriteLine("Пыщь!");
+    }
+}
+
+class LaserGun : Weapon
+{
+    public override int Damage {get{return 10;}}
+    public override void Fire()
+    {
+        //throw new NotImplementedException();
+        WriteLine("Пиу!");
+    }
+}
+
+class Bow : Weapon
+{
+    public override int Damage => 50;
+    public override void Fire()
+    {
+        //throw new NotImplementedException();
+        WriteLine("Бах!");
+    }
+}
+class Player // Класс 1
+{
+    public Player()// Пустой конструктор по умолчанию
+    {
+
+    }
+
+    public void Fire(Weapon weapon)
+    {
+        weapon.Fire();
+    }
+
+    public void CheckInfo(Weapon weapon)
+    {
+        weapon.ShowInfo();
+    }
+
+
+}
+
+
+internal class Program // Основной класс программы
+{
+    private static void Main(string[] args)// Основной метод программы
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine("<<< Абстрактный класс, метод, свойство >>>");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(DateTime.Now);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("-----------------------------");
+        Console.ForegroundColor = ConsoleColor.Green;
+       
+        Player player = new();
+        Gun gun = new();
+        //player.Fire(gun);
+
+        Weapon [] inventory = {new Gun(), new LaserGun(), new Bow()};
+        foreach(var i in inventory)
+        {
+            player.CheckInfo(i);
+            player.Fire(i);
+            WriteLine();
+        }
+
+        Console.WriteLine("================================================");
+
+
+    }
+}

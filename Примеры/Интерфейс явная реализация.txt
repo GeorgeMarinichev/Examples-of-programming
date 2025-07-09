@@ -1,0 +1,90 @@
+
+using System.Diagnostics;
+using static System.Console; // Импорт
+// using Print = System.Console; // Псевдонимы
+
+
+namespace Genesis; // Пространство имен
+
+interface IFirstInterface
+{
+    void Action();
+}
+
+interface ISecondInterface
+{
+    void Action();
+}
+
+class MyClass: IFirstInterface, ISecondInterface // Реализация интерфейса класса 1
+{
+    public void Action()
+    {
+        WriteLine("MyClass Action");
+    }
+}
+
+class MyOtherClass : IFirstInterface, ISecondInterface  // Класс персонажа
+{
+    void IFirstInterface.Action()
+    {
+        WriteLine("MyClass IFirstInterface Action");
+    }
+
+    void ISecondInterface.Action()
+    {
+        WriteLine("MyClass ISecondInterface Action");
+    }
+}
+
+
+class Program // Основной класс программы
+{
+    private static void Main(string[] args)// Основной метод программы
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine("<<< Интерфейс явная реализация >>>");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(DateTime.Now);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("-----------------------------");
+        Console.ForegroundColor = ConsoleColor.Green;
+
+        MyClass m1 = new MyClass();
+        // m1.Action();
+
+        // Foo(m1);
+        // Bar(m1);
+
+        WriteLine("================================================");
+        
+        MyOtherClass o1 = new MyOtherClass();
+        // o1.GetType
+        // Foo(o1);0
+        // Bar(o1);
+
+        IFirstInterface firstInterface = o1;
+        firstInterface.Action();
+
+        ((IFirstInterface)o1).Action();
+        
+        object obj = new object();
+
+        if(o1 is IFirstInterface firstInterface1)
+        {
+            firstInterface.Action();
+        }
+       
+     
+    }
+
+    static void Foo(IFirstInterface firstInterface)
+        {
+            firstInterface.Action();
+        }
+    static void Bar(ISecondInterface secondInterface)
+        {
+            secondInterface.Action();
+        }    
+    
+}

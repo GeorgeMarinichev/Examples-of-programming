@@ -1,0 +1,151 @@
+
+using System;
+using System.Linq;
+using System.Dynamic;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Space
+{
+    //[NotMapped]
+    //[EntityTypeConfiguration(typeof(UserConfig))]
+    [Table("People")]//Через атрибут имя таблицы
+    public class User
+    {
+        public int Id {get; set;}
+        public string? Name {get; set;}
+        public int Age {get; set;}
+        public int? CompanyId{get; set;}
+        public DateTime? CreatedAt{get; set;}//Внешний ключ
+        public Company? Company {get; set;}//Навигационная таблица
+
+        public void Print()=> Console.WriteLine($"{Id}-{Name}-{Age}-{CreatedAt}");
+    }
+
+    //[EntityTypeConfiguration(typeof(UserConfig))]
+    public class Company
+    {
+        public int Id {get; set;}//Первичный ключ 
+        public string? Name {get; set;}//Название компании
+
+        public List<User> Users {get; set;} = new();
+        public Country? Country{get; set;}
+    }
+
+    public class Country
+    {
+        public int Id{get; set;}
+        public string? Name{get; set;}
+        public List<Company> Companies {get; set;} = new();
+    }
+
+    public class ApplicationContext: DbContext
+    {
+        public DbSet<User> Users{get; set;} = null!;
+        public DbSet<Company> Companies{get; set;} = null!;
+        public DbSet<Country> Countries{get; set;} = null!;
+        // public ApplicationContext()
+        // {
+        //     //Database.EnsureDeleted();
+        //     Database.EnsureCreated();
+        // }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data Source=helloapp.db");
+            optionsBuilder.LogTo(Console.WriteLine, new []{RelationalEventId.CommandExecuted});
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().Property(u => u.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP"); // Для SQLite
+            modelBuilder.Entity<User>().Property(u => u.Age).HasDefaultValue(18);//Значения по умолчанию
+            modelBuilder.Entity<Company>().ToTable("RBT");//Переопределение сущности(таблицы)
+            modelBuilder.Entity<Company>().Property(c=> c.Name).HasColumnName("CompanyName");//Переопределение свойства(столбца)
+            modelBuilder.Entity<Company>().Property(c => c.Name).HasDefaultValue("Default Company");
+            modelBuilder.Entity<Country>().Property(c => c.Name).HasDefaultValue("Default Country");  
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            using(ApplicationContext db = new ApplicationContext())//Ввод данных
+            {
+                /////////////////////////////////////
+                db.Database.EnsureCreated();
+                //db.Database.EnsureDeleted();
+                /////////////////////////////////////
+                ///
+                // User? tom = new User{Name = "Tom", Age = 55};
+                // User? sam = new User{Name = "Sam", Age = 48};
+                // User? bob = new User{Name = "Bob", Age = 60};
+
+                Country con1 = new Country{Name = "USA"};
+                Country con2 = new Country{Name = "Germany"};
+                Country con3 = new Country{Name = "Japan"};
+                Country con4 = new Country();
+                db.Countries.AddRange(con1, con2, con3, con4);
+                db.SaveChanges();
+                
+
+                Company com1 = new Company{Name = "Microsoft", Country = con1};
+                Company com2 = new Company{Name = "Valve", Country = con2};
+                Company com3 = new Company{Name = "EA", Country = con3};
+                Company com4 = new Company();
+
+                db.Companies.AddRange(com1, com2, com3, com4);
+                db.SaveChanges();
+                ///////////////////////////////////////////////////////////////////
+
+                User tom = new User();
+                tom.Name = "Tom";
+                tom.Company = com1;
+                
+
+                //User tom = new User{Name = "Tom", Age = 39, Company = com1}; 
+                User bob = new User{Name = "Bob", Age = 65, Company = com2}; 
+                User sam = new User{Name = "Sam", Age = 45, Company = com3}; 
+                User jon = new User{Name = "Jon", Age = 55, Company = com4};
+
+                Console.WriteLine($"Id перед добавлением в контекст:{tom.Id}-{bob.Id}-{sam.Id}");
+                
+                db.Users.AddRange(tom, sam, bob, jon);
+                db.SaveChanges();
+                Console.WriteLine($"UserId после добавления в контекст:{tom.Id}-{bob.Id}-{sam.Id}");
+            }
+
+            using(ApplicationContext db = new ApplicationContext())//Вывод данных
+            {
+                //var users = db.Users.ToList();//
+                //var users = db.Users.Include(u=> u.Company).ToList();// Подгрузка данных по компаниям
+                var users = db.Users.Include(u=> u.Company).ThenInclude(c=> c!.Country).ToList();// Подгрузка данных по компаниям и странам
+
+                // //Удаление первой компании
+                // var comp = db.Companies.FirstOrDefault();
+                // if(comp != null)
+                // {
+                //     db.Companies.Remove(comp);
+                // }
+                // db.SaveChanges();
+
+                Console.WriteLine("Вывод данных:");          
+                // foreach(User u in db.Users.ToList())
+                // {
+                //     Console.WriteLine($"{u.Id} - {u.Name}-{u.Age}-{u.CreatedAt}-{u.Company?.Name}");
+                //     //u.Print();
+                // }
+
+                foreach(User u in db.Users.ToList())
+                {
+                    Console.WriteLine($"{u.Id} - {u.Name}-{u.Age}-{u.CreatedAt}-{u.Company?.Name}-{u.Company?.Country?.Name}");
+                    //u.Print();
+                }
+            }
+        }
+    }
+}

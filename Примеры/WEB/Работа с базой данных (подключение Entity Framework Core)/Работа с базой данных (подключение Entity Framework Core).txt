@@ -1,0 +1,59 @@
+////////////////////////////Работа с базой данных (подключение Entity Framework Core)
+//Entity Framework Core представляет ORM-решение, которое позволяет автоматически связать классы ЯП C#
+//с таблицами в БД. Entity Framework поддерживает большинство СУБД(MS SQL Server, SQLite, MySQL, Postres SQL).
+//В данном случае работаем через Entity Framework с БД в MS SQL Server.
+
+using System;
+using Microsoft.EntityFrameworkCore;//Подключение директивы фреймворка EntityFrameworkCor
+
+namespace Space//Пространство имен
+{
+    ///////////////////////////////////////////////////////
+    public class User
+    {
+        public int Id { get; set;} = 0;
+        public string Name { get; set;} = "";
+        public int Age { get; set;} = 0;
+    }
+    ///////////////////////////////////////////////////////
+    
+    public class ApplicationContext: DbContext//
+    {
+        public DbSet<User> Users { get; set; } = null!;
+        public ApplicationContext(DbContextOptions<ApplicationContext> options): base(options)
+        {
+            Database.EnsureCreated();//Создание базы данных при первом обращении
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().HasData(
+                new User {Id = 1, Name = "Tom", Age = 37},
+                new User {Id = 2, Name = "Bob", Age = 50},
+                new User {Id = 3, Name = "Sam", Age = 55}
+            );
+        }
+
+    }
+
+  
+    class Program//Главный класс приложения
+    {  
+        static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            string connection = builder.Configuration.GetConnectionString("DefaultConnection");//Получение строки подключения из файла конфигурации
+            builder.Services.AddDbContext<ApplicationContext>((options)=> options.UseSqlServer(connection));//Добавление контекста ApplicationContext в качестве сервиса в приложении
+            var app = builder.Build();
+
+            //Получение данных
+            app.MapGet("/users",(ApplicationContext db)=> db.Users.ToList());
+            app.MapGet("/",()=> "Hello, World");
+
+            app.Run();
+
+        }
+     
+    }
+}

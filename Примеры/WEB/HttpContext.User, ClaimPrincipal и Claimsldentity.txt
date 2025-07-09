@@ -1,0 +1,82 @@
+////////////////////////////HttpContext.User, ClaimPrincipal и Claimsldentity
+
+using System;
+using Microsoft.AspNetCore.Authorization;//Деректива для аутентификации
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
+namespace Space
+{
+    class Program
+    {
+        record class Person(string Email, string Password);//Для представления пользователя в приложении
+        static void Main(string[] args)
+        {
+            //WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            var builder = WebApplication.CreateBuilder(args);
+
+            //Аутентификация с помощью куки
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)//Добавление сервисов аутентификации
+            .AddCookie();
+
+        
+            //WebApplication app = builder.Build();
+            var app = builder.Build();
+
+            app.UseAuthentication();//Добавление middleware аутентификации
+
+
+            app.MapGet("/login", async(HttpContext context) =>//Создание идентичности
+            {
+                var claimsIdentity = new ClaimsIdentity("Undefined");//Создание идентичности с типом аутентификации(Undefined-неопределенный). Это может быть произвольная строка
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);//Создание обьекта принимающего идентичность claimsIdentity
+        
+                await context.SignInAsync(claimsPrincipal);//Используя обьект claimsPrincipal устанавливаются аутентификационные куки
+                return Results.Redirect("/");
+            });
+
+            app.MapGet("/logout", async(HttpContext context) =>
+            {
+                await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                return "Данные удалены";
+            });
+
+            // app.Map("/", (HttpContext context) =>
+            // {
+            //     var user = context.User.Identity;//Получаем через механизм(DI) текущего пользователя, по сути обьект claimsPrincipal сохраненный в куках
+            //     //Если 
+            //     if(user is not null && user.IsAuthenticated)
+            //     {
+            //         return ($"Пользователь аутентифицирован. Тип аутентификации:{user.AuthenticationType}");
+            //     }
+            //     else
+            //     {
+            //         return ("Пользователь не аутентифицирован!");
+            //     }
+            // });
+
+            //Или если не нужен весь обьект HttpContext, доступный через механизм(DI) в любой точке приложения
+            //А нужно только свойство User, то можно через механизм(DI), полусить сервис ClaimsPrincipal
+            //который будет будет аналогичен свойству context.User
+
+            app.Map("/", (ClaimsPrincipal claimsPrincipal) =>
+            {
+                var user = claimsPrincipal.Identity;//Получаем через механизм(DI) текущего пользователя, по сути обьект claimsPrincipal сохраненный в куках
+                //Если 
+                if(user is not null && user.IsAuthenticated)
+                {
+                    return ($"Пользователь аутентифицирован. Тип аутентификации:{user.AuthenticationType}");
+                }
+                else
+                {
+                    return ("Пользователь не аутентифицирован!");
+                }
+            });
+
+            //app.Map("/", () => "Hello World!");
+            app.Run();
+        }
+    }
+}
+

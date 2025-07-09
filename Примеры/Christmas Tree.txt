@@ -1,0 +1,49 @@
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("\t     Happy New Year !");
+
+            const int branches = 20;
+
+            for (int i = 0; i < branches; i++)
+            {
+                for (int s = 0; s < branches - i; s++)
+                {
+                    Console.Write(" ");
+                }
+
+                for (int j = 0; j < (2 * i + 1); j++)
+                {
+                    int p = new Random().Next(1, 100);
+
+                    if (p < 80)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write("^");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.Write("@");
+                    }
+                }
+
+                Console.WriteLine();
+            }
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("                  ###                    ");
+            Console.WriteLine("                  ###                    ");
+            Console.WriteLine("                  ###                    ");
+            Console.WriteLine("                  ###                    ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("#########################################");
+            Console.Beep();
+            Console.ResetColor();
+            Console.ReadKey(true);
+
+        }
+    }
+}

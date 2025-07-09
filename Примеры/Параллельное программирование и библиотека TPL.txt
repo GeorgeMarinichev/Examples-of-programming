@@ -1,0 +1,89 @@
+using System.Threading.Tasks;// Деректива поделючения пространство имен многопоточности
+
+namespace Genesis; // Пространство имен
+
+class MyClass//Класс
+{       
+    public void Method()//Метод
+    {
+        Console.WriteLine("1985"); 
+    }
+}
+class Program // Основной класс программы
+{ 
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //Console.SetWindowSize(80, 40);//
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("======<<<Параллельное программирование и библиотека TPL>>>=====");
+        Console.ResetColor();
+
+        Task t1 = new Task(()=> Console.WriteLine("Hello"));
+        //Или
+        Task t2 = Task.Factory.StartNew(()=> Console.WriteLine("Hello"));
+        //Или
+        Task t3 = Task.Run(()=> Console.WriteLine("Hello"));
+        //////////////////////////////////////////////////////////////////////////////////
+        Task task1 = new Task(()=>Console.WriteLine("Task1 is executed"));
+        task1.Start();
+        Task task2 = Task.Factory.StartNew(()=> Console.WriteLine("Task2 is executed"));
+        Task task3 = Task.Run(()=> Console.WriteLine("Task3 is executed"));
+
+        task1.Wait();//Ожидание задачи task1
+        task2.Wait();//Ожидание задачи task2
+        task3.Wait();//Ожидание задачи task3
+        
+        /////////////////////////////////////////////////////////////////////////////////
+        Console.WriteLine("Main Starts");//Начало
+        //Создание задачи
+        Task task = new Task(()=>
+        {
+            Console.WriteLine("Task Starts");//
+            Thread.Sleep(1000);//Задержка в миллесекундах
+            Console.WriteLine("Task Ends");//
+
+        });
+
+        task.Start();//Запуск задачи
+        task.Wait();//Ожидание выполнения задачи
+        //task.RunSynchronously();//Запуск задачи синхронно
+        Console.WriteLine("Main Ends");//Конец
+        //////////////////////////////////////////////////////////////////////////////////
+        Task task0 = new Task(()=>
+        {
+            Console.WriteLine($"Task{Task.CurrentId} Starts");//Возвращает идентификатор текущей задачи(статическое свойство)
+            Thread.Sleep(1000);//Задержка в миллесекундах
+            Console.WriteLine($"Task{Task.CurrentId} Ends");//
+        });
+        task0.Start();//Запуск задачи
+        Console.WriteLine($"task ID:{task0.Id}");//Возвращает true, если задача завершена
+        Console.WriteLine($"task is Completed:{task0.IsCompleted}");//Возвращает true, если задача была отменена
+        Console.WriteLine($"task Status:{task0.Status}");//Возвращает статус задачи
+
+        task0.Wait();//Ожидаем завершения задачи
+
+
+
+        ///Console.WriteLine("===================================");
+       
+    }
+}
+
+    
+
+
+
+
+
+        
+
+    
+
+
+
+
+
+
+
+
+

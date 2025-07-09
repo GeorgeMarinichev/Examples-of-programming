@@ -1,0 +1,102 @@
+//////////////////////////////Конфигурация по умолчанию и объеденение конфигурации и анализ конфигурации
+//////////////////////////////////////////////////////////////////////////////////
+using System;
+using System.Text;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;                   //Необходимый пакет using
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Microsoft.VisualBasic;
+////////////////////////////////////////////////////////////////////////////////
+using Microsoft.Extensions.FileProviders;//
+//////////////////////////////////////////////////////
+
+namespace Space
+{
+    ///////////////////////////////////////Создание интерфейса сервиса
+    
+    //////////////////////////////////////////////////Установка сервисов
+    
+    class Program//Главный класс приложения
+    {  
+        static void Main(string[] args)//Главный метод точка входа
+        {
+            // WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            // //var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+
+            // //var config = app.Configuration();
+            // // builder.Configuration
+            // //     .AddJsonFile("config.json")
+            // //     .AddXmlFile("config.xml")
+            // //     .AddIniFile("config.ini")
+            // //     .AddInMemoryCollection(new Dictionary<string, string>
+            // // {
+            // //     { "name", "Sam" },
+            // //     {"age", "32"}
+            // // }); ;
+
+            // builder.Configuration //Конфигурационные настройки из разных источников
+            //     .AddJsonFile("config.json")
+            //     .AddXmlFile("config.xml")
+            //     .AddIniFile("config.ini");
+                
+            
+
+            // app.Map("/", (IConfiguration appConfig)=> $"Name:{appConfig["name"]} age{appConfig["age"]}");
+            // //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обраьотки вызовов, если они не соответсвуют другим запросам
+            // app.Run();
+
+            //////////////////////////////////////Анализ конфигурации
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            //var builder = WebApplication.CreateBuilder(args);
+            var app = builder.Build();
+
+            builder.Configuration.AddJsonFile("config2.json");//Конфигурационные настройки
+
+            app.Map("/", (IConfiguration appConfig)=> 
+            {
+                IConfigurationSection connStrings = appConfig.GetSection("ConnectionStrings");
+                string defaultConnection = connStrings.GetSection("DefaultConnection").Value;
+                return defaultConnection;
+            });
+            //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обработки вызовов, если они не соответсвуют другим запросам
+            app.Run();
+
+            //////////////////////////////////////Анализ конфигурации(полный анализ)
+        //     WebApplicationBuilder builder = WebApplication.CreateBuilder();
+        //     //var builder = WebApplication.CreateBuilder(args);
+        //     var app = builder.Build();
+
+
+        //     builder.Configuration.AddJsonFile("config2.json"); //Конфигурационные настройки
+
+             
+        //     app.Map("/", (IConfiguration appConfig)=> GetSectionContent(appConfig.GetSection("projectConfig")));
+        //     //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обраьотки вызовов, если они не соответсвуют другим запросам
+        //     app.Run();
+
+        //     static string GetSectionContent(IConfiguration configSection)//
+        //     {
+        //         System.Text.StringBuilder contentBuilder = new();
+
+        //         foreach (var section in configSection.GetChildren())
+        //         {
+        //             contentBuilder.Append($"\"{section.Key}\":");
+        //             if(section.Value == null)
+        //             {
+        //                 string cubSectionContent = GetSectionContent(section);
+        //                 contentBuilder.Append($"{{\n{cubSectionContent}}},\n");
+        //             }
+        //             else
+        //             {
+        //                 contentBuilder.Append($"\"{section.Value}\":");
+        //             }
+        //         }
+        //         return contentBuilder.ToString();
+        //     }
+
+        }
+    }
+}

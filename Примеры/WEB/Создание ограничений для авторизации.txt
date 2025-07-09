@@ -1,0 +1,162 @@
+////////////////////////////Создание ограничений для авторизации
+using System;
+using Microsoft.AspNetCore.Authorization;//Деректива для аутентификации
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Collections.Generic;
+
+
+namespace Space
+{
+    record class Person(string Email, string Password, int Year);//Для представления пользователя в приложении
+
+    class AgeReguirement: IAuthorizationRequirement//Класс ограниечние по возрасту
+    {
+        protected internal int Age {get; set;}
+        public AgeReguirement(int age)
+        {
+            Age = age;
+        }
+    }
+
+    class AgeHandler: AuthorizationHandler<AgeReguirement>//Класс обработчик
+    { 
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AgeReguirement requirement)
+        {
+            //получаем claim с типом ClaimTypes.DateOfBirth- год рождения
+            var yearClaim = context.User.FindFirst(c=> c.Type == ClaimTypes.DateOfBirth);
+            if(yearClaim is not null)
+            {
+                //если claim года рождения хранит число
+                if(int.TryParse(yearClaim.Value, out var year))
+                {
+                    //И разница между текущим годом и годом рождения больше требуемого возраста
+                    if((DateTime.Now.Year - year) >= requirement.Age)
+                    {
+                        context.Succeed(requirement);//Сигнализирует, что claim соответсвует ограничению
+                    }
+                }
+            }
+            return Task.CompletedTask;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ///////////////////////Условная БД//////////////////
+            var people = new List<Person>
+            {
+                new Person("george@mail.com", "1985", 1985),
+                new Person("tom@mail.com", "55555", 2020)
+            };
+
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            //var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddTransient<IAuthorizationHandler, AgeHandler>();//Регистрация зависимости для настройки автоизации
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)//Добавление сервисов аутентификации
+                .AddCookie((options)=>
+                {
+                    options.LoginPath = "/login";//Путь направления не аутентифицированного пользователя
+                    options.AccessDeniedPath = "/login";//Путь направления аутентифицированного пользователя без доступа к ресурсу
+                });
+
+            builder.Services.AddAuthorization((opts)=>//Добавление сервисов авторизации
+            {
+                opts.AddPolicy("AgeLimit", policy => policy.Requirements.Add(new AgeReguirement(18)));//Установка ограничения по возрасту
+            });
+            
+            WebApplication app = builder.Build();
+            //var app = builder.Build();
+
+            app.UseAuthentication();//Добавление middleware аутентификации
+            app.UseAuthorization();//Добавление middleware авторизации
+
+            app.MapGet("/login", async(HttpContext context) =>
+            {
+                context.Response.ContentType = "text/html; charset=utf-8";
+                //HTML-форма для ввода логина и пароля
+                string loginForm =@"<!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset='utf-8'/>
+                    <title>METANIT.COM</title>
+                </head>
+                <body>
+                    <h2>Login Form</h2>
+                    <form method='post'>
+                        <p>
+                            <label>Email</label><br />
+                            <input name='email' />
+                        </p>
+                        <p>
+                            <label>Password</label><br />
+                            <input type='password' name='password' />
+                        </p>
+                        <input type='submit' value='Login' />
+                    </form>
+                </body>
+                </html>";
+                await context.Response.WriteAsync(loginForm);
+            });
+
+            app.MapPost("/login", async(string? returnUrl, HttpContext context)=>
+            {
+                //Получаем из формы email пароль
+                var form = context.Request.Form;
+                //Если email и/или пароль не установлены, посылается статус код 400
+                if(!form.ContainsKey("email") || !form.ContainsKey("password"))
+                {
+                    Results.BadRequest("Email и/или пароль не установлены");
+                }
+
+                string email = form["email"];
+                string password = form["password"];
+
+                //Нахождение пользователя
+                Person? person = people.FirstOrDefault(p => p.Email == email && p.Password == password);
+                if(person is null)//Если пользователь не найден, отправляется статус код 401
+                {
+                    return Results.Unauthorized();
+                }
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, person.Email),
+                    new Claim(ClaimTypes.DateOfBirth, person.Year.ToString())
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims,"Cookies");//Создание идентичности с типом аутентификации(Undefined-неопределенный). Это может быть произвольная строка
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);//Создание обьекта принимающего идентичность claimsIdentity
+                //Установка футентификации куки
+                await context.SignInAsync(claimsPrincipal);
+                return Results.Redirect(returnUrl ??"/");
+            });
+
+            //Доступ только для тех кто соответсвует ограничению AgeLimit
+            app.Map("/age", [Authorize(Policy = "AgeLimit")]()=> "Age Limit is passed");
+
+            //
+            app.Map("/", [Authorize](HttpContext context)=>
+            {
+                var login = context.User.FindFirst(ClaimTypes.Name);
+                var year = context.User.FindFirst(ClaimTypes.DateOfBirth);
+           
+                return $"Name:{login?.Value}\nYear:{year?.Value}";
+            });
+
+            app.MapGet("/logout", async(HttpContext context) =>
+            {
+                await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                return "Данные удалены";
+            });
+
+            app.Run();
+
+        }
+    }
+}
+

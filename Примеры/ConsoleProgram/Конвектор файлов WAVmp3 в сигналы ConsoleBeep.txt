@@ -1,0 +1,84 @@
+using System;
+using System.IO;
+using NAudio.Wave;//Библиотека NAudio через NuGet Package Manager:
+
+class Program
+{
+    static void Main(string[] args)
+    {
+	Console.WriteLine(Конвектор файлов WAV, mp3 в сигналы Console.Beep());
+        Console.WriteLine("Введите путь к аудиофайлу (WAV или MP3):");
+        string filePath = Console.ReadLine();
+
+        if (File.Exists(filePath))
+        {
+            if (filePath.EndsWith(".wav", StringComparison.OrdinalIgnoreCase))
+            {
+                PlayWavAsBeep(filePath);
+            }
+            else if (filePath.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase))
+            {
+                PlayMp3AsBeep(filePath);
+            }
+            else
+            {
+                Console.WriteLine("Неподдерживаемый формат файла. Пожалуйста, используйте WAV или MP3.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Файл не найден.");
+        }
+    }
+
+    static void PlayWavAsBeep(string filePath)
+    {
+        using (var reader = new BinaryReader(File.Open(filePath, FileMode.Open)))
+        {
+            reader.ReadBytes(22); // Пропускаем до количества каналов
+            short channels = reader.ReadInt16();
+            reader.ReadBytes(6); // Пропускаем до частоты дискретизации
+            int sampleRate = reader.ReadInt32();
+            reader.ReadBytes(6); // Пропускаем до битности
+            short bitsPerSample = reader.ReadInt16();
+
+            // Чтение данных
+            reader.ReadBytes(4); // Пропускаем "data" заголовок
+            int dataSize = reader.ReadInt32();
+
+            byte[] data = reader.ReadBytes(dataSize);
+
+            // Преобразование данных в частоты для Console.Beep
+            for (int i = 0; i < data.Length; i += 2)
+            {
+                // Преобразуем 16-битные PCM данные в частоту (пример)
+                short sample = (short)((data[i + 1] << 8) | data[i]);
+                int frequency = Math.Abs(sample) % 2000 + 200; // Приведение к частоте
+                Console.Beep(frequency, 50); // Воспроизведение сигнала
+            }
+        }
+    }
+
+    static void PlayMp3AsBeep(string filePath)
+    {
+        using (var mp3Reader = new Mp3FileReader(filePath))
+        {
+            var buffer = new byte[mp3Reader.Mp3WaveFormat.AverageBytesPerSecond / 10];
+            int bytesRead;
+
+            while ((bytesRead = mp3Reader.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                for (int i = 0; i < bytesRead; i += 2)
+                {
+                    if (i + 1 < bytesRead)
+                    {
+                        // Преобразуем 16-битные PCM данные в частоту (пример)
+                        short sample = (short)((buffer[i + 1] << 8) | buffer[i]);
+                        int frequency = Math.Abs(sample) % 2000 + 200; // Приведение к частоте
+                        Console.Beep(frequency, 50); // Воспроизведение сигнала
+                    }
+                }
+            }
+        }
+    }
+}

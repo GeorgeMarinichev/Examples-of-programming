@@ -1,0 +1,39 @@
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Делегаты в запросах LINQ");
+        //////////////////////////Отложенное выполнение///////////////////////////////////
+        string[] people = {"Tom", "Bob", "Kati", "Tim", "Mike", "Sam"};
+        var result = people.Where(LenghtIs3);
+
+        foreach (var item in result)
+        {
+            Console.WriteLine(item);
+        }
+
+        bool LenghtIs3(string name)
+        {
+            return name.Length == 3;
+        } 
+
+        Console.WriteLine("------------------------------------------");
+        /////////////////////////////////////////////////////////////////
+        int[] numbers = {1, 9, 8, 5};
+
+        var resultNumbers = numbers.Where(n => n > 0).Select(Square);
+        int Square(int n)
+        {
+            return n * n;
+        }
+
+    }
+
+}
+    
+        
+
+
+
+

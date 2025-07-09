@@ -1,0 +1,32 @@
+using System;
+using System.Runtime.InteropServices;
+class Program
+{
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    public static extern int SystemParametersInfo(int uAction, int uParam, string IpvParam2, int fuMinInt);
+    
+    const int SPI_SETDESCWALLPAPER = 20;
+    const int SPIF_UPDATEINIFILE = 0x01;
+    const int SPIF_SENDCHANGE = 0x02;
+
+
+    private static void Main(string[] args)
+    {
+        Thread thread = Thread.CurrentThread;
+        thread.Name = "ImagePath";
+        //thread.Start();
+
+        Console.Title = $"{thread.Name}";
+        Console.WriteLine("Введите путь к файлу:");
+        //string imagePath = @"C:\Users\User\Desktop\ggg.jpg";//
+        string imagePath = Console.ReadLine();
+
+        SetWallpaper(imagePath);
+        //thread.Join();
+    }
+
+    static void SetWallpaper(string path)
+    {
+        SystemParametersInfo(SPI_SETDESCWALLPAPER, 0, path, SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
+    }
+}

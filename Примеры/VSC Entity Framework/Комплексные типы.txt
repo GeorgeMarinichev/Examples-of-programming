@@ -1,0 +1,216 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore.Diagnostics;//Логгирование
+
+namespace Space
+{
+    [Table("People")]//Переименование таблицы
+    public class User//Тип владелец
+    {
+        public int Id { get; set; }//NOT NULL
+        public required string Name { get; set; } //NOT NULL
+        public required Language Language { get; set; }//NOT NULL
+
+        //Навигационные свойства
+        
+        //Промежуточная таблица
+    }
+
+   public class Company
+   {
+        public int Id { get; set; }//NOT NULL
+        public required string Name { get; set; } //NOT NULL
+        public required Language Language { get; set; }//NOT NULL
+        //public required List<Language> Languages { get; set; } = new List<Language>();//NOT NULL
+   }
+
+    [ComplexType]//Коплексный тип
+   public class Language
+   {
+        public required string Name {get; set;} //NOT NULL
+   }
+
+    // public class UserProfile//Тип владеемый
+    // {
+    //     //public int Id { get; set; }//NOT NULL
+    //     public string? Name { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+    //     public int Age { get; set; }//NOT NULL
+    //     //Навигационные свойства
+
+    //     //Промежуточная таблица
+    // }
+ 
+    public class ApplicationContext: DbContext//Класс контекст данных
+    {
+        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Company> Companies {get; set;} = null!;
+
+        // public ApplicationContext()//Конструктор
+        // {
+        //     //Пересоздание БД
+        //     Database.EnsureDeleted();//Очистка БД
+        //     Database.EnsureCreated();//Создание БД
+        // }
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data Source=helloapp.db");//Подключение
+            //optionsBuilder.UseLazyLoadingProxies().UseSqlite("Data Source=helloapp.db");//Подключение LazyLoading
+            //optionsBuilder.LogTo(Console.WriteLine, new[] { RelationalEventId.CommandExecuted });//Логгирование
+        }
+
+        // protected override void OnModelCreating(ModelBuilder modelBuilder)//FluentAPI 
+        // {
+        //     //modelBuilder.Entity<User>().OwnsOne(u => u.UserProfile);//Настройка связи через FluentAPI 
+        //     //modelBuilder.Entity<User>().OwnsOne(typeof(UserProfile), "Profile");//Настройка связи через FluentAPI
+        //     modelBuilder.Entity<User>(builder => {builder.ComplexProperty(user => user.Language);});//Коплексный тип через FluentAPI 
+        //     modelBuilder.Entity<Company>(builder => {builder.ComplexProperty(user => user.Language);});//Коплексный тип через FluentAPI 
+        // }
+    }
+
+    class Program//Основной класс точки входа
+    {
+        static void Main(string[] args)//Метод как точка входа
+        {
+            void CreateData()//Создание данных
+        {
+            using (ApplicationContext db = new ApplicationContext())//Ввод данных
+            {
+                //Пересоздание БД
+                db.Database.EnsureDeleted();//Очистка БД
+                db.Database.EnsureCreated();//Создание БД
+
+                //Добавление начальных данных
+                Language sharp = new Language{Name = "C#"};
+                Language basic = new Language{Name = "Basic"};
+                Language python = new Language{Name = "Python"};
+                //python.Name = "P";
+
+                //Добавление начальных данных
+                User user1 = new User{Name = "Tom", Language = sharp};
+                User user2 = new User{Name = "Sam", Language = basic};
+                User user3 = new User{Name = "Bob", Language = python};
+                User user4 = new User{Name = "Eva", Language = user3.Language};
+
+                // User user1 = new User("login1", "111", new UserProfile { Age = 25, Name = "Alice" });
+                // User user2 = new User("login2", "222", new UserProfile { Age = 30, Name = "Eva" });
+                // User user3 = new User("login3", "333", new UserProfile { Name = "Tom", Age = 45 });
+                // User user4 = new User("login4", "444", new UserProfile { Name = "Sam", Age = 55 });
+                db.Users.AddRange(user1, user2, user3, user4);
+
+                //Добавление начальных данных
+                // Company com1 = new Company{Name = "Microsoft", Languages = new List<Language>{sharp, basic}};
+                // Company com2 = new Company{Name = "Google", Languages = com1.Languages};
+                // Company com3 = new Company{Name = "Google", Languages = com2.Languages};
+            
+                Company com1 = new Company{Name = "Microsoft", Language = sharp};
+                Company com2 = new Company{Name = "Google", Language = python};
+                Company com3 = new Company{Name = "Blits", Language = basic};
+                db.Companies.AddRange(com1, com2, com3);
+
+
+                //Добавление данных
+              
+                //alice.Courses.Add(algorithms);
+                // alice.Enrollments.Add(new Enrollment {Course = algorithms, Mark = 4});
+
+                // eva.Courses.Add(basics);
+
+                // tom.Enrollments.Add(new Enrollment {Course = basics, Mark = 5}); 
+
+                // jon.Courses.AddRange(algorithms, basics);
+
+                // //basics.Students.AddRange(sam, bob);
+
+                // //Добавляем оценки студентам по курсам
+
+                // sam.Enrollments.Add(new Enrollment {Course = basics, Mark = 4});
+
+                // bob.Enrollments.Add(new Enrollment {Course = algorithms, Mark = 5});
+
+                db.SaveChanges();
+            }
+        }
+            CreateData();//
+
+            void ReadData()//Чтение данных
+        {
+            using (ApplicationContext db = new ApplicationContext())//Получение данных
+            {
+                Console.WriteLine($"==========================Пользователи===============================");
+                var user1 = db.Users.ToList();//вывод пользователей
+                foreach (var i in user1)
+                {
+                    Console.WriteLine($"Id:{i.Id} Name:{i.Name}\n Language:{i.Language.Name}");
+                    Console.WriteLine("--------------------------------------");
+                }
+                
+                Console.WriteLine($"==========================Курсы===============================");
+                var com1 = db.Companies.ToList();//вывод пользователей
+                foreach (var i in com1)
+                {
+                    Console.WriteLine($"Id:{i.Id} Name:{i.Name}\n Language:{i.Language.Name}");
+                    Console.WriteLine("--------------------------------------");
+                }
+
+                Console.WriteLine("+++++++++++++++++++++++++++++++++++++++");
+                var user3 = db.Users.ToList();
+                foreach (var i in user3)
+                {
+                    Console.WriteLine(user3.ToString());
+                }
+
+            }
+        }
+            Console.WriteLine("Метод вывода до изменений:");
+            ReadData();//1
+
+            void UpdateData()//Редактирование данных
+        {
+            //Изменение данных
+            using (ApplicationContext db = new ApplicationContext())//Редактирование данных
+            {
+                User? user1 = db.Users.FirstOrDefault(p => p.Name == "Tom");//изменение имени пользователя
+                if (user1 != null)
+                {
+                    user1.Name = "Tomek";
+                    db.SaveChanges();
+                }
+
+                var user2 = db.Users.FirstOrDefault();//изменение имени пользователя
+                if (user2 != null)
+                {
+                    user2.Language.Name = "Шарп";
+                    //sharp.Name = "Шарп";
+                    db.SaveChanges();
+                }
+            }
+        }
+            UpdateData();//
+
+            Console.WriteLine("Метод вывода после изменений:");
+            ReadData();//2
+
+            void DeleteData()//Удаление данных
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                User? user1 = db.Users.FirstOrDefault(u => u.Id == 1);
+                if (user1 != null)
+                {
+                    db.Users.Remove(user1);
+                    db.SaveChanges();
+                }
+            }
+        }
+            DeleteData();//
+            Console.WriteLine("Метод вывода после удаления:");
+            ReadData();//3
+        }
+    }
+}

@@ -1,0 +1,127 @@
+using System.Diagnostics.Contracts;
+using System.Threading.Tasks;// Деректива поделючения пространство имен многопоточности
+
+namespace Genesis; // Пространство имен
+
+class MyClass//Класс
+{       
+    public void Method()//Метод
+    {
+        Console.WriteLine("1985"); 
+    }
+}
+
+class Program // Основной класс программы
+{ 
+    public async static Task Main(string[] args)// Основной метод программы
+    {
+        //Console.SetWindowSize(80, 40);//
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("===<<<Aсинхронное программирование Асинхронные методы, async и await >>>===");
+        Console.ResetColor();
+        //////////////////////////////////////////////////////////////////////////////////
+        // await PrintAsync();   // вызов асинхронного метода
+        // Console.WriteLine("Некоторые действия в методе Main");
+ 
+ 
+        // void Print()
+        // {
+        //     Thread.Sleep(3000);     // имитация продолжительной работы
+        //     Console.WriteLine("Hello METANIT.COM");
+        // }
+ 
+        // // определение асинхронного метода
+        // async Task PrintAsync()
+        // {
+        //     Console.WriteLine("Начало метода PrintAsync"); // выполняется синхронно
+        //     await Task.Run(() => Print());                // выполняется асинхронно
+        //     Console.WriteLine("Конец метода PrintAsync");
+        // }
+
+        ///////////////////////////Задержка асинхронной операции Task.Delay///////////////////////////////
+        // await PrintAsync();   //Вызов асинхронного метода
+        // Console.WriteLine("Некоторые действия в методе Main");
+ 
+        // //Определение асинхронного метода
+        // async Task PrintAsync()
+        // {
+        //     Console.WriteLine("Начало метода PrintAsync"); //Выполняется синхронно
+        //     await Task.Delay(3000); // Задержка
+        //     //Или
+        //     //await Task.Delay(TimeSpan.FromMilliseconds(3000)); // Задержка
+        //     Console.WriteLine("Конец метода PrintAsync");
+        // }
+
+        /////////////////////////////Синхронный метод
+        Print("Tom");
+        Print("Bob");
+        Print("Sam");
+
+        async void Print(string name)//Синхронный метод
+        {
+            Thread.Sleep(3000);//имитация продолжительной работы
+            Console.WriteLine(name);
+            Console.Beep();
+        }
+
+        ///////////////////////////////Асинхронный метод
+        await PrintAsunc("Tom");
+        await PrintAsunc("Bob");
+        await PrintAsunc("Sam");
+
+        async Task PrintAsunc(string name)//Асинхронный метод
+        {
+            //Thread.Sleep(3000);
+            Task.Delay(3000);// Задержка(имитация продолжительной работы)
+            Console.WriteLine(name);
+            Console.Beep();
+        }
+
+        ///////////////////////////////Асинхронный метод(оптимизация)
+        var tomTask = PrintAsunc2("Tom");
+        var bobTask = PrintAsunc2("Bob");
+        var samTask = PrintAsunc2("Sam");
+
+        await tomTask;
+        await bobTask;
+        await samTask;
+
+        async Task PrintAsunc2(string name)//Асинхронный метод
+        {
+            //Thread.Sleep(3000);
+            Task.Delay(3000);// Задержка(имитация продолжительной работы)
+            Console.WriteLine(name);
+            Console.Beep();
+        }
+
+        //////////////////Определение асинхронного лямбда-выражения
+        Func<string, Task> printer = async (message)=>
+        {
+            await Task.Delay(3000);
+            Console.WriteLine(message);
+        };
+
+        await printer("Hello");
+        await printer("World");
+    }
+
+}
+
+
+
+
+
+
+
+        
+
+    
+
+
+
+
+
+
+
+
+

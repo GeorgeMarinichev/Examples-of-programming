@@ -1,0 +1,63 @@
+using System.Diagnostics;
+
+namespace Cosmos
+{
+    /////////////////////////////////////////////////////////////////////
+    struct Point
+    {
+        public int x;
+        public int y;
+        public int z;
+   
+    }
+    /////////////////////////////////////////////////////////////////////
+    internal class Program
+    {
+        static void Foo1(Point val)
+        {
+            //val.x = 15;
+            //Console.WriteLine(val.x + "=" + val.y + "=" + val.z);
+        }
+    
+        static void Foo2(in Point val)
+        {
+            //val.x = 13;// Нельзя менять значение!
+            //Console.WriteLine(val.x + "=" + val.y + "=" + val.z);
+        }
+        /////////////////////////////////////////////////////////////////
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Stopwatch - класс определения скорости выполнения");
+
+            Console.WriteLine("==================================");
+
+            Point pon = new(); // Обьект(экземпляр структуры)
+            pon.x = 10; 
+            pon.y = 20;
+            pon.z = 30;
+
+            /////////////////////////////////////////////////////////////////
+            
+            Stopwatch sw = Stopwatch.StartNew();                      // Stopwatch (класс для определения времени
+                                                                      // выполнения приложения)
+            for (int i = 0; i < int.MaxValue; i++)                    //
+            {                                                         //
+                Foo1(pon);                                            //
+            }                                                         //
+            sw.Stop();                                                //
+                                                                      //
+            Console.WriteLine($"Foo1 = {sw.ElapsedMilliseconds}");    //
+                                                                      //
+            sw.Restart();                                             //
+                                                                      //
+            for (int i = 0; i < int.MaxValue; i++)                    //
+            {                                                         //
+                Foo2(pon);                                            //
+            }                                                         //
+            sw.Stop();                                                //
+                                                                      //
+            Console.WriteLine($"Foo2 = {sw.ElapsedMilliseconds}");    //
+
+        }
+    }
+}

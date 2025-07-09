@@ -1,0 +1,38 @@
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
+
+namespace Lessons;
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Измерения время выполнения программы");
+            var sw = new Stopwatch();
+            sw.Start();
+            Thread.Sleep(10);
+            // for(int i = 0; i < 10; i++)
+            // {
+            //     Thread.Sleep(10);
+            //     Console.WriteLine($"Итерация-1:{i}");
+            // }
+            sw.Stop();
+            Console.WriteLine($"Time Spent-1:{sw.ElapsedMilliseconds}");
+
+            sw.Restart();//sw.Restart();
+            Thread.Sleep(10);
+            // for(int i = 0; i < 10; i++)
+            // {
+            //     Thread.Sleep(10);
+            //     Console.WriteLine($"Итерация-2:{i}");
+            // }
+            sw.Stop();
+            Console.WriteLine($"Time Spent-2:{sw.ElapsedMilliseconds}");
+        }
+    }
+
+
+
+
+

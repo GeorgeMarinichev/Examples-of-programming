@@ -1,0 +1,70 @@
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
+
+//unsafe class MyClass;
+//unsafe struct MyStruct;
+
+namespace Genesis
+{
+  
+
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Указатели");
+            ///////////////////Ключевое слово unsafe
+            unsafe
+            {
+                int* x;//Определяем указатель
+                int y = 10;//Определяем переменную
+
+                x = &y;//Указатель х указывает на переменную у
+                Console.WriteLine(*x);
+
+                y = y + 20;
+                Console.WriteLine(*x);
+
+                *x = 20;
+                Console.WriteLine(*x);
+            }
+
+            ////////////////////////////////////////
+            Console.WriteLine("--------------------------------");
+            unsafe
+            {
+                int* x;//Определяем указатель
+                int y = 10;//Определяем переменную
+
+                x = &y;//Указатель х указывает на переменную у
+                Console.WriteLine(*x);//
+
+                ulong addr = (ulong)x;//Преобразование в ulong
+                Console.WriteLine($"Адрес переменной y:{addr}");//
+            }
+
+            ////////////////////////////////////////
+            Console.WriteLine("--------------------------------");
+            unsafe
+            {
+                int* x;//Определяем указатель
+                int y = 10;//Определяем переменную
+
+                x = &y;//Указатель х указывает на переменную у
+                Console.WriteLine(*x);
+
+                int** z = &x;//Указатель z указывает на адрес, указателя х
+                **z = **z + 40;//Изменение указателя z повлечет изменение переменной у
+
+                Console.WriteLine(*x);
+                Console.WriteLine(y);
+                Console.WriteLine(**z);
+            }
+
+
+        }
+    }
+}
+
+

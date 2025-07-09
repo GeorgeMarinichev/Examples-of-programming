@@ -1,0 +1,134 @@
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
+
+//unsafe class MyClass;
+//unsafe struct MyStruct;
+struct Point
+{
+    public int X { get; set; }
+    public int Y { get; set; }
+    public Point(int x, int y)
+    {
+        X = x;
+        Y = y;
+    }
+}
+
+    class ClassPoint
+    {
+        public int x;
+        public int y;
+        public override string ToString()// => $"X:{X} Y:{Y}";
+    {
+       return $"X:{x} Y:{y}";
+    }
+}
+
+namespace Genesis
+{
+  
+
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Указатели на структуры, члены класов и массивы");
+            ///////////////////Указатели на типы и операция
+            unsafe
+            {
+                Point point = new(0, 0);//Экземпляр класса
+                Console.WriteLine(point);
+
+                Point * p = & point;
+
+                p->X = 30;
+                Console.WriteLine(point.X);
+                Console.WriteLine(p->X);
+
+                (*p).Y = 180;//Операция разыменования(как альтернатива)
+                Console.WriteLine(point.Y);
+                Console.WriteLine((*p).Y);
+                Console.WriteLine(p->Y);
+
+                Console.WriteLine(point);
+
+            }
+
+            Console.WriteLine("-------------------------------------");
+            ///////////////////Указатели на массивы и stackalloc
+            unsafe
+            {
+                const int size = 7;
+                int* square = stackalloc int[size];//Выделяем память в стеке под семь объектов int
+                int* p = square;
+                //Вычисляем квадраты чисел от 1 до 7 включая
+                for(int i = 0; i <= size; i++, p++)
+                {
+                    *p = i * i;//Считаем квадрат
+                }
+                for (int i = 0; i < size; i++)
+                {
+                    Console.WriteLine(square[i]);   
+                }
+                
+                Console.WriteLine("-------------------------------------");
+                unsafe
+                {
+                    const int size2 = 7;
+                    int* factorial = stackalloc int[size2];//Выделяем память в стеке под семь объектов int
+                    int* p2 = factorial;
+                    //Вычесляем факториалы
+                    for (int i = 2; i <= size2; i++, p2++)
+                    {
+                        *p2 = p2[-1] * i;//Считаем квадрат
+                    }
+                    for (int i = 0; i < size2; i++)
+                    {
+                        Console.WriteLine(factorial[i]);
+                    }
+                }
+
+                Console.WriteLine("-------------------------------------");
+                //////////////Оператор fixed и закрепление указателей
+                ClassPoint point2 = new();
+                //fixed (int* pX = &point2.x)//Блок фиксации указателя
+                //{
+                //    *pX = 50;
+                //}
+                //fixed(int* pY = &point2.y)//Блок фиксации указателя
+                //{
+                //    *pY = 150;
+                //}
+
+                //Мижно соеденить оба блока
+                fixed(int* pX = &point2.x, pY = &point2.y)
+                {
+                    *pX = 50;
+                    *pY = 150;
+                }
+                Console.WriteLine(point2);
+
+                Console.WriteLine("-------------------------------------");
+                unsafe
+                {
+                    int[] num = { 1, 9, 8, 5 };
+                    string str = "Привет мир!";
+                    fixed(int * pN = num)
+                    {
+                        int third = *(pN + 2);
+                        Console.WriteLine(third);
+                    }
+                    fixed (char* pS = str)
+                    {
+                        char forth = *(pS + 3);
+                        Console.WriteLine(forth);
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+

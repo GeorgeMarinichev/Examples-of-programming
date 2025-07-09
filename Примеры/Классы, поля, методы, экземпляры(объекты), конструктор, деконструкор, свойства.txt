@@ -1,0 +1,137 @@
+using Bank;
+using Base;
+using System;
+using System.Xml.Linq;
+
+namespace Osnova //Пространство имен Osnova
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Классы, поля, методы, экземпляры(объекты), конструктор, деконструкор, свойства");
+            ///////////////////////////////////////////////////////////////
+
+            BankAkk akk1 = new ();
+            //akk1.balans = 100;
+            //Console.WriteLine(akk1.balans);
+            //akk1.SetBalans(1000); // Самодельное свойство set
+            //akk1.GetBalans();     // Самодельное свойство get
+
+            akk1.Balans = -100;
+            Console.WriteLine(akk1.Balans);
+
+
+
+            Person per1 = new Person()// Вызов экземпляра класса Person, конструктор №1
+            {
+                perName = "Jon",      //Поля
+                perAge = 40           //Поля 
+            };
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            per1.perInfo();
+            Console.ResetColor();
+
+            Person Per2 = new Person();//Вызов экземпляра класса Person, конструктор №2
+            Per2.perName = "George";
+            Per2.perAge = 38;
+            Per2.perInfo();
+
+            Person per3 = new () { perName = "Tom", perAge = 28 };//Вызов экземпляра класса Person, конструктор №3
+            per3.perInfo();
+
+            Person per4 = new("Bad", 55);//Вызов экземпляра класса Person, конструктор №4
+            per4.perInfo();
+
+            //string name; 
+            //int age;
+
+            //per4.Deconstruct(out name, out age);//Вызов деконструктора
+
+            (string name, _) = per4;//Вызов деконструктора
+
+            //Console.WriteLine($"{name} = {age}");
+            //Console.WriteLine($"{name}");
+
+
+        }
+    }
+}
+
+
+
+namespace Base //Пространство имен Base
+{
+    internal class Person // Класс персонажи
+    {
+        //public string perName = "stok";
+        //public int perAge = 3000;
+        public string perName; //Поля класса персонажей
+        public int perAge;//Поля класса персонажей
+        public Person() { }// По умолчанию
+
+        public Person(string name = "default", int age = 2024)// Конструктор класса персонажи
+        //public Person(string perName, int perAge)
+        {
+            this.perName = name;
+            this.perAge = age;
+            Console.Beep();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            perInfo();
+            Console.ResetColor();
+
+        }
+
+        public void Deconstruct(out string name, out int age)//Деструктор класса персонажи
+       
+        {
+            name = perName;
+            age = perAge;
+        }
+
+        public void perInfo() => Console.WriteLine($"Имя:{perName} Возраст:{perAge} лет");//Метод класса персонажи
+
+       
+    }
+    
+    
+}
+ 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Bank //Пространство имен Bank
+{
+    internal class BankAkk
+    {
+        private int balans;
+        
+        public BankAkk() { }
+        
+    //    public void SetBalans(int getbal) // Самодельное свойство set
+    //    {
+    //        //balans = getbal;
+    //        //if (balans <= 0) balans = 0;
+            
+    //        if (getbal >= 0) balans = getbal;
+    //    }
+    //    public int GetBalans() // Самодельное свойство get
+    //{
+    //        Console.WriteLine(balans);
+    //        return balans;
+            
+    //    }
+
+    public int Balans
+        {
+           get {return balans;}
+            //set { balans = value; }
+            set {if(value >=0) balans = value; }
+        }
+
+    }
+}
+

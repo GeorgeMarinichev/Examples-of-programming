@@ -1,0 +1,128 @@
+using System.Collections;//Директива
+
+namespace Genesis;
+
+class Week//: IEnumerable//Класс дни недели хранить дни
+{
+    string[] days = { "Monday", "Tuesday", "Wednesday", "Thursday",
+                         "Friday", "Saturday", "Sunday" };
+    //public IEnumerator GetEnumerator()
+    //{
+    //    return days.GetEnumerator();    
+    //}
+
+    //public IEnumerator GetEnumerator()
+    //{
+    //    return new WeekEnumerator(days);
+    //}
+
+    public IEnumerator<string> GetEnumerator()//Версия с обобщениями
+    {
+        return new WeekEnumerator(days);
+    }
+
+}
+
+//class WeekEnumerator: IEnumerator//Собственный класс логика перебора объектов
+//{
+//    string[] days;
+//    int position = -1;
+//    public WeekEnumerator(string[] days)
+//    {
+//        this.days = days;
+//    }
+//    public object Current
+//    {
+//        get
+//        {
+//            if (position == -1 || position >= days.Length)
+//                throw new ArgumentException();
+//            return days[position];
+//        }
+//    }
+//    public bool MoveNext()
+//    {
+//        if (position < days.Length - 1)
+//        {
+//            position++;
+//            return true;
+//        }
+//        else
+//            return false;
+//    }
+//    public void Reset() => position = -1;
+//}
+
+class WeekEnumerator : IEnumerator <string>//Собственный класс логика перебора объектов версия с обобщениями
+{
+    string[] days;
+    int position = -1;
+    public WeekEnumerator(string[] days) => this.days = days;
+    public string Current
+    {
+        get
+        {
+            if (position == -1 || position >= days.Length)
+                throw new ArgumentException();
+            return days[position];
+        }
+    }
+    object IEnumerator.Current => Current;
+    public bool MoveNext()
+    {
+        if (position < days.Length - 1)
+        {
+            position++;
+            return true;
+        }
+        else
+            return false;
+    }
+    public void Reset() => position = -1;
+    public void Dispose() { }
+}
+
+
+
+
+internal class Program
+    {
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Интерфейсы IEnumerable и IEnumrator");
+
+        //Пример, без использования цикла foreach перебирем массив с помощью интерфейса IEnumerator:
+
+        string[] people = { "Tom", "Sam", "Bob" };//Массив
+
+        IEnumerator peopleEnumirator = people.GetEnumerator();// получаем IEnumerator
+
+        while (peopleEnumirator.MoveNext())// пока не будет возвращено false
+        {
+            string iteam = (string)peopleEnumirator.Current;// получаем элемент на текущей позиции
+            Console.WriteLine(iteam);
+        }
+        peopleEnumirator.Reset();// сбрасываем указатель в начало массива
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        Console.WriteLine("========================================================");
+
+        Week week = new();
+        foreach (var day in week)
+        {
+            Console.WriteLine(day);
+        }
+
+        ////////////////////////////////////////////Собственный класс логика перебора объектов ////////////////////////////////////
+        Console.WriteLine("========================================================");
+
+       
+
+
+
+
+    }
+
+
+}
+
+

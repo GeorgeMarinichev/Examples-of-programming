@@ -1,0 +1,109 @@
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
+using Microsoft.Diagnostics.Tracing.Parsers.Clr;
+using static System.Console; // Импорт
+using System.Collections.Generic;
+
+namespace Benchmark; // Пространство имен
+
+class Program // Основной класс программы
+{
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+        WriteLine("==================Обобщение(generics)=====================");
+        double a = 1; 
+        double b = 5.5;
+
+        WriteLine($"a:{a}\tb:{b}");
+
+        Swap(ref a, ref b);
+
+        WriteLine($"a:{a}\tb:{b}");
+
+        WriteLine("=======================================");
+
+        string str1 = "Hello";
+        string str2 = "World";
+
+        WriteLine($"str1:{str1}\tstr2:{str2}");
+
+        Swap(ref str1, ref str2);
+
+        WriteLine($"str1:{str1}\tstr2:{str2}");
+
+        WriteLine("=======================================");
+
+        double res = Foo<double>();
+        WriteLine($"res:{res}");
+
+        string res1 = Foo<string>();
+        WriteLine($"res:{res1}");
+
+        WriteLine("=======================================");
+
+        MyList<string> myList = new MyList<string>();
+        myList.Add("G");
+        myList.Add("e");
+        myList.Add("r");
+        myList.Add("g");
+
+        for (int i = 0; i < myList.Count; i++)
+        {
+            WriteLine(myList[i]);
+        }
+    }
+
+    static void Swap<T>(ref T a, ref T b)// Метод
+    {
+        T temp = a;
+        a = b;
+        b = temp;
+    }
+
+    static T Foo<T>()
+    {
+        return default(T);
+    }
+
+}
+
+//////////////Отдельный класс MyList, отдельным файлом///////////////
+
+using System.Collections.Generic;
+
+
+
+
+namespace Benchmark;
+
+public class MyList<T>
+{
+
+    public int Count {get {return _array.Length;}}
+    private T[]_array = Array.Empty<T>();
+
+    public T this[int index]// Индексатор (свойства)
+    {
+        get
+        {
+            return _array[index];
+        }
+        set
+        {
+            _array[index] = value;
+        }
+    }
+
+    public void Add(T value)
+    {
+        var newArray = new T[_array.Length + 1];
+        
+        for (int i = 0; i < _array.Length; i++)
+        {
+            newArray[i] = _array[i];
+        }
+        newArray[_array.Length] = value;
+        _array = newArray;
+    }
+}

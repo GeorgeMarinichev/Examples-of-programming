@@ -1,0 +1,98 @@
+//////////////////////////////Создание провайдера конфигурации
+//////////////////////////////////////////////////////////////////////////////////
+using System;
+using System.Text;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;                   //Необходимый пакет using
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Microsoft.VisualBasic;
+////////////////////////////////////////////////////////////////////////////////
+using Microsoft.Extensions.FileProviders;//
+//////////////////////////////////////////////////////
+
+namespace Space
+{
+    class TextConfigurationProvider: ConfigurationProvider//Класс провайдера конфигурации
+    {
+        public string FilePath {get; set;}
+        public TextConfigurationProvider(string path)
+        {
+            FilePath = path;
+        }
+
+        public override void Load()
+        {
+            var data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            using (StreamReader textReader = new StreamReader(FilePath))
+            {
+                string? line;
+                while((line = textReader.ReadLine()) != null)
+                {
+                    string key = line.Trim();
+                    string? value = textReader.ReadLine() ?? "";
+                    data.Add(key, value);
+                }
+            }
+            Data = data;
+        }
+       
+
+    }
+
+    class TextConfigurationSource: IConfigurationSource//Класс источника конфигурации
+    {
+        public string FilePath { get;}
+        public TextConfigurationSource(string filename)
+        {
+            FilePath = filename;
+        }
+
+        public IConfigurationProvider Build(IConfigurationBuilder builder)
+        {
+            string filePath = builder.GetFileProvider().GetFileInfo(FilePath).PhysicalPath;//Получение полного пути для файла
+            return new TextConfigurationProvider(filePath);
+        }
+    }
+
+    public static class TextConfigurationExtensions// Вспомогательный класс
+    {
+        public static IConfigurationBuilder AddTextFile(
+            this IConfigurationBuilder builder, string path)
+        {
+            if(builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+            if(string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentNullException("Путь к файлу не указан!");
+            }
+
+            var source = new TextConfigurationSource(path);
+            builder.Add(source);
+            return builder;
+        }
+    }
+  
+    class Program//Главный класс приложения
+    {  
+        static void Main(string[] args)//Главный метод точка входа
+        {
+           //////////////////////////////////////Анализ конфигурации
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            //var builder = WebApplication.CreateBuilder(args);
+            var app = builder.Build();
+
+            builder.Configuration.AddTextFile("config.txt");//Конфигурационные настройки
+
+            app.Map("/", (IConfiguration appConfig)=> $"Name:{appConfig["name"]} Age:{appConfig["age"]}");
+            
+            //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обработки вызовов, если они не соответсвуют другим запросам
+            app.Run();
+
+
+        }
+    }
+}

@@ -1,0 +1,121 @@
+
+using static System.Console; // Импорт
+// using Print = System.Console; // Псевдонимы
+
+namespace Genesis; // Пространство имен
+
+
+public class Point2D // Класс 1
+{
+    //public Point2D() {} // Конструктор по умолчанию
+    public Point2D(int x, int y)
+    {
+        X = x;
+        Y = y;
+        WriteLine("<<<Вызван конструктор класса Point2D>>>");
+    }
+    // public Point2D(int x, int y)// Конструктор
+    // {
+    //     this.x = x;
+    //     this.y = y;
+    // }
+
+    public const string MESSANGE = "Точка в протяженности";// Константа
+    
+    public int X {get; set;}
+    public int Y {get; set;}
+
+    public void PrintPoint()
+    {
+        WriteLine("X:\t" + X);
+        WriteLine("Y:\t" + Y);
+    }
+
+}
+public class Point3D: Point2D // Класс 2
+{
+    public Point3D(int x, int y, int z):base(x, y)
+    {
+        Z = z;
+        WriteLine("<<<Вызван конструктор класса Point3D>>>");
+    }
+
+    public int Z{get; set;}
+
+    public void PrintPoint()
+    {
+        base.PrintPoint();
+        WriteLine("Z:\t" + Z);
+    }
+}
+
+static class MyExtentions // Специальный класс с методом расширения this
+{
+    public static void Print(this Point3D info)
+    {
+        WriteLine(Point2D.MESSANGE);
+    }
+
+}
+internal class Program // Основной класс программы
+{
+    private static void Main(string[] args)// Основной метод программы
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine("<<< base, as is >>>");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(DateTime.Now);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("-----------------------------");
+        Console.ForegroundColor = ConsoleColor.Green;
+
+        Point2D p2d = new(1, 2);// Экземпляр класса
+        p2d.PrintPoint();
+
+        Console.WriteLine("================================================");
+
+        Point3D p3d = new(10, 20, 30);
+        p3d.Z = 50;
+        p3d.PrintPoint();
+
+        Console.WriteLine("================================================");
+
+        object obj = new Point2D(10, 15);
+         WriteLine(obj.GetType());
+        Point2D p = obj as Point2D; 
+        
+        p.PrintPoint();
+         WriteLine(p.GetType());
+        Foo(obj);
+        Bar(obj);
+        WriteLine(obj.GetType());
+
+        static void Foo(object obj)
+        {
+            Point2D point = (Point2D)obj;
+            //Point2D point = obj as Point2D;
+            if (point != null)
+            {
+                point.PrintPoint();
+            }
+        }
+
+        // static void Bar(object obj)
+        // {
+        //     if (obj is Point2D)
+        //     {
+        //         Point2D point = (Point2D)obj;
+        //         point.PrintPoint();
+        //     }
+        // }
+
+        static void Bar(object obj)
+        {
+            if (obj is Point2D point)
+            {
+                point.PrintPoint();
+            }
+        }
+
+    }
+}

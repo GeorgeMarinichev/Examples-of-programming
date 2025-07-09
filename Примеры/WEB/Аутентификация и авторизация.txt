@@ -1,0 +1,53 @@
+////////////////////////////Аутентификация и авторизация
+//Аутентификация представляет процесс определения пользователя
+//Авторизация представляет процесс определения право доступа к некоторым ресурсам
+
+using System;
+using Microsoft.AspNetCore.Authorization;//Деректива для аутентификации
+// Не обходимый пакет NuGet: Microsoft.AspNetCore.Authentication.JwtBearer, для аутентификации на основе jwt-токенов.
+
+namespace Space
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            /////////////Аутентификация на основе Cookie.
+            //WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);
+
+            // builder.Services.AddAuthentication("Cookies").AddCookie();//Добавление сервисов (Bearer-носитель) аутентификации
+            // builder.Services.AddAuthorization();//Добавление сервисов авторизации
+            
+            // //WebApplication app = builder.Build();
+            // var app = builder.Build();
+
+            // app.UseAuthentication();//Добавление middleware аутентификации
+            // app.UseAuthorization();//Добавление middleware авторизации
+
+            // app.Map("/users", [Authorize]() => "Hello User");//Ошибка 404, пользователь не аторизован
+            // app.Map("/", () => "Hello World!");
+
+            // app.Run();
+
+            /////////////Аутентификация на основе jwt-токенов.
+            //WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddAuthentication("Bearer").AddBearerToken();//Добавление сервисов (Bearer-носитель) аутентификации
+            builder.Services.AddAuthorization();//Добавление сервисов авторизации
+            
+            //WebApplication app = builder.Build();
+            var app = builder.Build();
+
+            app.UseAuthentication();//Добавление middleware аутентификации
+            app.UseAuthorization();//Добавление middleware авторизации
+
+            app.Map("/users", [Authorize]() => "Hello User");//Ошибка 401, пользователь не аторизован
+            app.Map("/", () => "Hello World!");
+
+            app.Run();
+        }
+    }
+}
+

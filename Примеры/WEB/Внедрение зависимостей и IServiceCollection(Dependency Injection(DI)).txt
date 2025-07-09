@@ -1,0 +1,104 @@
+//Внедрение зависимостей и IServiceCollection(Dependency Injection(DI))
+//////////////////////////////////////////////////////
+using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;                   //Необходимый пакет using
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+//////////////////////////////////////////////////////
+using System.Text;
+
+namespace Space
+{
+    ////////////////////////////Зависимость
+    // class Logger//
+    // {
+    //     public void Log(string message)
+    //     {
+    //         Console.WriteLine(message);
+    //     }
+    // }
+
+    // class Message
+    // {
+    //     Logger logger = new ();
+    //     public string Text{get; set;}
+    //     public void Print()
+    //     {
+    //         logger.Log(Text);
+    //     }
+    // }
+
+    //////////////////////////////////////////Без зависимости
+    interface ILogger//Интерфейс (абстракция)
+    {
+        void Log(string message);//Метод без реализации
+    }
+    class Logger: ILogger 
+    {
+        public void Log(string message)
+        {
+            Console.WriteLine(message);
+        }
+    }
+
+    class Message
+    {
+        ILogger logger;
+        //Logger logger = new ();
+        public string Text{get; set;} = "";
+
+        public Message(ILogger logger)
+        {
+            this.logger = logger;
+        }
+        public void Print()
+        {
+            logger.Log(Text);
+        }
+    }
+
+
+    //////////////////////////////////////////////////Установка встроенных сервисов фреймворка
+    
+
+
+    public class Program//Главный класс приложения
+    {  
+        public static void Main(string[] args)//Главный метод точка входа
+        {
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            WebApplication app = builder.Build();
+            //var app = builder.Build();
+
+            //IServiceCollection allService = builder.Services;// Коллекция сервисов
+            var services = builder.Services;
+
+            app.Run(async(context)=> 
+            {
+                var sb = new StringBuilder();
+                sb.Append("<h1>Все сервисы</h1>");
+                sb.Append("<table>");
+                sb.Append("<tr><th>Тип<th>Lifetime</th><th>Реализация</th></tr>");
+                foreach (var svc in services)
+                {
+                    sb.Append("<tr>");
+                    sb.Append($"<td>{svc.ServiceType.FullName}</td>");
+                    sb.Append($"<td>{svc.Lifetime}</td>");
+                    sb.Append($"<td>{svc.ImplementationType?.FullName}</td>");
+                    sb.Append("</tr>");
+                }
+                sb.Append("<table>");
+                context.Response.ContentType = "text/html; charset = utf-8";
+                context.Response.Headers.ContentLanguage = "ru-RU";
+                await context.Response.WriteAsync(sb.ToString());
+            });
+
+            //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));
+            app.Run();
+
+
+        }
+    }
+}

@@ -1,0 +1,128 @@
+Console.WriteLine("Метод Use");
+/////////////////////////////////Run
+//WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+//WebApplication app = builder.Build();
+
+//app.MapGet("/", () => "Hello");//
+//app.UseWelcomePage();//Подключение элемента в конвейер(отправляет клиенту страницу)
+
+//app.Run(AsyncRun);//Вызов отдельного метода
+//app.Run();//Метод запуска приложения
+//----------------------------------------------------------------------------------------------------
+//async Task AsyncRun(HttpContext context)//Отдельный метод расширения страивание компонента(middleware)
+//{
+//    await context.Response.WriteAsync("Hello");
+//}
+//----------------------------------------------------------------------------------------------------
+//app.Run(async (context) =>//Метод расширения страивание компонента(middleware)
+//{
+//    await context.Response.WriteAsync($":");
+//});
+//app.Run();//Метод запуска приложения
+//----------------------------------------------------------------------------------------------------
+
+//////////////////////////////////Заголовки и свойство Response(Ответ)
+//var builder = WebApplication.CreateBuilder();
+//var app = builder.Build();
+
+//app.Run(async (context) =>
+//{
+//    var response = context.Response;//Ответ
+//    //response.Headers.ContentLanguage = "ru-RU";
+//    response.ContentType = "text/plan; charset=utf-8";
+//    //response.Headers.Append("secret-id", "256");
+//    //response.StatusCode = 404;
+
+//    //await context.Response.WriteAsync("Привет, METANIT.COM");
+//    await response.WriteAsync("<h2>Hello METANIT.COM</h2><h3>Welcome to ASP.NET Core</h3>");
+//});
+//app.Run();//Метод запуска приложения
+
+//////////////////////////////////Свойство Request(Запрос)
+var builder = WebApplication.CreateBuilder();
+var app = builder.Build();
+
+app.Run(async (context) =>
+{
+    var request = context.Request;//Запрос
+    var response = context.Response;//Ответ
+    response.Headers.ContentLanguage = "ru-RU";
+    response.ContentType = "text/plan; charset=utf-8";
+    
+    var path = context.Request.Path;
+    var now = DateTime.Now;
+    var query = context.Request.QueryString;
+
+    //if (path == "/date")
+    //{
+    //    await response.WriteAsync($"date:{now.ToShortDateString()}");
+    //}
+    //else if (path == "/time")
+    //{
+    //    await response.WriteAsync($"time:{now.ToShortTimeString()}");
+    //}
+    //else
+    //{
+    //    await response.WriteAsync("Вот так!");
+    //}
+
+    //string name = context.Request.Query["name"];
+    //string age = context.Request.Query["age"];
+
+    //await response.WriteAsync($"{name}-{age}");
+
+    await context.Response.WriteAsync($"<p>Path: {path}</p>" + 
+        $"<p>QueryString: {query}</p>");
+
+    //var stringBuilder = new System.Text.StringBuilder("<table>");
+    //foreach(var header in context.Request.Headers)
+    //{
+    //    stringBuilder.Append($"<tr><td>{header.Key}</td><td>{header.Value}</td><tr>");
+    //}
+    //stringBuilder.Append("</table>");
+
+    //await context.Response.WriteAsync("Привет, METANIT.COM");
+    //await context.Response.WriteAsync(stringBuilder.ToString());
+    //await context.Response.WriteAsync($"Accept:{acc}");
+    //await response.WriteAsync($"Path:{path}");
+});
+app.Run();//Метод запуска приложения
+
+
+
+/////////////////////////////////Use
+//WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+//WebApplication app = builder.Build();
+
+//string date = "";
+//app.Use(async (context, next) =>
+//{
+//    date = DateTime.Now.ToShortDateString();
+//    await next.Invoke();
+//    Console.WriteLine($"Current date:{date}");
+//});
+//app.Run(async (context) => await context.Response.WriteAsync($"Date:{date}"));
+
+//app.Run();
+
+//////////////////////////////////////////////////////////////////////////////////////
+//var builder = WebApplication.CreateBuilder(args);
+//var app = builder.Build();
+
+//string date = "";
+
+//app.Use(async (context, next) =>
+//{
+//    string? path = context.Reques
+//    t.Path.Value?.ToLower();
+//    if (path == "/date")
+//    {
+//        await context.Response.WriteAsync($"Date:{DateTime.Now.ToShortDateString()}");
+//    }
+//    else
+//    {
+//        await next.Invoke();
+
+//    }
+//});
+//app.Run(async (context) => await context.Response.WriteAsync($"Hello"));

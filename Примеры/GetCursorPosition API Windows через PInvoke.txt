@@ -1,0 +1,58 @@
+using System;
+using System.Runtime.InteropServices;
+
+class Program
+{
+    // Структура для хранения координат
+    [StructLayout(LayoutKind.Sequential)]
+    public struct POINT
+    {
+        public int X;
+        public int Y;
+    }
+
+    // Импортируем функцию GetCursorPos из user32.dll
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetCursorPos(out POINT lpPoint);
+
+    static void Main(string[] agrs)
+    {
+        Console.Title = "Test";
+        System.Console.WriteLine("GetCursorPosition");
+        Console.CursorVisible = false;
+    
+
+        POINT cursorPosition;
+
+        while(true)
+        {
+            Console.Clear();
+
+            if(Console.KeyAvailable)
+            {
+                var keyInfo = Console.ReadKey(intercept: true);
+
+                if (keyInfo.Key == ConsoleKey.Escape)
+                {
+                    Console.WriteLine("Выход из программы...");
+                    break; // Выходим из цикла
+                }
+            }
+ 
+            // Получаем текущие координаты мыши
+            if (GetCursorPos(out cursorPosition))
+            {
+                Console.WriteLine($"X: {cursorPosition.X}, Y: {cursorPosition.Y}");
+            }
+            else
+            {
+                Console.WriteLine("Не удалось получить координаты мыши.");
+            }
+
+            Thread.Sleep(100);
+           
+        }
+        
+    }
+}

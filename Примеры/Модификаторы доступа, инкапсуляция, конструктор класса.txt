@@ -1,0 +1,114 @@
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks.Dataflow;
+
+namespace Genesis;
+enum Color : Byte // enum-перечесления цветов
+{
+    White,
+    Black,
+    Blue,
+    Green,
+    Yellow,
+    Orange,
+    Red
+}
+
+class Point
+{
+    public Point() {} // Пустой конструктор
+    public Point(Color col)
+    {
+        color = col;
+    }
+    public Point(int x, int y, int z) // Конструктор с параметрами
+    {
+        _x = x;
+        _y = y;
+        _z = z;
+    }
+    private Color color = Color.Red;
+    private int _x = 0;
+    private int _y = 0;
+    private int _z = 0;
+
+    public void PointInfo()
+    {
+        Console.WriteLine($"color:{color} x:{_x} y:{_y} z:{_z}");
+    }
+
+    public void PointColor(byte x)
+    {
+        color = (Color)x;
+    }
+}
+
+class Gun
+{
+    public Gun(bool IsLoaded) // Конструктор, или public Gun(bool IsLoaded) с применением ключевого слова this 
+    {
+        //Console.WriteLine(color);
+        //this.IsLoaded = IsLoaded; // С применением ключевого слова this 
+        _IsLoaded = IsLoaded; // Без применения ключевого слова
+
+    }
+    private Color color = Color.Black; // Поля
+    public int bulet;
+    private bool _IsLoaded; // Поля
+
+    private void Reload() // Метод
+    {
+        Console.WriteLine("Заряжаю...");
+        _IsLoaded = false;
+        Console.WriteLine("Заряжено!");
+    }
+
+    public void Shoot()
+    {
+        if (!_IsLoaded)
+        {
+            Console.WriteLine("Оружие не заряжено!");
+            Reload();
+        }
+        Console.WriteLine("Пыщь - пыщь!\n");
+        _IsLoaded = false;
+    }
+}
+
+internal class Program ////////////////////// Основной класс программы //////////////////////////
+{
+    private static void Main(string[] args)////////////////////// Основной метод программы //////////////////////////
+    {
+        //Console.Clear();
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Модификаторы доступа, инкапсуляция, конструктор класса");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(DateTime.Now);
+        Console.ForegroundColor = ConsoleColor.Green;
+
+        Console.WriteLine("-----------------Gun-------------");
+        //var gun = new Gun(false);
+        Gun gun = new(true);
+        //gun.IsLoaded = false; // Не доступен из за private
+        gun.bulet = 12;
+        gun.Shoot();
+        gun.Shoot();
+      
+        Console.WriteLine("-----------------Point-------------");
+        var p1 = new Point(15, 12, 10);
+        p1.PointInfo();
+        p1.PointColor(3);
+        p1.PointInfo();
+        
+        
+        Console.WriteLine("----------------------------------------");
+        var typeInfo = typeof(Point).GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+
+        foreach (var item in typeInfo)
+        {
+            Console.WriteLine($"{item.Name}\t private:{item.IsPrivate}\t public:{item.IsPublic}");
+        }
+
+    }
+}

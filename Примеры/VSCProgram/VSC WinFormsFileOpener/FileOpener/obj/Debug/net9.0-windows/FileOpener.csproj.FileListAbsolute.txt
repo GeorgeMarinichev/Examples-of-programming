@@ -1,0 +1,14 @@
+C:\Users\SmartPlayer\Desktop\VSC WinForms\FileOpener\bin\Debug\net9.0-windows\FileOpener.exe
+C:\Users\SmartPlayer\Desktop\VSC WinForms\FileOpener\bin\Debug\net9.0-windows\FileOpener.deps.json
+C:\Users\SmartPlayer\Desktop\VSC WinForms\FileOpener\bin\Debug\net9.0-windows\FileOpener.runtimeconfig.json
+C:\Users\SmartPlayer\Desktop\VSC WinForms\FileOpener\bin\Debug\net9.0-windows\FileOpener.dll
+C:\Users\SmartPlayer\Desktop\VSC WinForms\FileOpener\bin\Debug\net9.0-windows\FileOpener.pdb
+C:\Users\SmartPlayer\Desktop\VSC WinForms\FileOpener\obj\Debug\net9.0-windows\FileOpener.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\SmartPlayer\Desktop\VSC WinForms\FileOpener\obj\Debug\net9.0-windows\FileOpener.AssemblyInfoInputs.cache
+C:\Users\SmartPlayer\Desktop\VSC WinForms\FileOpener\obj\Debug\net9.0-windows\FileOpener.AssemblyInfo.cs
+C:\Users\SmartPlayer\Desktop\VSC WinForms\FileOpener\obj\Debug\net9.0-windows\FileOpener.csproj.CoreCompileInputs.cache
+C:\Users\SmartPlayer\Desktop\VSC WinForms\FileOpener\obj\Debug\net9.0-windows\FileOpener.dll
+C:\Users\SmartPlayer\Desktop\VSC WinForms\FileOpener\obj\Debug\net9.0-windows\refint\FileOpener.dll
+C:\Users\SmartPlayer\Desktop\VSC WinForms\FileOpener\obj\Debug\net9.0-windows\FileOpener.pdb
+C:\Users\SmartPlayer\Desktop\VSC WinForms\FileOpener\obj\Debug\net9.0-windows\FileOpener.genruntimeconfig.cache
+C:\Users\SmartPlayer\Desktop\VSC WinForms\FileOpener\obj\Debug\net9.0-windows\ref\FileOpener.dll

@@ -1,0 +1,72 @@
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Метод AsOrdered()/AsUnordered()");
+        //////////////////////////AsParallel()///////////////////////////////////
+        int[] num1 = {1, 2, 3, 4, 5};
+
+        // var square = from n in num1.AsParallel()//Оператор
+        //            select Square(n);
+
+        var square = from n in num1.AsParallel()
+                    where n > 0
+                    orderby n//Сортировка по порядку
+                    select Square(n);
+        
+        foreach (var item in square)
+        {
+            Console.WriteLine(item);
+        }
+
+        Console.WriteLine("--------------------------------------------");
+        /////////////////////////////////AsOrdered()//////////////////////////////////
+        int[] num2 = {1, 2, 3, 4, 5};
+
+        // var square = from n in num1.AsParallel()//Оператор
+        //            select Square(n);
+
+        var square2 = from n in num2.AsParallel().AsOrdered()
+                    where n > 0
+                    select Square(n);
+        
+        foreach (var item in square2)
+        {
+            Console.WriteLine(item);
+        }
+
+        Console.WriteLine("--------------------------------------------");
+        /////////////////////////////////AsOrdered()//////////////////////////////////
+        int[] num3 = {1, 2, 3, 4, 5};
+
+        // var square = from n in num1.AsParallel()//Оператор
+        //            select Square(n);
+
+        var square3 = from n in num3.AsParallel().AsOrdered()
+                    where n > 0
+                    select Square(n);
+
+        var query = from n in square3.AsUnordered()//Число больше нуля и без упорядочивания результата
+                    where n > 4
+                    select n;           
+        
+        foreach (var item in query)
+        {
+            Console.WriteLine(item);
+        }
+
+        
+        ///Метод Square
+        int Square(int n) => n * n;
+        
+       
+    }
+
+}
+    
+        
+
+
+
+

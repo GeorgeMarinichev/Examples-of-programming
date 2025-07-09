@@ -1,0 +1,82 @@
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace Benchmark; // Пространство имен
+
+public delegate void MyDelegate();// Делегат
+  
+
+class Program // Основной класс программы
+{
+    private static void Method1()
+    {
+        System.Console.WriteLine("Method1");
+    }
+
+    private static void Method2()
+    {
+        System.Console.WriteLine("Method2");
+    }
+
+    private static void Method3()
+    {
+        System.Console.WriteLine("Method3");
+    }
+
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<delegate>>>");
+
+        MyDelegate mD = null;
+
+        MyDelegate mD1 = new MyDelegate(Method1);
+        MyDelegate mD2 = new MyDelegate(Method2);
+        MyDelegate mD3 = new MyDelegate(Method3);
+
+        //Комбинирование делегатов
+        mD = mD1 + mD2 + mD3;
+        mD();
+
+        System.Console.WriteLine("Введите число от 1, до 7");
+        int res = int.Parse(Console.ReadLine());
+
+        switch (res)
+        {
+            case 1:
+                mD1();
+                break;
+            case 2:
+                mD2.Invoke();
+                break;
+            case 3:
+                mD3();
+                break;
+            case 4:
+                mD();
+                break;
+            case 5:
+                MyDelegate mD4 = mD - mD1;
+                mD4();
+                break;
+            case 6:
+                MyDelegate mD5 = mD - mD2;
+                mD5();
+                break;
+            case 7:
+            MyDelegate mD6 = mD - mD3;
+                mD6();
+                break;
+            default:
+                System.Console.WriteLine("Число должно быть от 1, до 7!");
+                break;
+        }
+
+
+
+        
+   
+    }      
+
+}
+

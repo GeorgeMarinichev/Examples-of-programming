@@ -1,0 +1,20 @@
+{
+  "Version": 1,
+  "Hash": "OuPLnujb3Kro+0SJasXIhiEg4ZpkLXHb4XsLmA0FR+E=",
+  "Source": "MyWeb",
+  "BasePath": "_content/MyWeb",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "MyWeb\\wwwroot",
+      "Source": "MyWeb",
+      "ContentRoot": "C:\\Users\\SmartPlayer\\Desktop\\VSC\\MyWeb\\wwwroot\\",
+      "BasePath": "_content/MyWeb",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [],
+  "Endpoints": []
+}

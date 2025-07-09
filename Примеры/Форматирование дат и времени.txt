@@ -1,0 +1,101 @@
+using System.Globalization;//Деректива
+using System.Data;
+
+namespace Genesis; // Пространство имен
+
+class Program // Основной класс программы
+{
+    
+    public static void Main(string[] args)// Основной метод программы
+    {
+        Console.WriteLine("====================<<<Форматирование дат и времени>>>================");
+
+        //DateTime dateTime = new DateTime();
+        //DateTime dateTime = new();
+        //var dateTime = new DateTime();
+        DateTime dateTime = DateTime.Now;
+
+        Console.WriteLine($"D: {dateTime.ToString("D")}");
+        Console.WriteLine($"d: {dateTime.ToString("d")}");
+        Console.WriteLine($"F: {dateTime.ToString("F")}");
+        Console.WriteLine($"f: {dateTime:f}");
+        Console.WriteLine($"G: {dateTime:G}");
+        Console.WriteLine($"g: {dateTime:g}");
+        Console.WriteLine($"M: {dateTime:M}");
+        Console.WriteLine($"O: {dateTime:O}");
+        Console.WriteLine($"o: {dateTime:o}");
+        Console.WriteLine($"R: {dateTime:R}");
+        Console.WriteLine($"s: {dateTime:s}");
+        Console.WriteLine($"T: {dateTime:T}");
+        Console.WriteLine($"t: {dateTime:t}");
+        Console.WriteLine($"U: {dateTime:U}");
+        Console.WriteLine($"u: {dateTime:u}");
+        Console.WriteLine($"Y: {dateTime:Y}");
+
+        System.Console.WriteLine("==========Свой формат==============");
+        Console.WriteLine(dateTime.ToString("hh:mm:ss"));
+        Console.WriteLine(dateTime.ToString("d:m:y"));
+
+        System.Console.WriteLine("============Структура DateOnly и DateTime============");
+        //DateOnly dateOnly = new DateOnly();
+        //DateOnly dateOnly = new();
+        //var dateOnly = new DateOnly();
+        DateOnly dateOnly = new DateOnly();
+        Console.WriteLine(dateOnly);//01.01.0001
+
+        DateOnly someDate = new DateOnly(1985, 10, 01);
+        Console.WriteLine(someDate);//10.01.1985
+
+        DateOnly julianDate = new DateOnly(2024, 08, 18, new JulianCalendar());
+        Console.WriteLine(julianDate);//31.08.2024
+
+        System.Console.WriteLine("===========Свойства структуры DateOnly============");
+        DateOnly sd = new DateOnly(1985, 10, 1);
+
+        Console.WriteLine(sd.Day);//9
+        Console.WriteLine(sd.DayNumber);//728971
+        Console.WriteLine(sd.DayOfWeek);//Saturday
+        Console.WriteLine(sd.DayOfYear);//314
+        Console.WriteLine(sd.Month);//11
+        Console.WriteLine(sd.Year);//1996
+        
+        System.Console.WriteLine("===========Методы DateOnly============");
+        DateOnly sd1 = DateOnly.Parse("06.01,2022");
+        Console.WriteLine(sd1);//06.01.2022
+
+        sd1 = sd1.AddDays(1);//07.01.2022
+        sd1 = sd1.AddMonths(1);//07.02.2022
+        sd1 = sd1.AddYears(-1);//07.01.2021
+        Console.WriteLine(sd1.ToShortDateString());//07.02.2021
+        Console.WriteLine(sd1.ToLongDateString());//7 февраля 2021 г.
+
+        System.Console.WriteLine("===========Структура TimeOnly============");
+
+        //TimeOnly tm = new TimeOnly();
+        //TimeOnly tm = new();
+        //var tm = new TimeOnly();
+        TimeOnly tm = new TimeOnly();
+        Console.WriteLine(tm);//0:00
+
+        TimeOnly timeOnly = new(12, 30);
+        Console.WriteLine(timeOnly);//12:30
+
+        System.Console.WriteLine("===========Свойства TimeOnly============");
+        TimeOnly tm1 = new(14, 25, 15);
+        Console.WriteLine(tm1);//14
+        Console.WriteLine(tm1);//25
+        Console.WriteLine(tm1);//15
+
+        System.Console.WriteLine("===========Методы TimeOnly============");
+        TimeOnly tm2 = TimeOnly.Parse("06:30:15");
+        Console.WriteLine(tm2);//6:30
+        tm1 = tm1.AddHours(1);
+        tm1 = tm1.AddMinutes(-20);
+        Console.WriteLine(tm1.ToShortTimeString());//15:05
+        Console.WriteLine(tm1.ToLongTimeString());//15:05:15
+  
+    }
+}
+
+
+

@@ -1,0 +1,75 @@
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
+
+
+namespace Genesis
+{
+    class Person: IDisposable
+    {
+        public string Name { get; }
+        public Person(string name) => Name = name;
+        public void Dispose()//Реализация метода интерфеса
+        {
+            Console.WriteLine($"{Name} has been disposed");
+        }
+    }
+
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Конструкция using");
+            ///////////////////Сборщик мусора в C#
+            Test();
+               
+            void Test()
+            {
+                //using (Person tom = new Person("Tom"))
+                //using (Person tom = new ("Tom"))
+                //using (var tom = new Person("Tom"))
+                //Область действия через всю область видимости
+                //using Person tom = new Person("Tom");
+                //using Person tom = new("Tom");
+                using var tom = new Person("Tom");
+                {
+                    Console.WriteLine($"Name:{tom.Name}");
+                }
+                Console.WriteLine("Конец первого метода");
+            }
+
+            /////////////////Освобождение множества ресурсов///////////////////
+            Test1();
+            //void Test1()
+            //{
+            //    using (Person sam = new("Sam"))
+            //    {
+            //        using (Person bob = new("Bob"))
+            //        {
+            //            Console.WriteLine($"Person1:{sam.Name} Person2:{bob.Name}");
+            //        }
+            //    }
+            //    Console.WriteLine("Конец первого метода");
+            //}
+            //Или
+            void Test1()
+            {
+                //using (Person sam = new("Sam"))
+                //using (Person bob = new("Bob"))
+                //Область действия через всю область видимости
+                using Person sam = new("Sam");
+                using Person bob = new("Bob");
+                {
+                 Console.WriteLine($"Person1:{sam.Name} Person2:{bob.Name}"); 
+                }
+                Console.WriteLine("Конец второго метода");
+            }
+
+
+
+        }
+
+    }
+}
+
+

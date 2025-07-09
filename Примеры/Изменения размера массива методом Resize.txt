@@ -1,0 +1,77 @@
+using System.Drawing;
+
+namespace ConsoleApp7
+{
+    
+
+    internal class Program
+    {
+        static void Res<T>(ref T[] mass, int size)// Метод изменения размера массива с дженерикам <T>
+        {
+            T[] mass2 = new T[size];// Создание второго масива для вложенния первого массива
+            
+            for (int i = 0; i < mass.Length && i < mass2.Length; i++)// Цикл перебора пока i < массива1 И i < массива2
+            {
+                mass2[i] = mass[i];// Индекс массива2 равен индексу массива1 
+                Console.WriteLine(mass[i]);
+            }
+            mass = mass2; // Массив1 равен массиву2
+        }
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Программа Resize ");
+            //Console.Write("Введите количество элементов массива: ");
+            //int x = int.Parse(Console.ReadLine());
+
+            //x = 4;
+            //int[] mass;
+            //mass = new int [x];
+            //mass[0] = 1;
+            //mass[1] = 9;
+            //mass[2] = 8;
+            //mass[3] = 5;
+
+
+            int[] arr = { 1, 9, 8, 5 };
+            string[] arr2 = { "g", "e", "o", "r", "g", "e" };
+            char[] arr3 = { '@', '#','%' };
+            
+            //Array.Resize(ref arr, 3);
+
+            Console.WriteLine("------------int-------");
+            Res(ref arr, 3);
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine("Первый элемент: " + arr[0]);
+            Console.WriteLine("Последний элемент: " + arr[^1]);
+            Console.WriteLine("Ранг: " + arr.Rank);
+            Console.WriteLine("Количество элементов: " + arr.Length);
+            Console.WriteLine("Общая сумма: " + arr.Sum());
+            Console.WriteLine("Наименьший элемент: " + arr.Min());
+
+            Console.WriteLine("----------string------");
+            Res(ref arr2, 6);
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine("Первый элемент: " + arr2[0]);
+            Console.WriteLine("Последний элемент: " + arr2[^1]);
+            Console.WriteLine("Ранг: " + arr2.Rank);
+            Console.WriteLine("Количество элементов: " + arr2.Length);
+            //Console.WriteLine("Общая сумма: " + arr2.Sum());
+            Console.WriteLine("Наименьший элемент: " + arr2.Min());
+            Console.WriteLine("Наибольший элемент: " + arr2.Max());
+
+            Console.WriteLine("----------char--------");
+            Res(ref arr3, 5);
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine("Первый элемент: " + arr3[0]);
+            Console.WriteLine("Последний элемент: " + arr3[^1]);
+            Console.WriteLine("Ранг: " + arr3.Rank);
+            Console.WriteLine("Количество элементов: " + arr3.Length);
+            //Console.WriteLine("Общая сумма: " + arr3.Sum());
+            Console.WriteLine("Наименьший элемент: " + arr3.Min());
+            Console.WriteLine("Наибольший элемент: " + arr3.Max());
+        }
+
+    }
+                
+}

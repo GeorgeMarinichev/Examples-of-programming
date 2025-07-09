@@ -1,0 +1,70 @@
+using System.Net.Http.Headers;
+using BenchmarkDotNet.Jobs;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Diagnostics.Tracing.Parsers.Clr;
+
+namespace Benchmark; // Пространство имен
+
+interface IIntrface
+{
+    void SayGoodbay();
+}
+struct MyStruct: IIntrface
+    {
+        public void SayHello()
+        {
+            Console.WriteLine("Hello");
+        }
+
+        public void SayGoodbay()
+        {
+            Console.WriteLine("Goodbuy");
+        }
+    }
+class Program // Основной класс программы
+{
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<Boxing Unboxing>>>");
+
+        MyStruct mS = new();
+       
+
+        //Тип1 (в object)
+        object boxing1 = mS;// неявная запаковка, но может быть явной(преобразование)
+        MyStruct unboxing1 = (MyStruct)boxing1;// явная распаковка, только явная!(преобразование)
+        unboxing1.SayHello();
+
+        //Тип2 (в ValueType)
+        ValueType boxing2 = mS;// неявная запаковка, но может быть явной(преобразование)
+        MyStruct unboxing2 = (MyStruct)boxing2;// явная распаковка, только явная!(преобразование)
+        unboxing2.SayHello();
+        unboxing2.SayGoodbay();
+
+        //Тип3 (в Interface Type)
+        IIntrface boxing3 = mS;// неявная запаковка, но может быть явной(преобразование)
+        MyStruct unboxing3 = (MyStruct)boxing3;// явная распаковка, только явная!(преобразование)
+        unboxing3.SayHello();
+        unboxing3.SayGoodbay();
+
+        // double i = 10.5;
+
+        // // Boxing(запаковка)
+        // object obj = i; // неявная запаковка, но может быть явной(преобразование)
+
+        // // Unboxing(распаковка)
+        // double j = (double)obj;// явная распаковка, только явная!(преобразование)
+
+        // Console.WriteLine(j);
+        // Console.WriteLine(j.GetType());
+        Console.WriteLine("-------------------------------------");
+
+        //System.Console.WriteLine("Введите число от 1, до 7");
+        //int res = int.Parse(Console.ReadLine());
+        
+    }      
+
+}
+

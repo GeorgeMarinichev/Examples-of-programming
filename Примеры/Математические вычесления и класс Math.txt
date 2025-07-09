@@ -1,0 +1,43 @@
+
+
+namespace Genesis; // Пространство имен
+
+
+class Program // Основной класс программы
+{
+    
+    public static void Main(string[] args)// Основной метод программы
+    {
+        Console.WriteLine("====================<<<Математические вычесления и класс Math>>>================");
+
+        //double result = Math.Abs(-12.4);//12.4
+        //double result = Math.Acos(1);//0
+        //double result = Math.BigMul(100, 9340);//934000
+        //double result = Math.Abs(2.34);//3
+        ///////////////////////////////////////////////////
+        // int res;
+        // int div = Math.DivRem(365, 24, out res);
+
+        //Console.WriteLine(res);
+        ///////////////////////////////////////////////////
+        //double result = Math.Floor(2.56);//2
+        ///////////////////////////////////////////////////
+        //double res = Math.IEEERemainder(26, 4);//2 = 26-24
+        //Console.WriteLine(res);
+        //////////////////////////////////////////////////
+        //double result = Math.Round(20.46);//20
+        //int result = Math.Sign(15);//1
+        //double result = Math.Sqrt(16);//4
+        //double result = Math.Truncate(16.89);//16
+
+        double radius = 50;
+        double area = Math.PI * Math.Pow(radius, 2);
+        
+        Console.WriteLine($"Площадь круга с радиусом {radius} ровна {Math.Round(area,2)}");
+
+
+    }   
+}
+
+
+

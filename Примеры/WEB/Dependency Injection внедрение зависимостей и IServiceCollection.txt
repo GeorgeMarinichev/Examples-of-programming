@@ -1,0 +1,47 @@
+using Microsoft.AspNetCore.Builder;
+using System.Diagnostics.Eventing.Reader;
+using System.Reflection.PortableExecutable;
+using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Text;
+
+namespace WebApplication6
+{
+    class Program
+    {
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("Dependency Injection внедрение зависимостей и IServiceCollection");
+
+            var builder = WebApplication.CreateBuilder(args);
+            var app = builder.Build();
+
+            var services = builder.Services;
+
+
+            app.Run(async context =>
+            {
+                var sb = new StringBuilder();
+                sb.Append("<h1>Все сервисы</h1>");
+                sb.Append("<table>");
+                sb.Append("<tr><th>Тип</th><th>Lifetime</th><th>Реализация</th></tr>");
+                foreach (var svc in services)
+                {
+                    sb.Append("<tr>");
+                    sb.Append($"<td>{svc.ServiceType.FullName}</td>");
+                    sb.Append($"<td>{svc.Lifetime}</td>");
+                    sb.Append($"<td>{svc.ImplementationType?.FullName}</td>");
+                    sb.Append("</tr>");
+                }
+                sb.Append("</table>");
+                context.Response.ContentType = "text/html;charset=utf-8";
+                await context.Response.WriteAsync(sb.ToString());
+            });
+
+            app.Run();
+
+
+
+        }
+    }
+}

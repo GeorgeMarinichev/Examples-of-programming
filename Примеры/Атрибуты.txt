@@ -1,0 +1,71 @@
+using System.Reflection;
+using System.Reflection.Metadata;
+
+namespace Genesis;
+class AgeAttribute: Attribute
+{
+    public int Age{get;}
+    public AgeAttribute() {}
+    public AgeAttribute(int age)
+    {
+        Age = age;
+    }
+}
+
+[AgeAttribute(18)]
+class Person
+{
+    public int Age{get;}
+    public string Name{get;}
+    public Person(string name, int age)
+    {
+        Name = name;
+        Age = age;
+    }
+}
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("<<<<<<<<<< Атрибуты >>>>>>>>>>");
+        Person tom = new("Том", 38);
+        Person bob = new("Bob", 16);
+
+        bool tomIsValid = ValidateUser(tom);
+        bool bobIsValid = ValidateUser(bob);
+
+        Console.WriteLine($"Hello, {tomIsValid}");
+        Console.WriteLine($"Hello, {bobIsValid}");
+        Console.WriteLine($"Hello, {tom.Name} - {tom.Age}");
+        Console.WriteLine($"Hello, {bob.Name} - {bob.Age}");
+
+        bool ValidateUser(Person person)
+        {
+            Type myType = typeof(Person);
+            object[] attributes = myType.GetCustomAttributes(false);
+
+            foreach(Attribute a in attributes)
+            {
+                if(a is AgeAttribute ageValidationAttribute)
+                {
+                    return person.Age >= ageValidationAttribute.Age;
+                }
+            }
+            return true;
+        }
+
+        
+
+        
+                 
+    }
+
+}
+
+    
+        
+
+
+
+

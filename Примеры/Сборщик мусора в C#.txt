@@ -1,0 +1,104 @@
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
+
+
+namespace Genesis
+{
+    class Person
+    {
+        public string Name { get; }
+        public Person(string name)
+        {
+            Name = name;
+        }
+        ~Person()
+        {
+            Console.WriteLine($"{Name} has deleted");
+        }
+    }
+
+
+        /////////////////////////////////////////////////////////
+        //public class Person1 : IDisposable
+        //{
+        //    public string Name { get; }
+        //    public Person1(string name)
+        //    {
+        //        Name = name;
+        //    }
+        //    public void Dispose()
+        //    {
+        //        Console.WriteLine($"{Name} has been disposed");
+        //    }
+        //}
+        /////////////////////////////////////////////////////////
+        public class SomeClass: IDisposable
+        {
+            private bool disposed = false;
+            public void Dispose()
+            {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            }
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (disposed) return;
+                if(disposing)
+                {
+                    //
+                }
+            disposed = true;//
+            }
+            ~SomeClass()
+            {
+                Dispose(false);
+            }
+            
+        }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Сборка мусора, управление памятью и указатели");
+                ///////////////////Сборщик мусора в C#
+                ///
+                //////////////////Деструктор////////////////////////////
+                //Test();
+                //GC.Collect();//Очистка памяти пол обьект tom
+                //Console.Read();//Ставим задержу
+
+                //void Test()
+                //{
+                //    Person tom = new Person("Tom");
+                //    //Console.WriteLine(tom.Name);
+                //}
+
+                /////////////Интерфес IDisposable/////////////////
+                //Test2();
+
+                //void Test2()
+                //{
+                //    Person1? tom = null;
+                //    try
+                //    {
+                //        tom = new Person1("Sam");
+                //    }
+                //    finally
+                //    {
+                //        tom?.Dispose();
+                //    }
+                //}
+                ////Или
+                //Person1 sam = new("Bob");
+                //sam.Dispose();
+
+            /////////////////////////Комбинирование подходов/////////////////////
+            
+
+        }
+
+    }
+}
+
+

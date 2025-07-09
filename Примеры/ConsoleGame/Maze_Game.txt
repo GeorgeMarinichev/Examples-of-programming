@@ -1,0 +1,405 @@
+
+
+namespace MazeGame//Версия от 18.12.24
+{
+    class Level_Game
+    {
+        // Представление лабиринта
+        public static char[,] level = { };
+
+        static char[,] level1 = new char[20, 11]
+        {
+            { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' },
+            { '#', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', 'P', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', '+', ' ', '#', '#', ' ', '#', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', 'P', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', '#', ' ', '#', '#', '+', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', 'P', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' }
+        };
+
+        static char[,] level2 = new char[20, 11]
+        {
+            { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'P', '#' },
+            { '#', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', '#', ' ', '#', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', 'P', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', '#', ' ', '#', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', 'P', '#', '#', '#', '#', '#', '#', '#', '+', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' }
+        };
+
+        static char[,] level3 = new char[20, 11]
+        {
+            { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', '#', '#', '#', '#', ' ', ' ', '#' },
+            { '#', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', '#', '#', '#', 'P', '#', '#', '#', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', '#', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', '#', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', ' ', '#', ' ', '#', ' ', 'P', '#' },
+            { '#', ' ', ' ', '#', ' ', '#', ' ', '#', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', '#', '#', '#', 'P', '#', '#', '#', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', ' ', ' ', '#', '#', '#', '#', '#', ' ', '+', '#' },
+            { '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' },
+            { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' }
+        };
+
+        // Начальные позиции игрока и монстра
+        static int widthMap;//Общая карта
+        static int heightMap;//Общая карта
+        //static int wall;//Стена
+        static int playerX = 1, playerY = 1; // Позиция игрока
+        static int monsterX = 8, monsterY = 8; // Позиция монстра
+        static int playerLife = 1; // Количество жизней
+        static int keysCollected = 0; // Количество собранных ключей
+        static bool isHiding = false; // Флаг для проверки, прячется ли игрок
+        static bool gameOver = false; // Флаг окончания игры
+        static byte levelVal = 1; // Переключатель уровней
+        Random ran = new Random();
+        ///////////////////////////////////////////////////////////////////////////////////////////
+
+        static void Main(string[] args)
+        {
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            Thread currentThread = Thread.CurrentThread;
+            Thread myThread = new Thread(GamePlay);
+            Thread botThread = new Thread(MoveMonster);
+            myThread.Name = "GamePlay";
+            botThread.Name = "MoveMonster";
+            myThread.Start();
+            botThread.Start();// Запускаем поток для движения монстра
+
+            //Task.Run(() => MoveMonster());
+            //Task.Delay(1000);
+
+            //получаем имя потока
+        
+            ///////////////////////////////////////////////////////////////////////////////////////////
+
+            //MediaPlayer player = new MediaPlayer();
+            //player.Open(new Uri("C:\\Users\\SmartPlayer\\Desktop\\Maze\\sound\\bg-music.wav"));
+            //player.Play();
+
+            Console.Title = $"{currentThread.Name} " +
+                            $"Id потока: {currentThread.ManagedThreadId} " +
+                            $"Статус потока: {currentThread.ThreadState}" +
+                            $"Приоритет потока:{currentThread.Priority} " +
+                            $":{botThread.Name} " +
+                            $"Id потока: {botThread.ManagedThreadId} " +
+                            $"Статус потока: {botThread.ThreadState}" +
+                            $"Приоритет потока:{botThread.Priority}";
+
+            //Console.SetWindowSize(30, 20);
+            //Console.WindowWidth = 80;
+            //Console.WindowHeight = 25;
+            //Console.BufferHeight = 30;
+            //Console.BufferWidth = 30;
+            Console.CursorVisible = false; // Скрыть курсор
+            Console.BackgroundColor = ConsoleColor.Black;
+            //level1.CopyTo(level, 0);
+            //Array.Copy(level1, level, 0);//
+
+            // Ожидание завершения потоков
+            myThread.Join();
+            botThread.Join();
+        
+        }
+        //////////////////////////////////////////////////////////////////////////
+        //Метод запуска всего цикла игры
+        static void GamePlay()
+        {
+            while (!gameOver)
+            {
+                //Console.GetCursorPosition();
+                Console.SetCursorPosition(0, 0);
+                DrawMaze();           // Отображение лабиринта
+                HandleInput();       // Обработка ввода от игрока
+                //MoveMonster();   // Движение монстра
+                CheckCollisions();  // Проверка столкновений
+                Thread.Sleep(100);   // Задержка для замедления игры
+            }
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine("Игра окончена! Нажмите любую клавишу для выхода.");
+            Console.ReadKey();
+        }
+
+        // Метод для отображения лабиринта на экране
+        static void DrawMaze()
+        {
+            if (levelVal == 1)//Выбор уровня
+            {
+                level = level1;
+            }
+            else if (levelVal == 2)
+            {
+                level = level2;
+            }
+            else if (levelVal == 3)
+            {
+                level = level3;
+            }
+
+            // Инициализация размеров карты
+            widthMap = level.GetLength(1);
+            heightMap = level.GetLength(0);
+            //Построение уровня и расположение игрока и НПС
+            for (int y = 0; y < level.GetLength(0); y++)
+            {
+                for (int x = 0; x < level.GetLength(1); x++)
+                {
+                    if (x == playerX && y == playerY)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write('@'); // Отображение игрока
+                    }
+                    else if (x == monsterX && y == monsterY)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.Write('M'); // Отображение монстра
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        Console.Write(level[y, x]); // Отображение ячеек лабиринта
+                    }
+
+                }
+                Console.WriteLine(""); // Переход на новую строку
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"Ключи собраны: {keysCollected}/3");
+            Console.WriteLine($"Колличество здоровье: {playerLife}");
+            Console.WriteLine($"Спрятался:{isHiding}");
+            Console.WriteLine($"Level:{levelVal}");
+            Console.ResetColor();
+
+            if (keysCollected == 3)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Console.WriteLine("Вы можете открыть портал! (нажмите 'E')");
+            }
+
+        }
+
+        // Метод для обработки ввода от игрока
+        static void HandleInput()
+        {
+            if (Console.KeyAvailable)
+            {
+                var key = Console.ReadKey(true).Key; // Чтение нажатой клавиши
+                int newX = playerX, newY = playerY; // Новые координаты игрока
+
+                switch (key)
+                {
+                    case ConsoleKey.W: if (!isHiding) newY--; break; // Вверх
+                    case ConsoleKey.S: if (!isHiding) newY++; break; // Вниз
+                    case ConsoleKey.A: if (!isHiding) newX--; break; // Влево
+                    case ConsoleKey.D: if (!isHiding) newX++; break; // Вправо
+                    case ConsoleKey.E: LockOn(); break; // Открыть портал
+                    case ConsoleKey.Spacebar: Console.ForegroundColor = ConsoleColor.Yellow; Console.WriteLine("SPACE"); ; break; // Стрельба
+                    case ConsoleKey.Q: isHiding = !isHiding; break; // Прятаться
+                }
+
+                // Проверка на стены и передвижение
+                if (level[newY, newX] != '#')
+                {
+                    if (level[newY, newX] == 'P') // Если игрок находит ключ
+                    {
+                        Console.Beep(415 * 2, 300);
+                        keysCollected++;
+                        level[newY, newX] = ' '; // Удаляем ключ из лабиринта
+                    }
+                    if (level[newY, newX] == '+') // Если игрок находит здоровье
+                    {
+                        Console.Beep(415, 300);
+                        playerLife++;
+                        level[newY, newX] = ' '; // Удаляем здоровье из лабиринта
+                    }
+                    playerX = newX; // Обновление позиции игрока
+                    playerY = newY;
+                }
+            }
+        }
+
+        // Метод для движения монстра
+        static void MoveMonster()
+        {
+            Random ran = new Random();
+            int newX = monsterX, newY = monsterY;//
+
+            while (!gameOver)
+            {
+                if (BotAggressive())
+                {
+                    MoveBotTowardsPlayer();
+                }
+                else
+                {
+                    MoveBotRandom();
+                }
+                Thread.Sleep(500); // Задержка для замедления движения монстра
+            }
+        } 
+        static void MoveBotRandom()
+        {
+            int newX = monsterX, newY = monsterY;
+            Random ran = new Random();
+                // Случайное движение бота
+                switch (ran.Next(4))
+                //switch (ran.Next(0, 4))
+                {
+                    case 0: newY--; break; // Вверх
+                    case 1: newY++; break; // Вниз
+                    case 2: newX--; break; // Влево
+                    case 3: newX++; break; // Вправо
+                }
+
+                // Проверка на столкновение со стенами
+                if (newX >= 0 && newX < widthMap && newY >= 0 && newY < heightMap && level[newY, newX] != '#')
+                {
+                    monsterX = newX; // Обновляем позицию бота
+                    monsterY = newY;
+                }
+            }
+
+            // Метод для проверки, находится ли игрок в пределах заданного радиуса
+        static bool BotAggressive()
+            {
+                int deltaX = Math.Abs(playerX - monsterX);
+                int deltaY = Math.Abs(playerY - monsterY);
+
+                // Проверка на расстояние
+                if (deltaX <= 5 && deltaY <= 5)
+                {
+                    // Проверка на наличие стен
+                    if (deltaX == 0) // Вертикальная видимость
+                    {
+                        for (int y = Math.Min(monsterY, playerY) + 1; y < Math.Max(monsterY, playerY); y++)
+                            if (level[y, monsterX] == '#') return false;
+                        return true;
+                    }
+                    else if (deltaY == 0) // Горизонтальная видимость
+                    {
+                        for (int x = Math.Min(monsterX, playerX) + 1; x < Math.Max(monsterX, playerX); x++)
+                            if (level[monsterY, x] == '#') return false;
+                        return true;
+                    }
+                }
+                return false; // Игрок вне видимости
+            }
+
+            // Метод для движения бота к игроку
+        static void MoveBotTowardsPlayer()
+            {
+                // Двигаем бота по оси X
+                if (monsterX < playerX)
+                {
+                    monsterX++; // Двигаем вправо
+                }
+                else if (monsterX > playerX)
+                {
+                    monsterX--; // Двигаем влево
+                }
+
+                // Двигаем бота по оси Y
+                if (monsterY < playerY)
+                {
+                    monsterY++; // Двигаем вниз
+                }
+                else if (monsterY > playerY)
+                {
+                    monsterY--; // Двигаем вверх
+                }
+            }
+        
+
+        // Метод для проверки столкновений
+        static void CheckCollisions()
+        {
+            //if(!isHiding)
+            if (!isHiding && playerX == monsterX && playerY == monsterY)
+            {
+                // Игрок пойман монстром
+                Console.Beep(262, 600);
+                Console.BackgroundColor = ConsoleColor.Red;
+                if (playerLife > 1)
+                {
+                    playerLife--;
+                }
+                else if (playerLife == 1)
+                {
+                    playerLife--;
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Вас уничтожил монстр!");
+                    Thread.Sleep(1000);
+                    gameOver = true;
+                }
+
+            }
+        }
+
+        //Метод статуса портала
+        static void LockOn()
+        {
+            if (keysCollected == 3)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("Вы спаслись!");
+                Thread.Sleep(1000);
+                if (levelVal == 1)
+                {
+                    levelVal = 2;
+                    keysCollected = 0;
+                }
+                else
+                {
+                    levelVal = 3;
+                    keysCollected = 0;
+                }
+
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Console.WriteLine($"Вам не хватает {3 - keysCollected} ключей!");
+            }
+
+        }
+    }
+}
+

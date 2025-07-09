@@ -1,0 +1,102 @@
+using System;
+
+namespace ConsoleApplication1
+{
+    internal class Program
+    {
+        public static void Main(string[] args)
+        {
+            //restart:
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Программа калькулятор...)");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+
+                float a, b;
+                char t;
+
+                try
+                {
+                    Console.Write("Введите первое число:");
+                    a = float.Parse(Console.ReadLine());
+
+                    Console.Write("Введите второе число:");
+                    b = float.Parse(Console.ReadLine());
+                }
+                catch (Exception)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Не коректные данные!");
+                    Console.ReadKey();
+                    continue;
+                    //throw;
+                } 
+                
+                Console.Write("Введите тип операции +,-,*,/,% :");
+                t = char.Parse(Console.ReadLine());
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                //Через конструкцию if... else
+                if (t == '+')
+                {
+                    Console.Write($"Итог: {a} + {b} = {a + b}");
+                }
+                else if (t == '-')
+                {
+                    Console.Write($"Итог: {a} - {b} = {a - b}");
+                }
+                else if (t == '*')
+                {
+                    Console.Write($"Итог: {a} * {b} = {a * b}");
+                }
+                else if (t == '/')
+                {
+                    if (b == 0)
+                        Console.Write(" Деление на ноль невозможно!");
+                    else
+                        Console.Write($"Итог: {a} / {b} = {a / b}");
+                }
+                else if (t == '%')
+                {
+                    Console.Write($"Итог: {a} % {b} = {a % b}");
+                }
+                else
+                {
+                    Console.WriteLine("Не известный тип операции!");
+                }
+
+                //Через конструкцию switch...
+                // switch (t)
+                // {
+                //     case '+':
+                //         Console.Write($"Итог: {a} + {b} = {a + b}");
+                //         break;
+                //     case '-':
+                //         Console.Write($"Итог: {a} - {b} = {a - b}");
+                //         break;
+                //     case '*':
+                //         Console.Write($"Итог: {a} * {b} = {a * b}");
+                //         break;
+                //     case '/':
+                //         if (b == 0)
+                //             Console.Write(" Деление на ноль невозможно!");
+                //         else
+                //             Console.Write($"Итог: {a} / {b} = {a / b}");
+                //         break;
+                //     case '%':
+                //         Console.Write($"Итог: {a} % {b} = {a % b}");
+                //         break;
+                //     default:
+                //         Console.ForegroundColor = ConsoleColor.Red;
+                //         Console.WriteLine("Не известный тип операции!");
+                //         break;
+                //}
+                Console.ResetColor();
+                Console.ReadKey();
+                //goto restart;
+            }
+
+        }
+    }
+}

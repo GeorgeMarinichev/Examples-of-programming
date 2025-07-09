@@ -1,0 +1,25 @@
+namespace Cosmos
+{
+    internal class Program
+    {
+        static void Foo(int x, int i) // Метод с рекурсивной функциИ цикла от i, до x
+        {
+            Console.WriteLine(x);
+
+            if (i >= x) 
+                return;// Выход из рекурсии
+          
+            i++;
+            Foo(x,i);
+            
+        }
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("<<< Рекурсивные функции или аналог цикла >>>");
+
+            Foo(0,3); // Вызов метода с рекурсивной функцией цикла от 0, до 3
+            
+        }
+    }
+}

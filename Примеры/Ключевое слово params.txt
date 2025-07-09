@@ -1,0 +1,39 @@
+using System.Threading.Channels;
+
+namespace Cosmos
+{
+    internal class Program
+    {
+        static int Sum(string str, params int [] par)
+        {
+            int res = 0;
+
+            for (int i = 0; i < par.Length; i++)
+            {
+                res += par[i];
+            }
+            return res;
+        }
+
+        static void Foo(params object[] par)
+        {
+            string mes = "Тип данных: {0}, значение: {1}";
+
+            foreach (object i in par)
+            {
+                Console.WriteLine(mes, i.GetType(), i);
+            }
+        }
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Ключевое слово params");
+
+            int res = Sum("str",1, 9, 8, 5);
+            Console.WriteLine(res);
+
+            Foo("Test", 5, '#', 5.99f, true);
+
+
+        }
+    }
+}

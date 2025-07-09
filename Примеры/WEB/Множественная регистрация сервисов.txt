@@ -1,0 +1,170 @@
+//Множественная регистрация сервисов
+//////////////////////////////////////////////////////
+//Пример использования паттерна (DI) и "интерфейс(абстракт)" для реализации полиморфизма, позволяет легко добавлять новые реализации без изменения кода,
+//которые использую зависимости.
+//////////////////////////////////////////////////////
+using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;                   //Необходимый пакет using
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+//////////////////////////////////////////////////////
+
+namespace Space
+{
+    ///////////////////////////////////////Создание интерфейса сервиса
+    /////////////////////////////////Одна зависимость с несколькими реализациями(регистрация для одной зависимости нескольких типов)//////////////////////////////////////////////////
+    interface IHelloService//Интерфейс (абстракция) сервисов (зависимость)
+    {
+        //string GetHello {get;}//Свойство
+        string GetHello();//Метод без реализации
+    }
+
+    class RuHelloService: IHelloService// Класс (short-короткий)реализующий интерфейс ITimeService 1
+    {
+        //public string GetHello => $"Привет, METANIT.COM";//Свойство реализованное
+        public string GetHello() => $"Привет, METANIT.COM";//Метод реализованый
+        
+    }
+
+    class EnHelloService: IHelloService// Класс (short-короткий)реализующий интерфейс ITimeService 2
+    {
+        //public string GetHello => $"Hello, METANIT.COM";//Свойство реализованное
+        public string GetHello() => $"Hello, METANIT.COM";//Метод реализованый
+        
+
+    }
+
+    class FrHelloService: IHelloService// Класс (short-короткий)реализующий интерфейс ITimeService 3
+    {
+        //public string GetHello => $"Bonjour, METANIT.COM";//Свойство реализованное
+        public string GetHello() => $"Bonjour, METANIT.COM";//Метод реализованый
+        
+
+    }
+    
+    class HelloMiddleware//
+    {
+        readonly IEnumerable<IHelloService> helloService;//Поле класса (readonly(поле для чтения)-неизменямое значение после инициализации)
+    
+        public HelloMiddleware(RequestDelegate _, IEnumerable<IHelloService> helloService)//Конструктор (с неиспользуемым параметром(RequestDelegate _,))
+        {
+            this.helloService = helloService;
+        }
+       
+        public async Task InvokeAsync(HttpContext context)
+        {
+            context.Response.ContentType = "text/html; charset=utf-8";
+            context.Response.Headers.ContentLanguage = "ru-RU";
+
+            string responseText = "";
+            foreach(var service in helloService)
+            {
+                //responseText += $"<h3>{service.GetHello}</h3>";//Как свойство
+                responseText += $"<h3>{service.GetHello()}</h3>";//Как метод
+            }
+            await context.Response.WriteAsync(responseText);
+        }
+    }
+
+
+
+    //////Несколько зависимостимостей с одной реализацией(регистрация одного объекта для нескольких зависисмостей)////////////////////////
+    interface IGenerator//Интерфейс (абстракция) сервисов (зависимость 1)
+    {
+        int GeneratorValue();//Метод
+    }
+
+    interface IReader//Интерфейс (абстракция) сервисов (зависимость 2)
+    {
+        int ReaderValue();//Метод
+    }
+
+    class ValueStorage: IGenerator, IReader//Реализация
+    {
+        int value;
+        public int GeneratorValue()
+        {
+            //Random ran = new Random();
+            //value = ran.Next();
+            value = new Random().Next();
+            return value;
+        }
+        public int ReaderValue()
+        {
+            return value;
+        }
+    }
+
+    class GeneratorMiddleware
+    {
+        RequestDelegate next;
+        IGenerator generator;
+
+        public GeneratorMiddleware(RequestDelegate next, IGenerator generator)
+        {
+            this.next = next;
+            this.generator = generator;
+        }
+
+        public async Task InvokeAsync(HttpContext context)
+        {
+            if(context.Request.Path == "/generate")
+            {
+                await context.Response.WriteAsync($"New Value:{generator.GeneratorValue()}");
+            }
+            else
+            {
+                await next.Invoke(context);
+            }
+        }
+    }
+
+    class ReaderMiddleware
+    {
+        IReader reader;
+
+        public ReaderMiddleware(RequestDelegate _, IReader reader)
+        {
+            this.reader = reader;
+        }
+
+        public async Task InvokeAsync(HttpContext context)
+        {
+            await context.Response.WriteAsync($"Current Value:{reader.ReaderValue()}");
+        }
+    }
+
+
+    //////////////////////////////////////////////////Установка сервисов
+    
+    public class Program//Главный класс приложения
+    {  
+        public static void Main(string[] args)//Главный метод точка входа
+        {
+            //////////////////////////////////Установка сервисов через метод Invoke/InvokeAsync компонентов контйнера middleware
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+     
+            //builder.Services.AddTransient<IHelloService, RuHelloService>();// Коллекция сервисов 
+            //builder.Services.AddTransient<IHelloService, EnHelloService>();// Коллекция сервисов 
+            //builder.Services.AddTransient<IHelloService, FrHelloService>();// Коллекция сервисов 
+
+            // builder.Services.AddTransient<IGenerator, ValueStorage>();// Коллекция сервисов 
+            // builder.Services.AddTransient<IReader, ValueStorage>();// Коллекция сервисов
+
+            var valueStorage = new ValueStorage();
+            builder.Services.AddSingleton<IGenerator>(valueStorage);// Коллекция сервисов 
+            builder.Services.AddSingleton<IReader>(valueStorage);// Коллекция сервисов 
+
+            WebApplication app = builder.Build();
+
+            //app.UseMiddleware<HelloMiddleware>();//Класс HelloMiddleware
+            app.UseMiddleware<GeneratorMiddleware>();
+            app.UseMiddleware<ReaderMiddleware>();
+
+            app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));
+            app.Run();
+        }
+    }
+}

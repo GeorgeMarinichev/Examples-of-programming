@@ -1,0 +1,66 @@
+using static System.Console; // Импорт
+
+namespace Benchmark; // Пространство имен
+
+
+class TestClass
+{
+    public static void Maethod1()
+    {
+        try
+        {
+            Method2();
+        }
+        catch (IndexOutOfRangeException ex)
+        {
+            WriteLine($"Catch в Methodq:{ex.Message}");
+        }
+        finally
+        {
+            WriteLine($"Блок finally в Method1");
+        }
+        WriteLine($"Конец метода Method1");
+    }
+    static void Method2()
+    {
+        try
+        {
+            int x = 8;
+            int y = x / 0;
+        }
+        finally
+        {
+            WriteLine($"Блок finally в Method2");
+        }
+        WriteLine($"Конец метода Method2");
+    }
+    
+}
+
+class Program // Основной класс программы
+{
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        WriteLine("try...catch..finally");
+        try
+        {
+            TestClass.Maethod1();
+        }
+        catch (DivideByZeroException ex)
+        {
+            WriteLine($"Catch в Main:{ex.Message}");
+        }
+        finally
+        {
+            WriteLine($"Блок finally в Main");
+        }
+        WriteLine($"Конец метода Main");
+        
+
+        WriteLine("Конец программы");
+   
+    }
+}
+

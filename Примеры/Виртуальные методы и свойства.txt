@@ -1,0 +1,59 @@
+abstract class Human
+ {
+    public string Bodi{get; set;}
+
+    public virtual void Print(){}
+   
+ }
+ class Person: Human
+ {
+    public string Name{get; set;}
+    public Person(string name)
+    {
+        Name = name;
+    }
+
+    // public virtual void Print()
+    // {
+    //     Console.WriteLine(Name);
+    // }
+    public override void Print()
+    {
+        Console.WriteLine(Name);
+    }
+ }
+
+class Employee: Person
+{
+    public string Company {get; set;}
+    public Employee (string name, string company): base(name)
+    {
+        Name = name;
+        Company = company;
+    }
+
+    public override void Print()
+    {
+        // Console.WriteLine($"{Name} {Company}");
+        base.Bodi = "666";
+        base.Print();
+        Console.WriteLine(Company);
+        Console.WriteLine(Bodi);
+    }
+}
+ 
+class Program
+{ 
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Виртуальные методы и свойства");
+        var per = new Person("Tom");
+        per.Print();
+
+        var emp = new Employee("Denis","RBT");
+        emp.Print();
+
+
+
+    }
+}

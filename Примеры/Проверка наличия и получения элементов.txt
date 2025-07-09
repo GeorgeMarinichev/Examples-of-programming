@@ -1,0 +1,150 @@
+using System.ComponentModel;
+using System.Reflection;
+
+class Person
+{
+    public string Name{get;}
+    public Person(string name) => Name = name;
+    public override bool Equals(object? obj)
+    {
+        if(obj is Person person)
+        return Name == person.Name;
+        return false;
+    }
+    public override int GetHashCode() => Name.GetHashCode();
+    
+}
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Проверка наличия и получения элементов");
+        //////////////////////////All///////////////////////////////////
+        string[] people = {"Tom", "Tim", "Bob", "Sam"};
+
+        bool allHas3Chars = people.All(s => s.Length == 3);
+        Console.WriteLine(allHas3Chars);
+
+        bool allStartsWithT = people.All(s => s.StartsWith("T"));
+        Console.WriteLine(allStartsWithT);
+
+        Console.WriteLine("-------------------------------------------");
+        //////////////////////////Any///////////////////////////////////
+        string[] people1 = {"Tom", "Tim", "Bob", "Sam"};
+
+        bool allHas3Chars1 = people1.Any(s => s.Length == 3);
+        Console.WriteLine(allHas3Chars1);
+
+        bool allStartsWithT1 = people1.Any(s => s.StartsWith("T"));
+        Console.WriteLine(allStartsWithT1);
+
+        Console.WriteLine("-------------------------------------------");
+        //////////////////////////Contains///////////////////////////////////
+        string[] people2 = {"Tom", "Tim", "Bob", "Sam"};
+
+        bool allHas3Chars2 = people2.Any(s => s.Length == 3);
+        Console.WriteLine(allHas3Chars2);
+
+        bool allStartsWithT2 = people2.Any(s => s.StartsWith("T"));
+        Console.WriteLine(allStartsWithT2);
+
+        Console.WriteLine("-------------------------------------------");
+        //////////////////////////Contains///////////////////////////////////
+        Person[] people3 = {new Person("Tom"), new Person("Sam"), new Person("Bob")};
+
+        var tom = new Person("Tom");
+        var mike = new Person("Mike");
+
+        bool hasTom = people3.Contains(tom);
+        Console.WriteLine(hasTom);
+
+        bool hasMike = people3.Contains(mike);
+        Console.WriteLine(hasMike);
+
+        Console.WriteLine("-------------------------------------------");
+        //////////////////////////Contains///////////////////////////////////
+        string[] people4 = {"Tom", "Tim", "Bob", "Sam"};
+
+        
+
+        bool hasTim = people4.Contains("Tom");
+        Console.WriteLine(hasTim);
+
+        bool hasSam = people4.Contains("Sam");
+        Console.WriteLine(hasSam);
+        
+        Console.WriteLine("-------------------------------------------");
+        //////////////////////////First//////////////////////////////////
+        string[] people5 = {"Tom", "Tim", "Bob", "Sam", "Kati", "Miki"};
+
+        
+
+        var first = people4.First();
+        Console.WriteLine(first);
+
+        //var firstWith4Chars = people4.First(s => s.Length == 4);        
+        //Console.WriteLine(firstWith4Chars);
+
+        // var first1 = new string[] {}.First();
+        // Console.WriteLine(first1);
+
+        Console.WriteLine("--------------------------------------------");
+        //////////////////////////FirstOrDefault//////////////////////////////////
+        string[] people6 = {"Tom", "Tim", "Bob", "Sam", "Kati", "Miki"};
+
+        
+
+        string firstWith5Chars = people4.FirstOrDefault(s => s.Length == 5, "Undefined");
+        Console.WriteLine(firstWith5Chars);
+
+        var firstOrDefault = new string[] {}.FirstOrDefault("Hello");        
+        Console.WriteLine(firstOrDefault);
+
+        int firstNumber = new int[] {}.FirstOrDefault(100);
+        Console.WriteLine(firstNumber);
+
+        Console.WriteLine("--------------------------------------------");
+        //////////////////////////Last//////////////////////////////////
+        string[] people7 = {"Tom", "Tim", "Bob", "Miki", "Kati", "Sam"};
+
+        var last0 = people7.Last();
+        Console.WriteLine(last0);
+
+        var LastWith4Chars = people7.Last(s => s.Length == 4);        
+        Console.WriteLine(LastWith4Chars);
+
+
+        ///Console.WriteLine("-------------------==-------------------------");
+        //////////////////////////LastOrDefault//////////////////////////////////
+        string[] people8 = {"Tom", "Tim", "Bob", "Sam", "Kati", "Miki"};
+
+        string? last = people8.LastOrDefault();
+        Console.WriteLine(last);
+
+        string? lastWith4Chars = people8.LastOrDefault(s => s.Length == 4);
+        Console.WriteLine(lastWith4Chars);
+
+        string? lastWith5Chars = people8.LastOrDefault(s => s.Length == 5);
+        Console.WriteLine(lastWith5Chars);
+
+        string? lastWith5CharsOrDefault = people8.LastOrDefault(s => s.Length == 5, "Undefined");
+        Console.WriteLine(lastWith5CharsOrDefault);
+
+
+        string? lastOrDefault = new string[] {}.LastOrDefault("Hello");        
+        Console.WriteLine(lastOrDefault);
+
+        int? lastNumber = new int[] {}.LastOrDefault(100);
+        Console.WriteLine(lastNumber);
+ 
+        
+    }
+
+}
+    
+        
+
+
+
+

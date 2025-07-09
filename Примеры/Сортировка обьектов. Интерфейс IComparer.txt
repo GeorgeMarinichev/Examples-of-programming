@@ -1,0 +1,153 @@
+using System.Security;
+using System.Security.Cryptography;
+using Genesis;
+using static System.Console;
+
+namespace Genesis; // Пространство имен
+
+//////////////////////////////////////////////////////////////////
+// public interface IComparable//Интерфейс клонирования
+// {
+//     int Company(object? o);    
+// }
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+// public interface IComparer<int T>//Интерфейс компаратора
+// {
+//     int Compare(T? x, T? y);    
+// }
+//////////////////////////////////////////////////////////////////
+// class Person: IComparable// Класс персона и интерфейс клонирования
+// {
+//     public string Name {get; set;}// Свойство имя
+//     public int Age {get; set;}// Свойство возраст
+//     public Person(string name, int age)// Конструктор
+//     {
+//         Name = name;
+//         Age = age;
+//     }
+    
+//     public int CompareTo(object? o)
+//     {
+//         if(o is Person person)
+//         {
+//             return Name.CompareTo(person.Name);
+//         }
+//         else
+//         {
+//             throw new ArgumentException("Не корректное значение параметров");
+//         }
+//     }
+// }
+
+// class Person: IComparable<Person>// Класс персона и интерфейс клонирования
+// {
+//     public string Name {get; set;}// Свойство имя
+//     public int Age {get; set;}// Свойство возраст
+//     public Person(string name, int age)// Конструктор
+//     {
+//         Name = name;
+//         Age = age;
+//     }
+    
+//     public int CompareTo(Person? person)
+//     {
+//         if(person is null)
+//         {
+//             throw new ArgumentException("Некорректное значение параметров");
+//         }
+//         else
+//         {
+//            return Name.CompareTo(person.Name); 
+//         }
+
+//     }
+
+//     public int CompareToInt(Person? person)
+//     {
+//         if(person is null)
+//         {
+//             throw new ArgumentException("Некорректное значение параметров");
+//         }
+//         else
+//         {
+//            return Age - person.Age; 
+//         }
+
+//     }
+// }
+//=============================================================================
+class PeopleComparer: IComparer<Person>// Класс персона и интерфейс клонирования
+{
+    public int Compare(Person? p1, Person? p2)
+    {
+        if(p1 is null || p2 is null)
+            throw new ArgumentException("Некорректное значение параметров");
+        return p1.Name.Length - p2.Name.Length;
+    }   
+}
+
+class Person// Класс персона и интерфейс клонирования
+{
+    public string Name {get;}// Свойство имя
+    public int Age {get; set;}// Свойство возраст
+    public Person(string name, int age)// Конструктор
+    {
+        Name = name;
+        Age = age;
+    }
+}
+     
+//=============================================================================
+
+class Company// Класс компания
+{
+    public string Name {get; set;}
+    public Company(string name)
+    {
+        Name = name;
+    }
+}
+class Program // Основной класс программы
+{
+    
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<Сортировка обьектов. Интерфейс IComparable>>>");
+
+        var george = new Person("George", 38);
+        var tom = new Person("Том", 43);
+        var bob = new Person("Bob", 55);
+        var sam = new Person("Sam", 65);
+
+        Person[] people = {george, tom, bob, sam};
+        Array.Sort(people, new PeopleComparer());
+
+        foreach (Person person in people)
+        {
+            Console.WriteLine($"{person.Name} - {person.Age}");
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        // Person p1 = new("George", 38, new Company("RBT"));
+        // Console.WriteLine(p1.Name +":"+ p1.Age +":"+ p1.Work.Name);
+        // p1.Work.Name = "Valve";
+        // Console.WriteLine(p1.Name +":"+ p1.Age +":"+ p1.Work.Name);
+    
+        // var tom = new Person("Том", 43, new Company("Microsoft"));
+        // Console.WriteLine(tom.Name +":"+ tom.Age +":"+ tom.Work.Name);
+        // var bob = (Person)tom.Clone();
+        // bob.Work.Name = "Google";
+        // Console.WriteLine(tom.Name +":"+ tom.Age +":"+ tom.Work.Name);
+        // Console.WriteLine(bob.Name +":"+ bob.Age +":"+ bob.Work.Name);
+
+        //System.Console.WriteLine("Введите число от 1, до 10");
+        //int res = int.Parse(Console.ReadLine());
+        
+    }
+}
+
+

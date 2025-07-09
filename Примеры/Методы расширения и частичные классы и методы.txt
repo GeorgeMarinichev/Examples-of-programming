@@ -1,0 +1,73 @@
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using System.Security;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using Genesis;
+using static System.Console;
+
+namespace Genesis; // Пространство имен
+public static class StringExtension
+{
+    public static int CharCount(this string str, char c)//Специальный класс и метод расширения
+    {
+        int counter = 0;
+
+        for(int i = 0; i < str.Length; i++)
+        {
+            if(str[i] == c)
+            {
+                counter++;
+            }
+        }
+        return counter;
+    }
+} 
+
+public partial class Person
+{
+    public void Move()
+    {
+        Console.WriteLine("I am moving");
+    }
+
+    public partial void Read();//Частичный метод без реализации
+}
+
+
+public partial class Person//Частичные классы
+{
+    public void Eat()
+    {
+        Console.WriteLine("I am eating");
+    }
+
+    public partial void Read()//Частичный метод c реализацией
+    {
+        Console.WriteLine("Read");
+    }
+}
+
+class Program // Основной класс программы
+{
+    
+    public static void Main(string[] args)// Основной метод программы
+    {
+        Console.WriteLine("====================<<<Методы расширения и частичные классы и методы>>>================");
+        /////////////////////////////Методы расширения
+        string s = "Спасите мир!";
+        char c = 'и';
+        int i = s.CharCount(c);
+        Console.WriteLine(i);
+        ///////////////////////////Частичные классы и методы
+        Person tom = new Person();
+        tom.Move();
+        tom.Eat();
+        tom.Read();
+    }
+
+
+}
+
+
+

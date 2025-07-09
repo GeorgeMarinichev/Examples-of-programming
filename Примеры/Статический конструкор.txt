@@ -1,0 +1,39 @@
+using System; // Деректива
+
+namespace Genesis; // Пространство имен
+
+class MyClass
+{
+    static MyClass()// Конструкор static может быть только один
+    {
+        Console.WriteLine("Статический конструкор");
+    }
+    public MyClass()// Конструкор 1
+    {
+        Console.WriteLine("Конструкор 1");
+    }
+
+    public static void PointMyClass()// Метод PointMyClass
+    {
+        Console.WriteLine("Метод PointMyClass");
+    }
+}
+
+internal class Program // Основной класс программы
+{
+    private static void Main(string[] args)// Основной метод программы
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine("Static");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("-----------------------------");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+
+        //MyClass mc1 = new();
+        MyClass.PointMyClass();
+        new MyClass();
+        new MyClass();
+        new MyClass();
+        
+    }
+}

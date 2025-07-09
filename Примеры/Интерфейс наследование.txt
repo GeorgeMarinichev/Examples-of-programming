@@ -1,0 +1,116 @@
+
+using System.Diagnostics;
+using static System.Console; // Импорт
+// using Print = System.Console; // Псевдонимы
+using User = Genesis.Player;
+
+namespace Genesis; // Пространство имен
+
+interface IWeapon
+{
+    void Fire();
+}
+
+interface IThrowingWeapon: IWeapon
+{
+    void Throw();
+}
+
+// abstract class Weapon // Абстрактый класс
+// {
+//     public abstract int Damage{get;}
+//     public abstract void Fire();
+//     public void ShowInfo()
+//     {
+//         WriteLine($"{GetType().Name} Урон:{Damage}");
+//     }
+
+// }
+
+class Gun : IWeapon // Реализация интерфейса класса 1
+{
+//public int Damage {get{return 35;}}
+    public void Fire()
+    {
+        //throw new NotImplementedException();
+        WriteLine($"{GetType().Name} Пыщь!");
+    }
+}
+
+class LaserGun : IWeapon // Реализация интерфейса класса 2
+{
+    //public override int Damage {get{return 55;}}
+    public void Fire()
+    {
+        //throw new NotImplementedException();
+        WriteLine($"{GetType().Name} Пиу!");
+    }
+}
+class Bow : IWeapon // Реализация интерфейса класса 3
+{
+    //public override int Damage => 85;
+    public void Fire()
+    {
+        //throw new NotImplementedException();
+        WriteLine($"{GetType().Name} Бах!");
+    }
+}
+class Knife: IThrowingWeapon
+{
+    public void Fire()
+    {
+        //throw new NotImplementedException();
+        WriteLine($"{GetType().Name} Щмяк!");
+    }
+    public void Throw()
+    {
+        //throw new NotImplementedException();
+        WriteLine($"{GetType().Name} Хыщь!");
+    }
+}
+class Player // Класс персонажа
+{
+    public Player()// Пустой конструктор по умолчанию
+    {
+
+    }
+    public void Fire(IWeapon weapon)
+    {
+        weapon.Fire();
+    }
+
+    public void Throw(IThrowingWeapon throwingWeapon)
+    {
+        throwingWeapon.Throw();
+    }
+}
+
+internal class Program // Основной класс программы
+{
+    private static void Main(string[] args)// Основной метод программы
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine("<<< Интерфейс наследование >>>");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(DateTime.Now);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("-----------------------------");
+        Console.ForegroundColor = ConsoleColor.Green;
+       
+        Player player = new();
+
+        IWeapon [] inventory = {new Gun(), new LaserGun(), new Bow(), new Knife()};
+        foreach(var item in inventory)
+        {
+            player.Fire(item);
+            //player.Throw(item);
+            WriteLine();
+        }
+
+        player.Throw(new Knife());
+
+        WriteLine("================================================");
+
+        
+    }
+}

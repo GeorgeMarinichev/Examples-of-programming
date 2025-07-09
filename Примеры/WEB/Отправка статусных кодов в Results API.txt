@@ -1,0 +1,88 @@
+////////////////////////////Отправка статусных кодов в Results API
+
+using System;//Подключение директивы
+
+namespace Space//Пространство имен
+{
+    class Program//Главный класс приложения
+    {  
+        static void Main(string[] args)
+        {
+            ////////////////Метод StatusCode();
+            // var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+
+            // app.Map("/about", ()=> Results.StatusCode(401));
+            // app.Map("/", ()=> "Hello, World");
+
+            // //app.Run(async(context)=> await context.Response.WriteAsync($"Text:{context.Items["text"]}"));
+            // app.Run();
+
+            // ///////////////////// Метод NotFound();
+            // var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+
+            // app.Map("/about", ()=> Results.NotFound(new{message = "Resource Not Found"}));
+            // app.Map("/contacts", ()=> Results.NotFound("Error 404. Invalid address"));
+            // app.Map("/", ()=> "Hello, World");
+
+            // //app.Run(async(context)=> await context.Response.WriteAsync($"Text:{context.Items["text"]}"));
+            // app.Run();
+
+            // ///////////////////// Метод Unauthorized(); Посылает код 401, не авторизован
+            // var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+
+            // app.Map("/about", ()=> Results.Unauthorized());
+            // app.Map("/", ()=> "Hello, World");
+
+            // //app.Run(async(context)=> await context.Response.WriteAsync($"Text:{context.Items["text"]}"));
+            // app.Run();
+
+            ///////////////////// Метод BadRequest(); Посылает код 400, запрос некорректный
+            // var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+
+            // app.Map("/about", ()=> Results.BadRequest());
+            // app.Map("/", ()=> "Hello, World");
+
+            // //app.Run(async(context)=> await context.Response.WriteAsync($"Text:{context.Items["text"]}"));
+            // app.Run();
+
+            // var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+
+            // app.Map("/contacts/{age:int}", (int age)=> 
+            // {
+            //     if(age < 18)
+            //     {
+            //         return Results.BadRequest(new{message = "Invalid age"});//Не верный возраст
+            //     }
+            //     else
+            //     {
+            //         return Results.Content("Access is avilable");//Доступ имеется
+            //     }
+            // });
+            // app.Map("/", ()=> "Hello, World");
+
+            // //app.Run(async(context)=> await context.Response.WriteAsync($"Text:{context.Items["text"]}"));
+            // app.Run();
+
+            ///////////////////// Метод Ok(); Посылает код 200, успешное выполнение запроса
+            var builder = WebApplication.CreateBuilder(args);
+            var app = builder.Build();
+
+            app.Map("/about", ()=> Results.Ok());
+            app.Map("/contacts", ()=> Results.Ok("Loudate omnes gentes laudate"));//
+            app.Map("/message", ()=> Results.Ok(new{message = "Success!"}));//Успех
+            app.Map("/", ()=> "Hello, World");
+
+            //app.Run(async(context)=> await context.Response.WriteAsync($"Text:{context.Items["text"]}"));
+            app.Run();
+
+
+         
+        }
+     
+    }
+}

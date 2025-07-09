@@ -1,0 +1,62 @@
+using System.Threading;// Деректива поделючения пространство имен многопоточности
+
+namespace Genesis; // Пространство имен
+
+class MyClass
+{
+    object block = new object();//Эстафетная палочка-объект синхронизации доступа-ключ(4)
+    public void Method()
+    {
+        int hash = Thread.CurrentThread.GetHashCode();// Получение ID
+        //////Критическая секция(поле для бега(3))/////////////////
+        lock (block)
+        {
+            for (int counter = 1; counter < 10; counter++)
+            {
+                Console.WriteLine($"Поток (бегун) {hash} итерация(круг){counter}");//Разделяемый ресурс(2)
+                Thread.Sleep(100);
+            }
+            Console.WriteLine(new string(' ', 20));
+        }
+        /////////////////////////////////////////////////////////
+    }
+}
+class Program // Основной класс программы
+{ 
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //Console.SetWindowSize(80, 40);//
+        Console.WriteLine("===================<<<Синхронизация потоков и критическая секция>>>================");
+        MyClass instance = new MyClass();
+
+        for (int i = 0; i < 3; i++)
+        {
+            new Thread(instance.Method).Start();//Потоки - бегуны(1)
+            //Thread.Sleep(1500);
+        }
+
+        Thread.Sleep(100);
+        
+        // Console.WriteLine("===================================");
+       
+    }
+}
+
+    
+
+
+
+
+
+        
+
+    
+
+
+
+
+
+
+
+
+

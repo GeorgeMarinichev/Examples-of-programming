@@ -1,0 +1,187 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Security;
+using System.Security.Cryptography;
+using Genesis;
+using static System.Console;
+
+namespace Genesis; // Пространство имен
+
+class Person//Класс
+{
+    public string Name {get; set;}//Свойства
+    public Person(string name)//Коструктор
+    {
+        Name = name;
+    }
+}
+
+class Company//Класс
+{
+    Person[] personal;//Массив
+    public Company(Person[] people)//Коструктор
+    {
+        personal = people;
+    }
+    public Person this[int index]// Определен индексатор 
+    {
+        get => personal[index];//Без проверки исключений
+        set => personal[index] = value;//
+    }
+
+    public Person this[string name]// Перезагрузка индексатора
+    {
+        get
+        {
+            foreach(var person in personal)
+            {
+                if(person.Name == name)
+                {
+                    return person;
+                }
+            }
+            throw new Exception("Unknow name");
+        }
+    
+    }
+}
+
+// class Company//Класс
+// {
+//     Person[] personal;//Массив
+//     public Company(Person[] people)//Коструктор
+//     {
+//         personal = people;
+//     }
+//     public Person this[int index]// Определен индексатор 
+//     {
+//         // get => personal[index];//Без проверки исключений
+//         // set => personal[index] = value;//
+//         get
+//         {
+//             if(index >= 0 && index < personal.Length)
+//             {
+//                 return personal[index];
+//             }
+//             else
+//             {
+//                 throw new ArgumentOutOfRangeException();
+//             }
+//         }
+//         set
+//         {
+//             if(index >= 0 && index < personal.Length)
+//             {
+//                 personal[index] = value;
+//             }
+//         }
+//     }
+// }
+
+class User
+{
+    string name = "";
+    string email = "";
+    string phone = "";
+
+    public string this[string propname]// Определен индексатор 
+    {
+        get
+        {
+            switch(propname)
+            {
+                case "name": return name;
+                case "email": return email;
+                case "phone": return phone;
+                default: throw new Exception("Unknown Property Name");
+            }
+        }
+        set
+        {
+            switch(propname)
+            {
+                case "name": 
+                    name = value;
+                    break;
+                case "email": 
+                    email = value;
+                    break;
+                case "phone": 
+                    phone = value;
+                    break;
+            }
+        }
+    }
+
+}
+
+class Matrix
+{
+    int[,] numbers = new int[,]{{1, 2, 3},{4, 5, 6}};
+    public int this[int i, int j]
+    {
+        get => numbers[i, j];
+        set => numbers[i, j] = value;
+    }
+}
+
+class Program // Основной класс программы
+{
+    
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<Индексаторы>>>");
+        /////////////////////////////////////////////////////////////////////
+       var microsoft = new Company(new []
+       {new Person("Tom"), new Person("Bob"),  
+       new Person("Sam"),  new Person("Alice")
+       });
+
+       Person firstPerson = microsoft[0];
+       Console.WriteLine(firstPerson.Name);
+
+       microsoft[3] = new Person("Mike");
+       Console.WriteLine(microsoft[3].Name);
+       Person lostPerson = microsoft[3];
+       Console.WriteLine(firstPerson.Name);
+       Console.WriteLine(lostPerson.Name);
+       Console.WriteLine(microsoft[0].Name);
+       Console.WriteLine(microsoft[3].Name);
+       Console.WriteLine("=====================================================");
+       ////////////////////////////////////////////////////////////////////////
+
+        User tom = new User();
+        tom["name"] = "George";
+        tom["email"] = "marinichev@mail.ru";
+        tom["phone"] = "+79964180110";
+        Console.WriteLine(tom["name"]);
+        Console.WriteLine("=====================================================");
+        ////////////////////////////////////////////////////////////////////////
+        
+        Matrix matrix = new Matrix();
+        Console.WriteLine(matrix[0, 0]);
+        Console.WriteLine(matrix[1, 0]);
+        Console.WriteLine(matrix[0, 1]);
+        matrix[0, 0] = 85;
+        matrix[1, 0] = 85;
+        matrix[0, 1] = 85;
+        Console.WriteLine(matrix[0, 0]);
+        Console.WriteLine(matrix[1, 0]);
+        Console.WriteLine(matrix[0, 1]);
+
+        ////////////////////////////////////////////////////////////////////////
+
+
+
+
+       
+
+ 
+
+    }
+
+}
+
+
+

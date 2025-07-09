@@ -1,0 +1,125 @@
+//////////////////////////////Передача конфигурации через сервис IOptions
+//////////////////////////////////////////////////////////////////////////////////
+using System;
+using System.Text;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;                   //Необходимый пакет using
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;//
+using Microsoft.VisualBasic;
+using Microsoft.Extensions.FileProviders;//
+//////////////////////////////////////////////////////
+
+namespace Space
+{
+    public class Person
+    {
+        public string Name { get; set; } = ";";
+        public int Age { get; set; } = 0;
+        public List<string> Languages { get; set; } = new();
+        public Company? Company { get; set; }
+
+    }
+
+    public class Company
+    {
+        public string Title { get; set;} = "";
+        public string Country { get; set;} = "";
+    }
+
+    public class PersonMiddleware
+    {
+        private readonly RequestDelegate _next;
+        public Person Person{ get; set; }
+        public PersonMiddleware(RequestDelegate next, IOptions<Person> options)
+        {
+            _next = next;
+            Person = options.Value;
+        }
+
+        public async Task InvokeAsync(HttpContext context)
+        {
+            System.Text.StringBuilder stringBuilder = new();
+            stringBuilder.Append($"<p>Name:{Person.Name}</p>");
+            stringBuilder.Append($"<p>Age:{Person.Age}</p>");
+            stringBuilder.Append($"<p>Company:{Person.Company?.Title}</p>");
+            stringBuilder.Append($"<p>Country:{Person.Company?.Country}</p>");
+            stringBuilder.Append("<h3>:Languages</h3><ul>");
+            foreach (string lang in Person.Languages)
+            {
+                stringBuilder.Append($"<li>{lang}</li>");
+            }
+            stringBuilder.Append("</ul>");
+
+            await context.Response.WriteAsync(stringBuilder.ToString());
+            
+        }
+    } 
+
+    
+    class Program//Главный класс приложения
+    {  
+        static void Main(string[] args)//Главный метод точка входа
+        {
+        //    //////////////////////////////////////Анализ конфигурации через IOptions<>
+        //     WebApplicationBuilder builder = WebApplication.CreateBuilder();
+
+        //     builder.Configuration.AddJsonFile("config2.json");//Конфигурационные настройки
+
+        //     builder.Services.Configure<Person>(builder.Configuration);//Установление объекта по настройкам из конфигурации
+
+        //     var app = builder.Build();
+
+        //     app.Map("/", (IOptions<Person> options)=> 
+        //     {
+        //         Person person = options.Value;//Получение переданных через IOptions объект Person
+        //         return person;
+        //     });
+            
+        //     //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обработки вызовов, если они не соответсвуют другим запросам
+        //     app.Run();
+
+            //////////////////////////////////////Анализ конфигурации через IOptions<> и метод HTTP-запросов UseMiddleware<T>()
+            // WebApplicationBuilder builder = WebApplication.CreateBuilder();
+
+            // builder.Configuration.AddJsonFile("config2.json");//Конфигурационные настройки
+
+            // builder.Services.Configure<Person>(builder.Configuration);//Установление объекта по настройкам из конфигурации
+
+            // var app = builder.Build();
+
+            // app.UseMiddleware<PersonMiddleware>();//Метод HTTP-запросов UseMiddleware<T>()
+            // //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обработки вызовов, если они не соответсвуют другим запросам
+            // app.Run();
+
+            //////////////////////////////////////Настройка привязки конфигурации
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+
+            builder.Configuration.AddJsonFile("config2.json");//Конфигурационные настройки
+
+            builder.Services.Configure<Person>(builder.Configuration);//Установление объекта по настройкам из конфигурации
+            builder.Services.Configure<Person>(optAge =>
+            {
+                optAge.Age = 25;
+            });
+
+            builder.Services.Configure<Company>(builder.Configuration.GetSection("company"));
+            var app = builder.Build();
+
+            app.Map("/", (IOptions<Company> options)=> options.Value);//Получение переданных через IOptions объект Person
+          
+            // app.Map("/", (IOptions<Person> options)=> 
+            // {
+            //     Person person = options.Value;//Получение переданных через IOptions объект Person
+            //     return person;
+            // });
+
+            //app.UseMiddleware<PersonMiddleware>();//Метод HTTP-запросов UseMiddleware<T>()
+            //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обработки вызовов, если они не соответсвуют другим запросам
+            app.Run();
+
+
+        }
+    }
+}

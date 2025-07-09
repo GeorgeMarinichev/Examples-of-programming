@@ -1,0 +1,92 @@
+
+while (true)
+{
+    Console.ResetColor();
+    Console.Clear();
+    Console.WriteLine("Программа треугольники...)");
+    char name;
+    int night;
+    night = 0;
+    name = '#';
+
+    try
+    {
+        Console.Write("Введиете символ:");
+        name = char.Parse(Console.ReadLine());
+        Console.Write("Введиете высоту:");
+        night = int.Parse(Console.ReadLine());
+    }
+    catch (Exception)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Введены не корректные данные!!!");
+        Console.ReadLine();
+        //
+        //Console.ResetColor();
+        //Console.Clear();
+        continue;
+        //throw;
+    }
+
+    Console.ForegroundColor = ConsoleColor.Green;
+
+    for (int i = 0; i < night; i++) // первый треугольник
+    {
+        System.Threading.Thread.Sleep(600);
+        for (int j = 0; j <= i; j++)
+        {
+            Console.Write($"{name}");
+        }
+
+        Console.WriteLine();
+    }
+
+    Console.WriteLine();
+
+    for (int i = 0; i < night; i++) // второй треугольник
+    {
+        for (int j = night; j > i; j--)
+        {
+            Console.Write($"{name}");
+        }
+
+        Console.WriteLine();
+    }
+
+    Console.WriteLine();
+
+    for (int i = 0; i < night; i++) // третий треугольник
+    {
+        for (int j = night; j > i; j--)
+        {
+            Console.Write(" ");
+        }
+
+        for (int j = 0; j <= i; j++)
+        {
+            Console.Write($"{name}");
+        }
+
+        Console.WriteLine();
+    }
+
+    Console.WriteLine();
+
+    for (int i = 0; i < night; i++) // четвертый треугольник
+    {
+        for (int j = 0; j <= i; j++)
+        {
+            Console.Write(" ");
+        }
+
+        for (int j = night; j > i; j--)
+        {
+            Console.Write($"{name}");
+        }
+
+        Console.WriteLine();
+    }
+    Console.WriteLine("Все!)");
+    
+    Console.ReadKey();
+}

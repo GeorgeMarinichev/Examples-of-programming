@@ -1,0 +1,116 @@
+/////////////////////////////Сессии
+using System;
+using System.Text.Json;
+
+
+namespace Space
+{
+    class Person
+    {
+        public string Name {get; set;} = "";
+        public int Age {get; set;} = 0;
+    }
+
+    public static class SessionExtensions
+        {
+            public static void Set<T>(this ISession session, string key, T value)
+            {
+                session.SetString(key, JsonSerializer.Serialize<T>(value));
+            }
+
+            public static T? Get<T>(this ISession session, string key)
+            {
+                var value = session.GetString(key);
+                return value == null ? default(T) : JsonSerializer.Deserialize<T>(value);
+            }
+        }
+    internal class Program
+    {
+        private static void Main(string[] args)
+        {
+            // var builder = WebApplication.CreateBuilder(args);
+
+            // builder.Services.AddDistributedMemoryCache();//Добавляем IDistributedMemoryCache
+            // builder.Services.AddSession();//Добавляем сервисы сессии
+            // var app = builder.Build();
+
+            // app.UseSession();//Добавляем middleware для работы с сессиями
+
+            // app.Run(async (context) =>
+            // {
+            //     if (context.Session.Keys.Contains("name"))
+            //     {
+            //         await context.Response.WriteAsync($"Hello:{context.Session.GetString("name")}!");
+            //     }
+            //     else
+            //     {
+            //         context.Session.SetString("name", "Gerge");
+            //         await context.Response.WriteAsync($"Hello, World!");
+            //     }
+            // });
+            // //app.MapGet("/", () => "Hello World!");
+
+            // app.Run();
+            // ////////////////////////Измение установки сервисов:
+            // var builder = WebApplication.CreateBuilder(args);
+
+            // builder.Services.AddDistributedMemoryCache();//Добавляем IDistributedMemoryCache
+            // builder.Services.AddSession(optios=>
+            // {
+            //     optios.Cookie.Name = ".MyApp.Session";
+            //     optios.IdleTimeout = TimeSpan.FromSeconds(3600);
+            //     optios.Cookie.IsEssential = true;
+            // });//Добавляем сервисы сессии
+            // var app = builder.Build();
+
+            // app.UseSession();//Добавляем middleware для работы с сессиями
+
+            // app.Run(async (context) =>
+            // {
+            //     if (context.Session.Keys.Contains("name"))
+            //     {
+            //         await context.Response.WriteAsync($"Hello:{context.Session.GetString("name")}!");
+            //     }
+            //     else
+            //     {
+            //         context.Session.SetString("name", $"Gerge{DateTime.Now.ToLongTimeString()}");
+            //         await context.Response.WriteAsync($"Hello, World!");
+            //     }
+            // });
+            // //app.MapGet("/", () => "Hello World!");
+
+            // app.Run();
+            ////////////////////////Хранение сложных объектов:
+            var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddDistributedMemoryCache();//Добавляем IDistributedMemoryCache
+            builder.Services.AddSession(optios=>
+            {
+                optios.Cookie.Name = ".MyApp.Session";
+                optios.IdleTimeout = TimeSpan.FromSeconds(3600);
+                optios.Cookie.IsEssential = true;
+            });//Добавляем сервисы сессии
+            var app = builder.Build();
+
+            app.UseSession();//Добавляем middleware для работы с сессиями
+
+            app.Run(async (context) =>
+            {
+                if (context.Session.Keys.Contains("person"))
+                {
+                    Person? person = context.Session.Get<Person>("person");
+                    await context.Response.WriteAsync($"Hello:{person?.Name} Age:{person?.Age}!");
+                }
+                else
+                {
+                    Person person = new Person{Name = "Gerge", Age = 39};
+                    context.Session.Set<Person>($"person", person);
+                    await context.Response.WriteAsync("Hello, World!");
+                }
+            });
+            //app.MapGet("/", () => "Hello World!");
+
+            app.Run();
+        }
+    }
+}

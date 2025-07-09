@@ -1,0 +1,281 @@
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore.Diagnostics;//Логгирование
+
+namespace Space
+{
+    public class Course//Класс таблицы персона
+    {
+        public int Id { get; set; }//NOT NULL
+        public string? Name { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        public List<Student> Students{ get; set; } = new(); //Не обязательное свойство допускающие значение null(nullable-тип)
+        //Навигационные свойства
+
+        //Промежуточная таблица
+        public List<Enrollment> Enrollments{ get; set; } = new();
+    }
+
+    [Table("People")]//Переименование таблицы
+    public class Student
+    {
+        public int Id { get; set; }//NOT NULL
+        public string? Name { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        public int Age { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        public List<Course> Courses { get; set;} = new();//Не обязательное свойство допускающие значение null(nullable-тип)
+
+
+        //Навигационные свойства
+
+        //Промежуточная таблица
+        public List<Enrollment> Enrollments{ get; set; } = new();
+    }
+
+    public class Enrollment
+    {
+        //Навигационные свойства
+        public int StudentId { get; set;}//NOT NULL
+        public Student? Student {get; set;}//Не обязательное свойство допускающие значение null(nullable-тип)
+
+        public int CourseId { get; set;}//NOT NULL
+        public Course? Course {get; set;}//Не обязательное свойство допускающие значение null(nullable-тип)
+
+        //Оценка студента
+        public int Mark {get; set;}//NOT NULL
+    }
+
+    public class ApplicationContext : DbContext//Класс контекст данных
+    {
+        //public DbSet<Account> Accounts { get; set; } = null!;
+        public DbSet<Course> Courses { get; set; } = null!;
+        public DbSet<Student> Students { get; set; } = null!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data Source=helloapp.db");//Подключение
+            //optionsBuilder.UseLazyLoadingProxies().UseSqlite("Data Source=helloapp.db");//Подключение LazyLoading
+            //optionsBuilder.LogTo(Console.WriteLine, new[] { RelationalEventId.CommandExecuted });//Логгирование
+        }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+            .Entity<Course>()
+            .HasMany(c => c.Students)
+            .WithMany(s => s.Courses)
+            .UsingEntity<Enrollment>
+            (j => j
+            .HasOne(pt => pt.Student)
+            .WithMany(t => t.Enrollments)
+            .HasForeignKey(pt => pt.StudentId), //Связь с таблицей Students через StudentId
+            j => j
+            .HasOne(pt => pt.Course)
+            .WithMany(p => p.Enrollments)
+            .HasForeignKey(pt => pt.CourseId), //Связь с таблицей Courses через Student
+            j => 
+            {j.Property(pt => pt.Mark).HasDefaultValue(3);
+            j.HasKey(t => new {t.CourseId, t.StudentId});
+            j.ToTable("Enrollments");
+            });
+        }
+    }
+    
+    class Program//Основной класс точки входа
+    {
+        static void Main(string[] args)//Метод как точка входа
+        {
+            void CreateData()//Создание данных
+            {
+                using (ApplicationContext db = new ApplicationContext())//Ввод данных
+                {
+                    //Пересоздание БД
+                    db.Database.EnsureDeleted();//Очистка БД
+                    db.Database.EnsureCreated();//Создание БД
+
+                    //Добавление начальных данных
+                    // Account acc1 = new Account { Login = "login1", Password = "111" };
+                    // Account acc2 = new Account { Login = "login2", Password = "222" };
+                    // Account acc3 = new Account { Login = "login3", Password = "333" };
+                    // db.Accounts.AddRange(acc1, acc2, acc3);
+
+                    //Добавление начальных данных
+                    Course algorithms = new Course {Name = "Алгоритмы"};
+                    Course basics = new Course {Name = "Программирование"};
+                    db.Courses.AddRange(algorithms, basics);
+
+                    //Добавление начальных данных
+                    Student alice = new Student { Name = "Alice", Age = 25};
+                    Student eva = new Student { Name = "Eva", Age = 30};
+                    Student jon = new Student { Name = "Jon", Age = 40};
+                    Student tom = new Student { Name = "Tom", Age = 45};
+                    Student sam = new Student { Name = "Sam", Age = 55};
+                    Student bob = new Student { Name = "Bob", Age = 65};
+                    db.Students.AddRange(alice, eva, jon, tom, sam, bob);
+
+                    //Добавляем к студентам курсы
+                    //alice.Courses.Add(algorithms);
+                    alice.Enrollments.Add(new Enrollment {Course = algorithms, Mark = 4});
+
+                    eva.Courses.Add(basics);
+
+                    tom.Enrollments.Add(new Enrollment {Course = basics, Mark = 5}); 
+
+                    jon.Courses.AddRange(algorithms, basics);
+                    
+                    //basics.Students.AddRange(sam, bob);
+
+                    //Добавляем оценки студентам по курсам
+
+                    sam.Enrollments.Add(new Enrollment {Course = basics, Mark = 4});
+                    
+                    bob.Enrollments.Add(new Enrollment {Course = algorithms, Mark = 5});
+
+                      
+
+                    
+                    
+
+                    db.SaveChanges();
+                }
+            }
+            CreateData();//
+            
+            void ReadData()//Чтение данных
+            {
+                using (ApplicationContext db = new ApplicationContext())//Получение данных
+                {
+                    Console.WriteLine($"==========================Студенты===============================");
+                    var student = db.Students.Include(u => u.Courses).ToList();//вывод пользователей
+                    foreach (var i in student)
+                    {
+                        Console.WriteLine($"Id:{i.Id} Name:{i.Name} Age:{i.Age}");
+                        foreach(var j in i.Courses)
+                        {
+                            Console.WriteLine($"Course:{j.Name}");
+                            Console.WriteLine("--------------------------------------");
+                            foreach(var p in j.Enrollments)
+                            {
+                                Console.WriteLine($"Name:{p.Student?.Name} Mark:{p.Mark}");
+                                Console.WriteLine("--------------------------------------");
+                            }
+                        }
+                        //Console.WriteLine($"Company:{i.Courses?.Name}\n");
+                    }
+
+                    Console.WriteLine($"==========================Курсы===============================");
+                    var course = db.Courses.Include(c => c.Students).ToList();//вывод компаний
+                    foreach (var i in course)
+                    {
+                        Console.WriteLine($"Course:{i.Name}");
+                        foreach(var j in i.Students)
+                        {
+                            Console.WriteLine($"Name:{j.Name}");
+                            Console.WriteLine("--------------------------------------");
+                        }
+                    }
+
+                }
+            }
+            Console.WriteLine("Метод вывода до изменений:");
+            ReadData();//1
+
+            void UpdateData()//Редактирование данных
+            {
+                //Изменение данных
+                using (ApplicationContext db = new ApplicationContext())//Редактирование данных
+                {   
+                    Student? student1 = db.Students.FirstOrDefault(p => p.Name == "Tom");//изменение имени пользователя
+                    if (student1 != null)
+                    {
+                        student1.Name = "Tomek";
+                        db.SaveChanges();
+                    }
+
+                    Course? course = db.Courses.FirstOrDefault(c => c.Name == "Алгоритмы");//изменение названия компании
+                    if(course != null)
+                    {
+                        course.Name = "EA";
+                        db.SaveChanges();
+                    }
+
+                    // Student? student2 = db.Students.FirstOrDefault(u1 => u1.Name == "Bob");//смена компании сотрудника
+                    // if(student2 != null)
+                    // {
+                    //     student2.Courses = course;
+                    //     db.SaveChanges();
+                    // }
+
+                }
+            }
+            UpdateData();//
+
+            Console.WriteLine("Метод вывода после изменений:");
+            ReadData();//2
+
+            void DeleteData()//Удаление данных
+            {
+                using(ApplicationContext db = new ApplicationContext())
+                {
+                    Student? student = db.Students.FirstOrDefault(u => u.Name == "Bob");
+                    if(student != null)
+                    {
+                        db.Students.Remove(student);
+                        db.SaveChanges();
+                    }
+
+                    Course? course = db.Courses.FirstOrDefault();
+                    if(course != null)
+                    {
+                        db.Courses.Remove(course);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            DeleteData();//
+            Console.WriteLine("Метод вывода после удаления:");
+            ReadData();//3
+
+
+            // using (ApplicationContext db = new ApplicationContext())//Редактирование данных
+            // {
+            //     //Получение данных по людям
+            //     ////////////////////////////////////////////////////////////////////////////////
+            //     //var users = db.Users.ToList();//Без метода //LINQ  
+            //     //var userProfile = db.UserProfiles.ToList();//Без метода //LINQ  
+            //     // var users = db.Users.Include(use => use.Company).ToList();//Без метода //LINQ 
+            //     // foreach (var i in users)
+            //     // {
+            //     //     //Console.WriteLine("==========================================");//Для красоты
+            //     //     Console.WriteLine($"Name:{i.UserProfile?.Name} Age:{i.UserProfile?.Age}");
+            //     //     Console.WriteLine($"Login:{i.Login} Password:{i.Password}");
+            //     //     //Console.WriteLine("-------------------------------------------");//Для красоты
+            //     // }
+
+            //     ////////////////////////////////////////////////////////////////////////////////////
+           
+            //     /////////////////////////////////////////////////
+            //     //var user = db.Users.ToList();//
+            //     // var countries = db.Countries.Include(c => c.Companies).ThenInclude(u => u.Users).ToList();//LINQ
+            //     // foreach (var i in countries)
+            //     // {
+            //     //     Console.WriteLine(i.Name);
+            //     //     Console.WriteLine("==========================================");//Для красоты
+            //     //     foreach (var j in i.Companies)
+            //     //     {
+            //     //         Console.WriteLine(j.Name);
+            //     //         Console.WriteLine("-------------------------------------------");//Для красоты
+            //     //         foreach (var t in j.Users)
+            //     //         {
+            //     //             Console.WriteLine(t.Name);
+            //     //         }
+            //     //         Console.WriteLine("-------------------------------------------");//Для красоты
+            //     //     }
+            //     //     Console.WriteLine("==========================================");//Для красоты
+            //     // }
+            //     //////////////////////////////////////////////////
+            // }
+
+        }
+    }
+}

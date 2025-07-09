@@ -1,0 +1,52 @@
+using System;
+
+namespace ConsoleApplication1
+{
+    internal class Program
+    {
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("Программа расчета начисления % по вкладам...)");
+            
+            Console.WriteLine("Введите сумму вклада:");
+            decimal sum = Decimal.Parse(Console.ReadLine());
+            //decimal sum = Convert.ToDecimal(Console.ReadLine());
+            
+            Console.WriteLine("Введите срок в количестве месяцев:");
+            int per = int.Parse(Console.ReadLine());
+            //int per = Convert.ToInt32(Console.ReadLine());
+
+            for (int x = 1; x<=per; x++)
+            {
+                
+                sum += sum * 0.07M;
+                Console.WriteLine($"месяц = {sum}");
+                
+            }
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write($"После {per} месяцев, сумма % по вкладам составит = {sum}");
+
+            
+            Console.ResetColor();
+            Console.ReadKey();
+            // Вариант через цикл while //
+            //int x = 1;
+            //while(x<per)
+            //{
+                //sum += sum * 0.07M;
+                //x++;
+                //Console.WriteLine($"месяц = {sum}");
+            //}
+            //Console.ForegroundColor = ConsoleColor.Yellow;
+            //Console.Write($"После {per} месяцев, сумма % по вкладам составит = {sum}");
+
+            
+            Console.ResetColor();
+            Console.ReadKey();
+		
+
+
+
+        }
+    }
+}

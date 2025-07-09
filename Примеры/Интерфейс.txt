@@ -1,0 +1,46 @@
+using System.Drawing;
+using System.Net.Http.Headers;
+using System.Xml.XPath;
+using BenchmarkDotNet.Jobs;
+using CommandLine.Text;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Diagnostics.Tracing.Parsers.Clr;
+
+namespace Benchmark; // Пространство имен
+
+interface IMovable
+{
+    public const int minSpeed = 0;// Константа минимальная скорость
+    static int maxSpeed = 60;// Максимальная скорость
+
+    int MaxSpeed {get{return 0;}}// Максимальная скорость
+    void Move()// Метод движения
+    {
+        Console.WriteLine("Walking");
+    }
+    string Name {get; set;}//Свойство название
+    delegate void MoveHandler(string message);// Определение делегата
+
+    event MoveHandler MoveEvent;// Событие движения
+
+}
+
+//delegate int Operation(int n);// к третему способу с  применением параметров
+class Program // Основной класс программы
+{
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<Интерфейс>>>");
+
+        Console.WriteLine(IMovable.minSpeed);
+        Console.WriteLine(IMovable.maxSpeed);
+        
+        //System.Console.WriteLine("Введите число от 1, до 7");
+        //int res = int.Parse(Console.ReadLine());
+        
+    }
+
+}
+

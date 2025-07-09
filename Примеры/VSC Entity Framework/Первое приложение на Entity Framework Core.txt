@@ -1,0 +1,64 @@
+//Первое приложение на Entity Framework Core
+//dotnet new console
+//dotnet tool install --global dotnet-ef
+//dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+
+
+
+using System;
+using System.Dynamic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+
+namespace Space
+{
+    public class User//Класс описвывющий данные
+    {
+        public int Id {get; set;} = 0;
+        public string? Name {get; set;} = "";
+        public int Age {get; set;} = 0;
+    }
+
+    //Специальный класс контекст данных
+    public class ApplicationContext: DbContext//определяет контекст данных, используемый для взаимодействия с базой данных
+    {
+        public DbSet<User> Users => Set<User>();//представляет набор объектов, которые хранятся в базе данных
+        public ApplicationContext()//
+        {
+            Database.EnsureCreated();//Проверка БД, при отсутсвие создается она
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)//Переопределение метода
+        {
+            optionsBuilder.UseSqlite("Data Source=hello.db");
+        }
+    }
+
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                //Создание обьектов User
+                User george = new User{Name = "George", Age = 39};
+                User tom = new User{Name = "Tom", Age = 45};
+
+                //Добавление их в БД
+                db.Users.Add(george);
+                db.Users.Add(tom);
+                db.SaveChanges();
+                Console.WriteLine("Обьекты успешно сохранены!");
+
+                //Получение обьектов из БД и вывод на консоль
+                var users = db.Users.ToList();
+                Console.WriteLine("Список обьектов:");
+                foreach (User user in users)
+                {
+                    Console.WriteLine($"Name:{user.Name} Age:{user.Age} Id:{user.Id}");
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,133 @@
+//////////////////////////////Жизненный цикл зависимостей
+// ASP.NET Core позволяет управлять жизненным циклом внедряемых в приложении сервисов. С точки зрения жизненного цикла сервисы могут представлять один из следующих типов:
+
+// Transient: при каждом обращении к сервису создается новый объект сервиса. В течение одного запроса может быть несколько обращений к сервису, соответственно при каждом обращении будет создаваться новый объект. Подобная модель жизненного цикла наиболее подходит для легковесных сервисов, которые не хранят данных о состоянии
+
+// Scoped: для каждого запроса создается свой объект сервиса. То есть если в течение одного запроса есть несколько обращений к одному сервису, то при всех этих обращениях будет использоваться один и тот же объект сервиса.
+
+// Singleton: объект сервиса создается при первом обращении к нему, все последующие запросы используют один и тот же ранее созданный объект сервиса
+
+// Для создания каждого типа сервиса предназначен соответствующий метод AddTransient(), AddScoped() и AddSingleton().
+/////////////////////////////////////////////////////////////////////////////
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+
+namespace Space
+{
+    public interface ICounter//Интерфейс(абстракт)
+    {
+        int Value{get;}//Свойство для чтения(асессоры)
+    }
+
+    public class RandomCounter: ICounter//Реализация интерфейса ICounter
+    {
+        Random ran = new Random();
+        private int _value;// Поле
+
+        public RandomCounter()//Конструктор
+        {
+            _value = ran.Next(0, 1000000);
+        }
+
+        public int Value
+        {
+            get => _value;
+        }
+    }
+
+    public class CounterService//
+    {
+        public ICounter Counter {get;}
+        public CounterService(ICounter counter)//Конструктор
+        {
+            Counter = counter;
+        }
+    }
+
+
+    public class CounterMiddleware//Определение компонента middleware
+    {
+        RequestDelegate next;
+        int i = 0;//Счетчик запросов
+
+        public CounterMiddleware(RequestDelegate next)
+        {
+            this.next = next;
+        }
+
+        public async Task InvokeAsync(HttpContext httpContext, ICounter counter, CounterService counterService)//
+        {
+            i++;
+            httpContext.Response.ContentType = "text/html; charset = utf-8";
+            await httpContext.Response.WriteAsync($"Request:{i}; Counter:{counter.Value}; Service:{counterService.Counter.Value}");
+        }
+    }
+
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+            // /////////////////////////AddTransient()
+            // //WebApplicationBuilder builder = CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);
+
+            // builder.Services.AddTransient<ICounter, RandomCounter>();
+            // builder.Services.AddTransient<CounterService>();
+            // //builder.Services.AddTransient<CounterMiddleware>();
+
+            // var app = builder.Build();
+
+            // app.UseMiddleware<CounterMiddleware>();
+
+            // app.Run();
+
+
+            /////////////////////////AddScoped()
+            //WebApplicationBuilder builder = CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);
+
+            // builder.Services.AddScoped<ICounter, RandomCounter>();
+            // builder.Services.AddScoped<CounterService>();
+            // //builder.Services.AddTransient<CounterMiddleware>();
+
+            // var app = builder.Build();
+
+            // app.UseMiddleware<CounterMiddleware>();
+
+            // app.Run();
+
+
+            /////////////////////////AddSingleton()
+            //WebApplicationBuilder builder = CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);
+
+            // builder.Services.AddSingleton<ICounter, RandomCounter>();
+            // builder.Services.AddSingleton<CounterService>();
+            // //builder.Services.AddTransient<CounterMiddleware>();
+
+            // var app = builder.Build();
+            
+            // app.UseMiddleware<CounterMiddleware>();
+
+            // app.Run();
+
+            //WebApplicationBuilder builder = CreateBuilder();//Создание механизма Depedency Injection и передача в нужный метод
+            var builder = WebApplication.CreateBuilder(args);
+
+            RandomCounter ranCounter = new RandomCounter();
+            builder.Services.AddSingleton<ICounter>(ranCounter);
+            builder.Services.AddSingleton<CounterService>(new CounterService(ranCounter));
+            //builder.Services.AddTransient<CounterMiddleware>();
+
+            var app = builder.Build();
+            
+            app.UseMiddleware<CounterMiddleware>();
+
+            app.Run();
+
+        }
+    }
+    
+}

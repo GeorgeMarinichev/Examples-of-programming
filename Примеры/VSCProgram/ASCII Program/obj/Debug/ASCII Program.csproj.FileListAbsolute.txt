@@ -1,0 +1,7 @@
+C:\Users\SmartPlayer\Desktop\ASCII Program\bin\Debug\ASCII Program.exe.config
+C:\Users\SmartPlayer\Desktop\ASCII Program\bin\Debug\ASCII Program.exe
+C:\Users\SmartPlayer\Desktop\ASCII Program\bin\Debug\ASCII Program.pdb
+C:\Users\SmartPlayer\Desktop\ASCII Program\obj\Debug\ASCII Program.csproj.AssemblyReference.cache
+C:\Users\SmartPlayer\Desktop\ASCII Program\obj\Debug\ASCII Program.csproj.CoreCompileInputs.cache
+C:\Users\SmartPlayer\Desktop\ASCII Program\obj\Debug\ASCII Program.exe
+C:\Users\SmartPlayer\Desktop\ASCII Program\obj\Debug\ASCII Program.pdb

@@ -1,0 +1,67 @@
+//////////////////////////////Передача зависимостей в конечные точки
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Routing.Patterns;
+using System;
+
+namespace Space
+{
+    ////////////////////////////////////////////////////////////////////////////////
+    interface IDateTime
+    {
+        public string DateGet();
+        public string TimeGet();
+    }
+    ////////////////////////////////////////////////////////////////////////////////
+
+    public class DateTimeService: IDateTime
+    {
+    //     void GetTime()
+    //     {
+    //         DateTime.Now.ToShortDateString();
+    //     }
+
+        public string DateGet()
+        {
+            return DateTime.Now.ToLongDateString();
+        }
+
+        public string TimeGet()
+        {
+            return DateTime.Now.ToLongTimeString();
+        }
+    }
+
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            //var builder = WebApplication.CreateBuilder(args);
+
+            //builder.Services.AddTransient<DateTimeSevice>();//Добавление сервиса
+            builder.Services.AddTransient<DateTimeService>();//Добавление сервиса
+            
+            var app = builder.Build();
+
+            ////////////////////////////// Ограничения
+            app.Map("/", () => "Index Page");
+            app.Map("/users", () => "User  Page");
+            app.Map("/date", (DateTimeService dateTimeService) => $"Date:{dateTimeService.DateGet()}");
+            app.Map("/time", (DateTimeService dateTimeService) => $"Time:{dateTimeService.TimeGet()}");
+            app.Map("/dt", (DateTimeService dateTimeService)=> SendDateTime(dateTimeService));//Рабочий способ
+            //app.Map("/dt", ()=> SendDateTime);
+
+            //app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            app.Run();
+
+            static string SendDateTime(DateTimeService dateTimeService)
+            {
+                return $"Date:{dateTimeService.DateGet()} Time:{dateTimeService.TimeGet()}";
+            }
+        }
+    }
+}
+

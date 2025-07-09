@@ -1,0 +1,136 @@
+using System;
+using System.Collections;
+using System.Diagnostics;
+using System.Collections.ObjectModel; //Директива
+using System.Collections.Specialized;
+
+namespace Genesis;
+    
+    class Person
+    {
+        public string Name { get; }
+        public Person(string name)
+        {
+            Name = name;
+        }
+    }
+
+    internal class Program
+    {
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Класс ObservableCollection");
+
+        //ObservableCollection<string> person = new ObservableCollection<string>();//Пустой список
+        //ObservableCollection<string> person = [];//Пустой список
+        var person = new ObservableCollection<string>();//Пустой список
+
+        //ObservableCollection<string> animal = new ObservableCollection<string>(16);//Емкость словаря
+
+        var people = new ObservableCollection<string>(new string[] { "M1", "M2", "M3" });//конструктора позволяет передать объекты из другой коллекции или массива
+
+        //var employees = new List<string> { "Tom", "Bob", "Sam" };//Лист 
+        //Dictionary<int, string> people = new Dictionary<int, string>(employees);//Инициализация стека элементами из другой коллекции или массива
+
+        var people1 = new ObservableCollection<string>() //Инициализация объектов
+            {
+                "Tom","Bob", "Sam"
+            };
+        Console.WriteLine(people1.Count);
+        Console.WriteLine(people1[0]);
+        Console.WriteLine(people1[1]);
+        Console.WriteLine(people1[2]);
+
+        Console.WriteLine("========================================================");
+
+        var people2 = new ObservableCollection<string>(new string[] { "Mike", "Alice", "Kate" })//Инициализация объектов
+            {
+                "Tom", "Bob", "Sam"
+            };
+        Console.WriteLine(people2.Count); //Колличество элементов в словаре
+        Console.WriteLine(people2.First());//Первый элемент в словаре
+        Console.WriteLine(people2.Last()); //Последний элемент в словаре
+        
+        Console.WriteLine("========================================================");
+        
+        foreach (var i in people2)
+        {
+            Console.WriteLine(i);//Перебор элементов словаря циклом
+        }
+
+        for (int i = 0; i < people1.Count; i++)
+        {
+            Console.WriteLine(people1[i]);
+        }
+
+        Console.WriteLine("========================================================");
+
+        var people3 = new ObservableCollection<string>();//Пустая коллекция
+
+        people3.Add("DNS");//Добавление элемента в коллекию
+        people3.Insert(1,"RBT");//Добавление по индексу элемента в коллекию 
+        Console.WriteLine(people3.Contains("M video"));//Проверка наличия элемента = false
+        people3.Remove("DNS");//Удаление элемента
+        //people3.RemoveAt(0);//Удаление элемента по индексу
+
+        Console.WriteLine("========================================================");
+
+        var people4 = new ObservableCollection<Person>()
+        {
+            new Person("Dima"),
+            new Person("Denis")
+        };
+        foreach (var i in people4)
+        {
+            Console.WriteLine(i.Name);
+        }
+        Console.WriteLine("\nСписок пользователей:");
+
+
+        people4.Add(new Person("Valera"));  // добавляем новый элемент
+        foreach (var i in people4)
+        {
+            Console.WriteLine(i.Name);
+        }
+        Console.WriteLine("\nСписок пользователей:");
+
+        
+        people4.RemoveAt(1);                 // удаляем элемент
+        foreach (var i in people4)
+        {
+            Console.WriteLine(i.Name);
+        }
+        Console.WriteLine("\nСписок пользователей:");
+
+
+        people4[0] = new Person("Eugene");   // заменяем элемент
+        foreach (var i in people4)
+        {
+            Console.WriteLine(i.Name);
+        }
+
+        //people4.CollectionChanged += People_CollectionChanged;// подписываемся на событие изменения коллекции
+        //void People_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)// обработчик изменения коллекции
+        //{
+        //    switch (e.Action)
+        //    {
+        //        case NotifyCollectionChangedAction.Add: // если добавление
+        //            if (e.NewItems?[0] is Person newPerson)
+        //                Console.WriteLine($"Добавлен новый объект: {newPerson.Name}");
+        //            break;
+        //        case NotifyCollectionChangedAction.Remove: // если удаление
+        //            if (e.OldItems?[0] is Person oldPerson)
+        //                Console.WriteLine($"Удален объект: {oldPerson.Name}");
+        //            break;
+        //        case NotifyCollectionChangedAction.Replace: // если замена
+        //            if ((e.NewItems?[0] is Person replacingPerson) &&
+        //                (e.OldItems?[0] is Person replacedPerson))
+        //                Console.WriteLine($"Объект {replacedPerson.Name} заменен объектом {replacingPerson.Name}");
+        //            break;
+        //    }
+    }
+
+
+}
+
+

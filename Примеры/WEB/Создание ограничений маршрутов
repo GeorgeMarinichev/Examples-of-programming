@@ -1,0 +1,85 @@
+//////////////////////////////Создание ограничений маршрутов
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Routing.Patterns;
+using System;
+
+namespace Space
+{
+    ////////////////////////////////////////////////////////////////////////////////
+    // interface IRouteConstraint
+    // {
+    //     bool Match(HttpContext? httpContext, IRouter? route, string routeKey, 
+    //                 RouteValueDictionary values, RouteDirection routeDirection);
+    // }
+    ////////////////////////////////////////////////////////////////////////////////
+
+    class SecretCodeConstraint : IRouteConstraint//IParameterPolicy
+    {
+        private readonly string secretCode; // Допустимый код
+
+        public SecretCodeConstraint(string secretCode)
+        {
+            this.secretCode = secretCode;
+        }
+
+        public bool Match(HttpContext? httpContext, IRouter? route, string routeKey, 
+                          RouteValueDictionary values, RouteDirection routeDirection)
+        {
+            if (values.TryGetValue(routeKey, out var value))
+            {
+                return value?.ToString() == secretCode;
+            }
+            return false;
+        }
+        // public bool Apply(HttpContext httpContext, ParameterPolicyContext parameterPolicyContext)
+        // {
+        //     // Исправлено использование TryGetValue
+        //     if (parameterPolicyContext.Values.TryGetValue(parameterPolicyContext.ParameterName, out var value))
+        //     {
+        //         return value?.ToString() == secretCode;
+        //     }
+        //     return false;
+        // }
+
+        ////////////////////////////////////////////////////////////////
+        public class InvalidNamesConstraint: IRouteConstraint
+        {
+            string[] names = new[]{"Tom", "Jon", "Bob"};
+            public bool Match(HttpContext? httpContext, IRouter? route, string routeKey, 
+                          RouteValueDictionary values, RouteDirection routeDirection)
+            {
+                return !names.Contains(values[routeKey]?.ToString());
+            }
+        }
+        
+    }
+
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            //var builder = WebApplication.CreateBuilder(args);
+
+            //builder.Services.Configure<RouteOptions>(options => options.ConstraintMap.Add("secretcode", typeof(SecretCodeConstraint)));
+            builder.Services.AddRouting(options => options.ConstraintMap.Add("secretcode", typeof(SecretCodeConstraint)));
+            
+            var app = builder.Build();
+
+            ////////////////////////////// Ограничения
+            //app.Map("/", () => "Index Page");
+            //app.Map("/users", () => "User  Page");
+            //app.Map("/phonebook/{phone:regex(^7-\\d{{3}}-\\d{{3}}-\\d{{2}}-\\d{{2}}$)}", (string phone) => $"Phonebook: {phone}");
+
+            //app.Map("/users/{name}/{token:secretcode(1985)}/", (string name, int token) => $"User  Name: {name} \nToken: {token}");
+            app.Map("/users/{name:invalidnames}", (string name) => $"User  Name: {name}");//
+
+
+            app.Run();
+        }
+    }
+}
+

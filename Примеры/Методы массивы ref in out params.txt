@@ -1,0 +1,74 @@
+using System;
+using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace ConsoleApp7
+{
+
+    internal class Program
+    {
+        static int[] myMassiv(int a)//Метод генератор одномерного массива
+        {
+            int[] massiv = new int[a];
+            Random rand = new Random();
+            for (int i = 0; i < massiv.Length; i++)
+            {
+                massiv[i] = rand.Next(1, 10);
+            }
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            for (int i = 0; i < massiv.Length; i++)
+            {
+                Console.Write(massiv[i] + "\t");
+            }
+            Console.WriteLine();
+            return massiv;
+        }
+
+
+        static void Main(string[] args)
+        {
+            //static void myMetod2(object res1, object res2) => Console.WriteLine($"Символ:{res1} количество:{res2}");
+
+            Console.WriteLine("Программа метод изменяющий количество элементов в массиве");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            
+            int mass_x;
+            mass_x = 0;
+            Random ran = new Random();
+            ran.Next(10);
+
+            int[] mass;
+            mass = myMassiv(2);
+            Console.WriteLine(mass.Length);
+            try
+            {
+                Console.Write("Введите длину массива: ");
+                mass_x = int.Parse(Console.ReadLine());
+                myMassiv(mass_x);
+            }
+            catch (Exception)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(" Не верное значение!!!");
+                Console.ReadKey();
+                //throw;
+            }
+
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(mass.Length);
+            Console.WriteLine(mass.Rank);
+            Console.WriteLine(mass.Sum());
+            Console.WriteLine(mass.Min());
+            Console.WriteLine(mass.Max());
+
+
+
+
+            Console.ResetColor();
+        }
+
+    }
+}

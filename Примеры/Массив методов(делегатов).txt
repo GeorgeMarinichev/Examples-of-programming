@@ -1,0 +1,83 @@
+using System.Net.Http.Headers;
+using BenchmarkDotNet.Jobs;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Diagnostics.Tracing.Parsers.Clr;
+
+namespace Benchmark; // Пространство имен
+
+//public delegate void MyDelegate(string s);// Делегат 0
+
+public delegate void MyDelegate1(string s);// Делегат 1
+class Program // Основной класс программы
+{
+    // private static void SayHello(string s)// Метод 0
+    // {
+    //     Console.WriteLine("Hello, "+ s);// Конкатенация строк
+    // }
+    private static void SayHello(string s)// Метод 1
+    {
+        Console.WriteLine("Hello, "+ s);// Конкатенация строк
+    }    
+    
+    private static void SayGoodbay(string s)// Метод 2
+    {
+        Console.WriteLine("SayGoodbay, "+ s);// Конкатенация строк
+    }
+
+    private static void AskHowAreYou(string s)// Метод 3
+    {
+        Console.WriteLine("HowAreYou, "+ s);// Конкатенация строк
+    }
+
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<Массив методов(делегатов)>>>");
+
+        // Массив делегатов 0
+        // MyDelegate[] dalsArray = new MyDelegate[10];
+        
+        // for (int i = 0; i < dalsArray.Length; i++)
+        // {
+        //     //dalsArray[i] = new MyDelegate(SayHello);
+        //     dalsArray[i] = SayHello;// Техника предположения делегата
+        // }
+        
+        // for (int i = 0; i < dalsArray.Length; i++)
+        // {
+        //     //dalsArray[i].Invoke(Convert.ToString(i));
+        //     dalsArray[i](Convert.ToString(i));
+        // }
+
+        MyDelegate1[] methodsArray = new MyDelegate1[]
+        {
+            //SayHello, SayGoodbay, AskHowAreYou
+            delegate (string s)
+            {
+                Console.WriteLine("Hello1" + s);
+            },
+            (s) =>
+            {
+                Console.WriteLine("Goodbay1," + s);
+            },
+            (s) => Console.WriteLine("HowAreYou," + s)
+        };
+
+        for (int i = 0; i < methodsArray.Length; i++)
+        {
+            //methodsArray[i].Invoke(Convert.ToString(i));
+            methodsArray[i](Convert.ToString(i));
+        }
+
+
+
+        Console.WriteLine("-------------------------------------");
+        
+        //System.Console.WriteLine("Введите число от 1, до 7");
+        //int res = int.Parse(Console.ReadLine());
+        
+    }      
+
+}
+

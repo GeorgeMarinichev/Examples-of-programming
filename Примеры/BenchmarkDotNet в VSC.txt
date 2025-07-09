@@ -1,0 +1,49 @@
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
+using System.Text;
+
+/*
+
+Команда подключения библиотеки dotnet add package BenchmarkDotNet в VSC
+Команда запуска в конфигурации Release 
+dotnet run -c Release 
+
+*/
+
+BenchmarkRunner.Run<StringText>();// Метод BenchmarkRunner.Run, в котором типизируется класс StringText
+
+[MemoryDiagnoser]// Колличество создаваемых обьектов(применяется в качестве атрибута к тестируемому классу)
+public class StringText
+{
+    string[] numbers = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+
+
+    [Benchmark]//Атрибут тестирования метода
+    public string WithStringBuilder()
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        foreach (string s in numbers)
+        {
+            stringBuilder.Append(s);
+            stringBuilder.Append(" ");
+        }
+        return stringBuilder.ToString();
+    }
+
+    [Benchmark]//Атрибут тестирования метода
+    public string WithConcatenation()
+    {
+        string result = "";
+        foreach (string s in numbers) result = result + s + " ";
+        return result;
+    }
+    
+    [Benchmark]//Атрибут тестирования метода
+    public string WithInterpolation()
+    {
+        string result = "";
+        foreach (string s in numbers) result = $"{result}{s}";
+        return result;
+    }
+   
+}

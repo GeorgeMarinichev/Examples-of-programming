@@ -1,0 +1,58 @@
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using System.Runtime.InteropServices;
+
+
+namespace Genesis;
+
+public class Person
+{
+    string name;
+    public int Age {get; set;}
+
+    public Person(string name, int age)
+    {
+        this.name = name;
+        this.Age = age;
+    }
+    public void Print() => Console.WriteLine($"Name{name} Age{Age}");
+}
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("<<<<<<<<<<<Πετλεκρθÿ>>>>>>>>>>");
+        Type myType = typeof(Person);
+
+        // foreach (MemberInfo member in myType.GetMembers())
+        // {
+        //     Console.WriteLine(member);
+        // }
+
+        ///////////////////////////////////////////////////////
+        // foreach (MemberInfo i in myType.GetMembers(BindingFlags.DeclaredOnly 
+        //                                                 | BindingFlags.Instance 
+        //                                                 | BindingFlags.NonPublic 
+        //                                                 | BindingFlags.Public))
+        // {
+        //     Console.WriteLine($"{i.DeclaringType} {i.MemberType} {i.Name}");
+        // }
+
+        /////////////////////////////////////////////////////////////////////////////////////////
+        MemberInfo[] print = myType.GetMember("Print", BindingFlags.Instance | BindingFlags.Public);
+        foreach (MemberInfo i in print)
+        {
+            Console.WriteLine($"{i.MemberType} {i.Name}");
+        }
+            
+    }
+
+}
+
+    
+        
+
+
+
+

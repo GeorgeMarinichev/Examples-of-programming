@@ -1,0 +1,50 @@
+
+namespace Genesis; // Пространство имен
+
+interface IAction//Интерфейс
+{
+    protected internal void Move()
+    {
+        Console.WriteLine("Движется");
+    }
+}
+
+class BaseAction: IAction//Применение/реализация интерфейса к классу
+{
+    void IAction.Move()
+    {
+        Console.WriteLine("Move in Base Class");
+    }
+
+}
+
+//delegate int Operation(int n);// к третему способу с  применением параметров
+class Program // Основной класс программы
+{
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<Явная реализация интерфейсов>>>");
+
+        BaseAction baseAction1 = new BaseAction();//Через экземпляр/обЪект класса
+        //baseAction1.Move();// Ошибка!
+        //((IAction)baseAction1).Move();//Небезопасное приведение(преобразование)
+        if (baseAction1 is IAction action)//Безопасное приведение(преобразование)
+        {
+            action.Move();
+        }
+        IAction baseAction2 = new BaseAction();//Через экземпляр/обЪект интерфейса
+        baseAction2.Move();
+        
+
+        
+        
+        //System.Console.WriteLine("Введите число от 1, до 10");
+        //int res = int.Parse(Console.ReadLine());
+        
+    }
+
+}
+
+

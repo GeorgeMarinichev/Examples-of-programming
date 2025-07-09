@@ -1,0 +1,148 @@
+using System.Threading.Tasks.Dataflow;
+
+namespace Genesis;
+public class RecProgram // Мой класс с одним конструкором и пятью методами
+{
+    public RecProgram() // Конструктор
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("Конструкор класса RecProgram");   
+    }
+
+    /// <summary>
+    /// Метод №1 Приветсвие без параметров
+    /// </summary>
+    public void Rec() // Метод №1
+    {
+        Console.WriteLine("Виды рекурсии");
+    }
+
+    /// <summary>
+    /// Метод №2 Рекурсивный метод цикла счетчика
+    /// </summary>
+    /// <param name="i"></param>
+    /// <param name="x"></param> 
+    public void Rec(int i, int x = 1) // Метод №2
+    { 
+        Console.WriteLine(x);
+        if (x >= i)
+        {
+            return;
+        }
+        x++;
+        Rec(i, x);
+    }
+
+    /// <summary>
+    /// Метод №3 Рекурсивный метод перебора массива 
+    /// </summary>
+    /// <param name="mass"></param>
+    /// <param name="i"></param>
+    public void Rec(int [] mass, int i = 0) // Метод №3
+    {
+        if (i < mass.Length)
+        {
+            Console.WriteLine(mass[i]);
+            i++;
+            Rec(mass, i);
+        }
+        else
+        {
+            return;
+        }
+    }
+
+/// <summary>
+/// Метод №4 Сумма элементов массива рекурсией
+/// </summary>
+/// <param name="mass"></param>
+/// <param name="i"></param>
+/// <param name="res"></param>
+/// <returns></returns>
+    public static int Rec1(int [] mass, int i = 0, int x = 0) // Метод №4
+    {
+        if (i < mass.Length)
+        {
+            return mass[i] + Rec1(mass, ++i);
+        }
+        return 0;
+    }
+
+    /// <summary>
+    /// Метод №5 Сумма цифр числа рекурсией
+    /// </summary>
+    /// <param name="val"></param>
+    /// <returns></returns>
+    public static int Rec1(int val)// Метод №5
+    {
+        if(val < 10)
+        {
+            return val;
+        }    
+        return val % 10 + Rec1(val / 10);
+    }
+}
+internal class Program
+{
+    private static void Main(string[] args)////////////////////// Основной метод программы //////////////////////////
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Основы ООП");
+        
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("======================");
+        /////////////////////////////////////////////////////////////////////////////////////////////
+
+        int [] mass = {1, 9, 8, 5};
+
+        int num = 1985;
+
+        /////////////////////////////////////////////////////////////////////////////////////////////
+
+        RecProgram rec = new();// Экземпляр класса
+
+        //dynamic rcc = new RecProgram();
+
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("======================");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        rec.Rec(); // Метод перегрузка №1 Приветсвие без параметров
+        
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("======================");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        rec.Rec(12, 1); // Метод пергрузка №2 Рекурсивный метод цикла счетчика
+
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("======================");
+        Console.ForegroundColor = ConsoleColor.Cyan; 
+        rec.Rec(mass); // Метод №3 Рекурсивный метод перебора массива
+
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("======================");
+        Console.ForegroundColor = ConsoleColor.DarkCyan; 
+        //int sumRec1 = RecProgram.Rec1(mass); // Метод №4 Сумма элементов массива рекурсией
+        //Console.WriteLine(sumRec1);
+        Console.WriteLine(RecProgram.Rec1(mass));
+
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("======================");
+        Console.ForegroundColor = ConsoleColor.DarkCyan;
+        int sumRec2 = RecProgram.Rec1(num); // Метод №5 Сумма цифр числа рекурсией
+        Console.WriteLine(sumRec2);
+        //Console.WriteLine(RecProgram.Rec1(num));
+   
+       Console.ResetColor();
+       //Console.Clear();
+    }
+}
+
+
+
+
+    
+
+
+
+
+

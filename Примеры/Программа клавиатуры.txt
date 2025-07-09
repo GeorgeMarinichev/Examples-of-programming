@@ -1,0 +1,28 @@
+//restart:
+Console.WriteLine("Программа клавиатура...)");
+
+Console.ForegroundColor = ConsoleColor.Yellow;
+Console.WriteLine("Нажмите клавишу:");
+Console.ForegroundColor = ConsoleColor.Green;
+
+ConsoleKey consoleKey = Console.ReadKey().Key;
+switch (consoleKey)
+{
+    case ConsoleKey.Q:
+        Console.WriteLine("Q");
+        break;
+    case ConsoleKey.Backspace:
+        Console.WriteLine("Backspace");
+        break;
+    case ConsoleKey.W:
+        Console.WriteLine("w");
+        break;
+    default:
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Не правильная кнопка!");
+        break;
+}
+
+Console.ResetColor();
+Console.ReadKey();
+//goto restart;

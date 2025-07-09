@@ -1,0 +1,101 @@
+//Создание сервисов
+//////////////////////////////////////////////////////
+using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;                   //Необходимый пакет using
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+//////////////////////////////////////////////////////
+using System.Text;
+using Microsoft.AspNetCore.DataProtection;
+
+namespace Space
+{
+    ///////////////////////////////////////Создание интерфейса сервиса
+    interface ITimeService//Интерфейс (абстракция) сервисов
+    {
+        string GetTime();//Метод без реализации
+    }
+    class ShortTimeService: ITimeService// Класс (short-короткий)реализующий интерфейс ITimeService
+    {
+        public string GetTime()
+        {
+            return DateTime.Now.ToShortTimeString();
+        }
+    }
+
+    class LongTimeService: ITimeService// Класс (lohg-длинный) реализующий иетерфейс ITimeService
+    {
+        public string GetTime() => DateTime.Now.ToLongTimeString();
+        
+    }
+
+
+    ////////////////////////////////////Создание класса сервиса без интерфейса(абстракции)
+    public class DateService//
+    {
+        public string GetDate()
+        {
+            return DateTime.Now.ToShortDateString();
+            //return DateTime.Now.ToLongDateString();
+        }
+    }
+
+    //////////////////////////////////Создание расширяшего класса для добавления сервисов
+    public static class ServiceProividerExtensions
+    {
+        public static void AddService(this IServiceCollection services)
+        {
+            services.AddTransient<DateService>();
+        }
+    } 
+
+
+    //////////////////////////////////////////////////Установка сервисов
+    
+    public class Program//Главный класс приложения
+    {  
+        public static void Main(string[] args)//Главный метод точка входа
+        {
+        //     WebApplicationBuilder builder = WebApplication.CreateBuilder();
+        //     builder.Services.AddTransient<ITimeService, ShortTimeService>();// Коллекция сервисов короткое время
+        //     builder.Services.AddTransient<ITimeService, LongTimeService>();// Коллекция сервисов длинное время
+
+        //     builder.Services.AddTransient<DateService>();// Коллекция сервисов короткая дата
+     
+        //     WebApplication app = builder.Build();
+        //     //var app = builder.Build();
+
+        //     //builder.Services.AddTransient<ITimeService, ShortTimeService>();// Коллекция сервисов
+        
+
+        //     app.Run(async(context)=> 
+        //     {
+        //         var timeService = app.Services.GetService<ITimeService>();
+        //         var dateService = app.Services.GetService<DateService>();
+        //         await context.Response.WriteAsync($"Time:{timeService?.GetTime()}");
+        //         await context.Response.WriteAsync($"Date:{dateService?.GetDate() ?? "Service not available"}");
+        //         //Console.WriteLine("Hello, METANIT.COM");
+        //     });
+
+        //     //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));
+        //     app.Run();
+
+        /////////////////////////////////////////////Установка сервисов с расширением
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+
+            builder.Services.AddService();
+
+            var app = builder.Build();
+
+            app.Run(async(context)=>
+            {
+                var dateService = app.Services.GetService<DateService>();
+                await context.Response.WriteAsync($"Date:{dateService?.GetDate() ?? "Service not available"}");
+
+            });
+            app.Run();
+        }
+    }
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Test CORS</title>
+</head>
+<body>
+    <h2 id="result"></h2>
+    <button id="btn" value="Запрос">Запрос</button>
+
+    <script>
+        // const btn = document.getElementById("btn");
+        // const result = document.getElementById("result");
+        // btn.addEventListener("click", async () =>
+        // {
+            // try
+            // {
+            //     //const response = await fetch("http://localhost:5072/");
+            //     //const response = await fetch("http://localhost:5072/", {headers: {"custom-header": "test"}});//отправка custom-headers заголовка
+            //     //if(response.ok) result.innerText = await response.text();
+
+            //     const response = await fetch("http://localhost:5072/");
+            //     if(response.ok)
+            //     {
+            //         const headerTitle = "custom-header";//название заголовка
+            //         result.innerText = await response.text();
+            //         if(response.headers.has(headerTitle))
+            //         {
+            //             console.log(response.headers.get(headerTitle));//получаем его значение
+            //         }
+            //     }
+            // }
+            // catch (e)
+            // {
+            //     result.innerText = e.message;
+            // }
+            
+        // });
+
+        const btn = document.getElementById("btn");
+        const result = document.getElementById("result");
+        document.cookie = "login=tom32"; // куки, которые будут отправляться
+        btn.addEventListener("click", async () => 
+        {
+            try 
+            {
+                const response = await fetch("https://localhost:5072/", { credentials: "include"});
+                if (response.ok)  result.innerText = await response.text();    
+            }
+            catch (e) 
+            {
+                result.innerText = e.message;
+            }
+        });
+    </script>
+</body>
+</html>

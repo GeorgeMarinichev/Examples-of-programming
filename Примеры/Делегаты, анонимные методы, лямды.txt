@@ -1,0 +1,51 @@
+namespace ConsoleApp5
+{
+    delegate void MyDelegate();//
+    delegate void MyDelegateI(string str);//
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Делегаты, анонимные методы, лямды");
+
+            void MyMethod()
+            {
+                Console.WriteLine("MyMethod");
+            }
+            //#1
+            //MyDelegate M1 = new(MyMethod);
+            //M1();
+            
+            //#2
+            MyDelegate m2;
+            m2 = MyMethod;
+            m2();
+
+            //#3
+            MyDelegate m3 = delegate
+            {
+                Console.WriteLine("Анонимный метод - void");
+            };
+            m3();
+
+            //#4
+            MyDelegateI m4 = delegate (string name)
+            {
+                Console.WriteLine($"Анонимный метод - string:{name}");
+            };
+            m4("m4");
+
+            //#5
+            MyDelegate m5 = () => Console.WriteLine("Лямда-1");
+            m5();
+
+            //#6
+            MyDelegateI m6 = lamda => { Console.WriteLine($"Лямда:{lamda}"); };
+            m6("2");
+
+            var m7 = () => Console.WriteLine("Лямда-3");
+            m7();
+
+        }
+    }
+}

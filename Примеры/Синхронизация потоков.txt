@@ -1,0 +1,54 @@
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+
+namespace Genesis; // Пространство имен
+
+
+class Program // Основной класс программы
+{
+    public static void Main(string[] args)// Основной метод программы
+    {
+        Console.WriteLine("====================<<<Синхронизация потоков>>>================");
+
+        int x = 8;
+        object locker = new();//Объект заглушка
+        //Запускаем поток
+        for (int i = 1; i < 6; i++)
+        {
+            Thread myT1 = new(Print);
+            myT1.Name = $"Поток-{i}";//Установка имени для каждого потока
+            myT1.Start();
+            //Console.WriteLine(i);
+        }
+
+          void Print()
+        {
+            lock (locker)
+            {
+                x = 1;
+                for (int i = 1; i < 6; i++)
+                {
+                    Console.WriteLine($"{Thread.CurrentThread.Name}:{x}");
+                    x++;
+                    Thread.Sleep(500);
+                
+                }
+            }
+        }
+    }
+}
+
+
+
+        
+
+    
+
+
+
+
+
+
+
+
+

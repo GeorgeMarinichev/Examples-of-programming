@@ -1,0 +1,143 @@
+using System;
+using System.Collections;
+using System.Collections.Immutable;//Директива
+
+namespace Genesis;
+
+internal class Program
+    {
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Форматирование и интерполяция строк");
+
+        ////////////////////////////Создание строк////////////////////////////////////////////////
+        
+        //При выводе строк в консоли с помощью метода Console.WriteLine для встраивания значений 
+        //в строку мы можем применять форматирование вместо конкатенации:
+
+        string name = "Tom";
+        int age = 32;
+        Console.WriteLine("Имя:{0} Возраст:{1}", name, age);//Имя:Tom Возраст:32
+        //То же самое форматирование в строке мы можем сделать не только в методе Console.WriteLine,
+        //но и в любом месте программы с помощью метода string.Format:
+        string output = string.Format("Имя:{0} Возраст:{1} лет", name, age);
+        Console.WriteLine(output);
+        //Метод Format принимает строку с плейсхолдерами типа {0}, {1} и т.д., а также набор аргументов, которые
+        //вставляются на место данных плейсхолдеров. В итоге генерируется новая строка.
+
+
+        ///////////////////////////Спецификаторы форматирования//////////////////////////////////
+
+        Console.WriteLine("------------------Форматирование валюты---------------------");
+        //Для форматирования валюты используется описатель "C/c":
+        //double number = 23.7;
+        //string result1 = string.Format("{0:C0}", number);
+        //Console.WriteLine(result1);//24 p
+        //string result2 = string.Format("{0:c1}", number);
+        //Console.WriteLine(result2);//23,7 ?
+
+        Console.WriteLine("------------------Форматирование целых чисел---------------------");
+        //Для форматирования целочисленных значение применяется описатель "D/d":
+        //int number = 23;
+        //string result1 = string.Format("{0:D}", number);
+        //Console.WriteLine(result1);//23
+        //string result2 = string.Format("{0:d4}", number);
+        //Console.WriteLine(result2);//0023
+
+        Console.WriteLine("------------------Форматирование дробных чисел---------------------");
+        //Для форматирования дробны чисел используется описатель F/f
+        //int number = 23;
+        //string result1 = string.Format("{0:F}", number);
+        //Console.WriteLine(result1);//23,00
+        //string result2 = string.Format("{0:f4}", number);
+        //Console.WriteLine(result2);//23,0000
+
+
+        Console.WriteLine("------------------Формат процентов---------------------");
+        //Для форматирования отображение процентов описатель P/p
+        //decimal number = 23;
+        //string result1 = string.Format("{0:P}", number);
+        //Console.WriteLine(result1);//2 300,00 %
+        //string result2 = string.Format("{0:p4}", number);
+        //Console.WriteLine(result2);//2 300,0000 %
+
+        Console.WriteLine("------------------Экспоненциальное представление---------------------");
+        //Для форматирования экспоненциальное представление описатель E/e
+        //int number = 23;
+        //string result1 = string.Format("{0:E}", number);
+        //Console.WriteLine(result1);//2,300000E+001
+        //string result2 = string.Format("{0:e4}", number);
+        //Console.WriteLine(result2);//2,3000e+001
+
+        Console.WriteLine("------------------Шестнадцатеричный формат---------------------");
+        //Для форматирования шестнадцатеричный формат описатель X/x
+        //int number = 23;
+        //string result1 = string.Format("{0:X}", number);
+        //Console.WriteLine(result1);//17
+        //string result2 = string.Format("{0:x4}", number);
+        //Console.WriteLine(result2);//0017
+
+        Console.WriteLine("------------------Задает более короткий из двух форматов: F или E---------------------");
+        //Для форматирования описатель G/g
+        //int number = 23;
+        //string result1 = string.Format("{0:G}", number);
+        //Console.WriteLine(result1);//23
+        //string result2 = string.Format("{0:g4}", number);
+        //Console.WriteLine(result2);//23
+
+        Console.WriteLine("------------------Настраиваемые форматы---------------------");
+        //Используя знак #, можно настроить формат вывода. Например, нам надо вывести некоторое число в формате телефона +х (ххх)ххх-хх-хх:
+        //long number = 79964180110;
+        //string result1 = string.Format("{0:+#(###)###-##-##}", number);
+        //Console.WriteLine(result1);//+7(996)418-01-10
+
+        ////////////////////////////////Метод ToString//////////////////////////////////////////////////////////
+        
+        //Метод ToString() не только получает строковое описание объекта, но и может осуществлять форматирование. 
+        //Он поддерживает те же описатели, что используются в методе Format:
+
+        Console.WriteLine("------------------Метод ToString()---------------------");
+        long phone = 79964182727;
+        Console.WriteLine(phone.ToString("+#(###)###-##-##"));//+7(996)418-27-27
+        //Или
+        Console.WriteLine(string.Format("{0:+#(###)###-##-##}", phone));//+7(996)418-27-27
+
+        double money = 250000.500;
+        Console.WriteLine(money.ToString("C2")); //250 000,50 p
+
+        Console.WriteLine("------------------Интерполяция строк---------------------");
+        //Интерполяция строк призвана упростить форматирование строк. Так, перепишем пример с выводом значений переменных в строке:
+        //string name1 = "George";
+        //int age1 = 38;
+        //Console.WriteLine($"Имя:{name1} Возраст:{age1}");
+
+        //int x = 10;
+        //int y = 5;
+        //Console.WriteLine($"{x}+{y}={x + y}");
+
+        //int x = 10;
+        //int y = 5;
+        //string result = $"{x}+{y}={x + y}";
+        //Console.WriteLine(result);
+
+        int x = 10;
+        int y = 5;
+        string result = $"{x}+{y}={Myltiply(x, y)}";
+        Console.WriteLine(result);
+
+        int Myltiply(int a, int b) => a + b;
+
+        long phone1 = 79964180110;
+        Console.WriteLine($"{phone:+#(###)###-##-##}");//+7(996)418-01-10
+
+        string name1 = "George";
+        int age1 = 38;
+        Console.WriteLine($"Имя: {name1, 50}Возраст: {age1}");
+
+
+
+
+    }
+}
+
+

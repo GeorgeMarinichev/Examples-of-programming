@@ -1,0 +1,97 @@
+
+using System.Runtime.InteropServices.Marshalling;
+using System.Security.Cryptography;
+class MyClass
+{
+    private int age = 10;//Поля класса
+
+    private int age2 = 30;//Поля класса
+    public int Age2
+    {
+        get
+        {
+            return age2;
+        }
+        //get{return age2;}
+        //get => age2;Сокращение
+        set
+        {
+            age2 = value;
+        }
+        //set{value = age2;}
+        //set => age2 = value;Сокращение
+
+        //public int Age2 => age2;// Сокращение всего свойства целиком
+    }
+
+    public int Age3{get; set;}=50;//Свойства - акссесоры(методы доступа)
+    ////////////////////////////////////////////
+    public int GetMethod()
+         {
+             return age;
+         }
+
+
+    // public void SetMethod(int age)
+    //     {
+    //         this.age = age;
+    //     } 
+    public void SetMethod(int age)
+        {
+            if(age < 0 || age > 120)
+            {
+                Console.WriteLine($"Не верное значение:{age}! Возраст должен быть ни меньше 0, и не более 120 лет");
+            }
+            else
+            {
+               this.age = age; 
+            }
+        }    
+    ////////////////////////////////////////////  
+    private string name;//Поля класса 
+    public string Name
+    {
+        set
+        {
+            if(string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException("Имя не может быть пустым!");  
+            }
+            else if(name.Length < 2)
+            {
+                throw new Exception("Имя не может иметь менее двух символов!");
+            }
+            else
+            {
+                name = value;
+            }
+        }
+        get{return name;}
+    }
+}
+class Program
+{ 
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Свойства(методы доступа)");
+        var ppp = new MyClass();
+        
+        Console.WriteLine(ppp.GetMethod());
+        ppp.SetMethod(-15);
+        ppp.SetMethod(20);
+        Console.WriteLine(ppp.GetMethod());
+
+        Console.WriteLine(ppp.Age2);
+        ppp.Age2 = 60;
+        Console.WriteLine(ppp.Age2);
+
+        Console.WriteLine(ppp.Age3);
+        ppp.Age3 = 100;
+        Console.WriteLine(ppp.Age3);
+
+        ppp.Name ="q";
+        Console.WriteLine(ppp.Name);
+
+
+    }
+}

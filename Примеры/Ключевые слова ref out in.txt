@@ -1,0 +1,120 @@
+using System.Diagnostics;
+
+namespace Cosmos
+{
+    ///////////////////////////////////////////////////////////
+    struct Point
+    {
+        public int x;
+        public int y;
+        public int z;
+   
+    }
+    
+    ///////////////////////////////////////////////////////////
+    
+    internal class Program
+    {
+        static void Shit(int x)
+        {
+            x = 0;
+            Console.WriteLine(x);
+        }
+
+        static void Shit1(ref int x)
+        {
+            x = 1;
+            Console.WriteLine(x);
+        }
+
+        static void Shit2(out int x)
+        {
+            x = 2;// Обязательная инициализация!
+            Console.WriteLine(x);
+        }
+        //////////////////////////////////////////////////////////////////////////
+        static void Shit3(in int x)
+        {
+            //x = 3;// Заперещено присвивать значение(только для чтения)!
+            Console.WriteLine(x);
+        }
+
+        static void Foo1(Point value)
+        {
+            //value.x = 15;
+            //Console.WriteLine(value.x + "=" + value.y + "=" + value.z);
+        }
+       
+        //////////////////////////////////////////////////////////////////////////
+       
+        static void Foo2(in Point value)
+        {
+            //value.x = 15;
+            //Console.WriteLine(value.x + "=" + value.y + "=" + value.z);
+        }
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Ключевые слова ref out in");
+
+            Console.WriteLine("==================================");
+
+            Point pon = new(); // Обьект(экземпляр структуры)
+            pon.x = 10; 
+            pon.y = 20;
+            pon.z = 30;
+
+            //Foo(pon);
+            //Foo1(in pon);
+            Stopwatch sw = Stopwatch.StartNew();                      // Stopwatch (класс для определения времени
+                                                                      // выполнения приложения)
+            for (int i = 0; i < int.MaxValue; i++)                    //
+            {                                                         //
+                Foo1(pon);                                            //
+            }                                                         //
+            sw.Stop();                                                //
+            Console.WriteLine($"Foo1 = {sw.ElapsedMilliseconds}");    //
+                                                                      //
+            sw.Restart();                                             //
+                                                                      //
+            for (int i = 0; i < int.MaxValue; i++)                    //
+            {                                                         //
+                Foo2(pon);                                            //
+            }                                                         //
+            sw.Stop();                                                //
+            Console.WriteLine($"Foo2 = {sw.ElapsedMilliseconds}");    //
+
+            Console.WriteLine("==================================");
+
+            int x;
+            x = 10;
+            Console.WriteLine("до: " + x);
+
+            Shit(x);
+            Console.WriteLine("до: " + x);
+
+            x = 10;
+            Shit1(ref x);
+            Console.WriteLine("до: " + x);
+
+            x = 10;
+            Shit2(out x);
+            Console.WriteLine("до: " + x);
+
+            x = 10;
+            Shit3(in x); // Можно не ставить in пример - (Shit3(x))
+            Console.WriteLine("до: " + x);
+
+
+            Console.WriteLine("==================================");
+
+            
+
+
+            
+
+
+
+        }
+    }
+}

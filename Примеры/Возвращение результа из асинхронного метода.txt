@@ -1,0 +1,159 @@
+using System.Data;
+using System.Reflection.Metadata;
+using System.Threading.Tasks;// Деректива поделючения пространство имен многопоточности
+
+namespace Genesis; // Пространство имен
+
+class MyClass//Класс
+{       
+    public void Method()//Метод
+    {
+        Console.WriteLine("1985"); 
+    }
+}
+
+class Account
+{
+    int sum = 0;
+    public event EventHandler<string>? Added;
+    public void Put(int sum)
+    {
+        this.sum += sum;
+        Added?.Invoke(this, $"На счет поступило{sum}$");
+    }
+
+}
+
+record class Person(string Name);
+
+
+class Program // Основной класс программы
+{ 
+    public static async Task Main(string[] args)// Основной метод программы
+    {
+        //Console.SetWindowSize(80, 40);//
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("===<<<Возвращение результа из асинхронного метода>>>===");
+        Console.ResetColor();
+        //////////////////////////////void////////////////////////////
+        // PrintAsunc("Hello World");
+        // PrintAsunc("Hello METANIT.COM");
+
+        // Console.WriteLine("Main End");
+        // await Task.Delay(3000);
+
+        // async void PrintAsunc(string message)
+        // {
+        //     await Task.Delay(1000);
+        //     Console.WriteLine(message);
+        // }
+        /////////////////////////////////////////////////////////////
+        // Account account = new Account();
+        // account.Added += PrintAsunc1;
+
+        // account.Put(500);
+
+        // await Task.Delay(2000);
+
+        // async void PrintAsunc1(object? obj, string message)
+        // {
+        //     await Task.Delay(1000);//Имитация продолжительной работы
+        //     Console.WriteLine(message);
+        // }
+        //////////////////////////////Task////////////////////////////
+        // var task = PrintAsunc("Hello Metanit.com");
+        // Console.WriteLine("Main Work");
+
+        // await task;
+
+        // async Task PrintAsunc(string message)
+        // {
+        //     await Task.Delay(0);
+        //     Console.WriteLine(message);
+        // }
+
+        /////////////////////////////Task<T>/////////////////////////////
+        // int n1 = await SquareAsenc(5);
+        // int n2 = await SquareAsenc(10);
+        // int n3 = await SquareAsenc(50);
+        // Console.WriteLine($"n1={n1} n2={n2} n3={n3}");//
+
+
+        // async Task<int> SquareAsenc(int n)
+        // {
+        //     await Task.Delay(0);
+        //     return n * n;//Корень числа
+        // }
+
+        ////////////////////////////Task<T>///////////////////////////
+        // Person person = await GetPersonAsync("Tom");
+        // Console.WriteLine(person.Name);
+
+        // async Task<Person> GetPersonAsync(string name)
+        // {
+        //     await Task.Delay(0);
+        //     return new Person(name);
+        // }
+
+        ////////////////////////////Task<T>//////////////////////////
+        // var square5 = SquareAsenc(5);
+        // var square6 = SquareAsenc(10);
+      
+        // Console.WriteLine("Остальные действия в методе Main");//
+
+        // int n1 = await square5;
+        // int n2 = await square5;
+        // Console.WriteLine($"n2:{n1} n2:{n2}");
+
+        // async Task<int> SquareAsenc(int n)
+        // {
+        //     await Task.Delay(0);
+        //     var result = n * n;
+        //     //return n * n;//Корень числа
+        //     Console.WriteLine($"Квадрат числа {n} равен {result}");
+        //     return result;
+        // }
+
+        ////////////////////////////Task<T>//////////////////////////
+        var result = await AddAsync(4, 5);
+        Console.WriteLine(result);
+
+        Task<int> AddAsync(int a, int b)
+        {
+            return Task.FromResult(a + b);
+        }
+
+        ////////////////////////////ValueTask<T>//////////////////////////
+        var getMessage = getMessageAsync();
+        string message = await getMessage.AsTask();
+        Console.WriteLine(message);//
+
+        async ValueTask<string> getMessageAsync()
+        {
+            await Task.Delay(0);
+            return "Hello";
+        }
+
+       
+    }
+
+}
+
+
+
+
+
+
+
+        
+
+    
+
+
+
+
+
+
+
+
+

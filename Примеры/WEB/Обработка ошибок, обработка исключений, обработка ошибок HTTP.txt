@@ -1,0 +1,174 @@
+/////////////////////////////Обработка ошибок, обработка исключений, обработка ошибок HTTP
+using System;
+
+
+namespace Space
+{
+    class Person
+    {
+        public string Name {get; set;} = "";
+        public int Age {get; set;} = 0;
+    }
+
+   
+    internal class Program
+    {
+        private static void Main(string[] args)
+        {
+        //    ////////////////////////
+        //     var builder = WebApplication.CreateBuilder();
+        //     var app = builder.Build();
+
+        //     //app.UseDeveloperExceptionPage();//
+        //     app.Environment.EnvironmentName = "Production";//Меняем имя окружения
+
+        //     app.Run(async (context) =>
+        //     {
+        //         int a = 5;
+        //         int b = 0;
+        //         int c = a / b;
+
+        //         await context.Response.WriteAsync($"C = {c}");
+        //     });
+
+        //     //app.MapGet("/", () => "Hello World!");
+        //     //app.Run(async (context) => await context.Response.WriteAsync("Hello, METANIT.COM"));
+
+        //     app.Run();
+        
+        // ////////////////////////
+        //     var builder = WebApplication.CreateBuilder();
+        //     var app = builder.Build();
+
+        //     //app.UseDeveloperExceptionPage();//
+        //     app.Environment.EnvironmentName = "Production";//Меняем имя окружения
+
+        //     //Если приложение не находится в процессе разработки
+        //     //Перенаправляем по адресу "/error"
+        //     if(!app.Environment.IsDevelopment())
+        //     {
+        //         app.UseExceptionHandler("/Error");
+        //     }
+            
+        //     //Middleware, которое обрабатывает исключение
+        //     app.Map("/Error", app=> app.Run(async(context)=>
+        //     {
+        //         context.Response.StatusCode = 500;
+        //         await context.Response.WriteAsync("Error 500. DivideByZeroException occurred!");
+        //     }));
+
+        //     app.Run(async (context) =>
+        //     {
+        //         int a = 5;
+        //         int b = 0;
+        //         int c = a / b;
+
+        //         await context.Response.WriteAsync($"C = {c}");
+        //     });
+
+        //     //app.MapGet("/", () => "Hello World!");
+        //     //app.Run(async (context) => await context.Response.WriteAsync("Hello, METANIT.COM"));
+
+        //     app.Run();
+
+        // ////////////////////////
+        //     var builder = WebApplication.CreateBuilder();
+        //     var app = builder.Build();
+
+        //     //app.UseDeveloperExceptionPage();//
+        //     app.Environment.EnvironmentName = "Production";//Меняем имя окружения
+
+        //     //Если приложение не находится в процессе разработки
+        //     //Перенаправляем по адресу "/error"
+        //     if(!app.Environment.IsDevelopment())
+        //     {
+        //         app.UseExceptionHandler(app=> app.Run(async(context)=> //Middleware, которое обрабатывает исключение
+        //         {
+        //             context.Response.StatusCode = 500;
+        //             await context.Response.WriteAsync("Error 500. DivideByZeroException occurred!");
+        //         }));
+        //     }
+            
+        //     app.Run(async (context) =>
+        //     {
+        //         int a = 5;
+        //         int b = 0;
+        //         int c = a / b;
+
+        //         await context.Response.WriteAsync($"C = {c}");
+        //     });
+
+        //     //app.MapGet("/", () => "Hello World!");
+        //     //app.Run(async (context) => await context.Response.WriteAsync("Hello, METANIT.COM"));
+
+        //     app.Run();
+
+            // ////////////////////////Обработка ошибок HTTP
+            // var builder = WebApplication.CreateBuilder();
+            // var app = builder.Build();
+
+            // app.UseStatusCodePages();//Обработка ошибок HTTP
+        
+            // app.Map("/hello", () => "Hello, ASP.NET Core!");
+
+            // //app.Run(async (context) => await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            // ////////////////////////Настройка сообщения
+            // var builder = WebApplication.CreateBuilder();
+            // var app = builder.Build();
+
+            // //Обработка ошибок HTTP
+            // app.UseStatusCodePages("text/plan", "Error Resource Not Found. Status code: {0}");//Передача сообщения через плейсхолдер и конкатенацию
+
+            // app.Map("/hello", () => "Hello, ASP.NET Core!");
+
+            // //app.Run(async (context) => await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            // ////////////////////////Установка обработчика ошибок
+            // var builder = WebApplication.CreateBuilder();
+            // var app = builder.Build();
+
+            // //Обработка ошибок HTTP
+            // app.UseStatusCodePages(async (statusCodeContext)=>
+            // {
+            //     var response = statusCodeContext.HttpContext.Response;
+            //     var path = statusCodeContext.HttpContext.Request.Path;
+            //     response.ContentType = "text/plan; charset=UTF-8";
+            //     response.Headers.ContentLanguage = "ru-RU";
+
+            //     if(response.StatusCode == 403)
+            //     {
+            //         await response.WriteAsync($"Path:{path} Access Denied");
+            //     }
+            //     else if(response.StatusCode == 404)
+            //     {
+            //         await response.WriteAsync($"Resource:{path} Not Found");
+            //     }
+
+            // });//Передача сообщения через плейсхолдер и конкатенацию
+
+            // app.Map("/hello", () => "Hello, ASP.NET Core!");
+
+            // //app.Run(async (context) => await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            /////////Методы UseStatusCodePagesWithRedirects и UseStatusCodePagesWithReExecute
+            var builder = WebApplication.CreateBuilder();
+            var app = builder.Build();
+
+            //Обработка ошибок HTTP
+            //app.UseStatusCodePagesWithRedirects("/error{0}");
+            //app.UseStatusCodePagesWithReExecute("/error{0}");
+            app.UseStatusCodePagesWithReExecute("/error", "?code={0}");
+
+            app.Map("/hello", () => "Hello, ASP.NET Core!");
+            //app.Map("/error/{statusCode}", (int statusCode) => $"Error. StatusCode:{statusCode}");
+            app.Map("/error", (string code) => $"Error Code:{code}");
+
+            //app.Run(async (context) => await context.Response.WriteAsync("Hello, METANIT.COM"));
+            app.Run();
+        }
+    }
+}

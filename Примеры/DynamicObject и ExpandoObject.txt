@@ -1,0 +1,93 @@
+using System.Dynamic;
+using System.Reflection;
+
+namespace Genesis;
+
+class PersonObject : DynamicObject
+{
+    // словарь дл€ хранени€ всех свойств
+    Dictionary<string, object> members = new Dictionary<string, object>();
+ 
+    // установка свойства
+    public override bool TrySetMember(SetMemberBinder binder, object? value)
+    {
+        if(value is not null)
+        {
+            members[binder.Name] = value;
+            return true;
+        }
+        return false;
+    }
+    // получение свойства
+    public override bool TryGetMember(GetMemberBinder binder, out object? result)
+    {
+        result = null;
+        if (members.ContainsKey(binder.Name))
+        {
+            result = members[binder.Name];
+            return true;
+        }
+        return false;
+    }
+    // вызов метода
+    public override bool TryInvokeMember(InvokeMemberBinder binder, object?[]? args, out object? result)
+    {
+        result = null;
+        if(args?[0] is int number)
+        {
+            // получаем метод по имен
+            dynamic method = members[binder.Name];
+            // вызываем метод, передава€ его параметру значение args?[0]
+            result = method(number);
+        }
+        // если result не равен null, то вызов метода прошел успешно
+        return result != null;
+    }
+}
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("<<<<<<<<<< DynamicObject и ExpandoObject >>>>>>>>>>");
+        ////////////////////////////////////////////////////////////////////////////
+        dynamic person = new System.Dynamic.ExpandoObject();
+        person.Name = "Alice";
+        person.Age = 32;
+        person.Language = new List<string>{"english", "german", "french"};
+
+        Console.WriteLine($"{person.Name} {person.Age}");
+        foreach (var l in person.Language)
+        {
+            Console.WriteLine(l);
+        }
+        //ќбъ€вление метода с помощью делегатов
+        person.IncrementAge = (Action<int>)(x => person.Age += x);
+        person.IncrementAge(6);
+        Console.WriteLine($"{person.Name} {person.Age}");
+        //</int></string>
+        //////////////////////////////////////////////////////////////////////////////
+        dynamic per = new PersonObject();
+        per.Name = "Tom";
+        per.Age = 23;
+
+        Func<int, int> increment = (int n) => {per.Age += n; return per.Age;};
+        per.IncrementAge = increment;
+
+        Console.WriteLine($"{per.Name}{per.Age}");
+        per.IncrementAge(4);
+        Console.WriteLine($"{per.Name}{per.Age}");
+        
+
+    
+        
+                 
+    }
+
+}
+
+    
+        
+
+
+
+

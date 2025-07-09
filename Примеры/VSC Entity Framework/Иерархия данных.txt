@@ -1,0 +1,186 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore.Diagnostics;//Логгирование
+
+namespace Space
+{
+    //[Table("Пункты Меню")]//Переименование таблицы
+    public class MenuItem//Тип владелец
+    {
+        public int Id { get; set; }//NOT NULL
+        public string? Title { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        //public int? ParentId {get; set;}//Не обязательное свойство допускающие значение null(nullable-тип)
+        public MenuItem? Parent {get; set;}//Не обязательное свойство допускающие значение null(nullable-тип)
+        public List<MenuItem> Children {get; set;} = new();
+
+        //Навигационные свойства
+        
+        //Промежуточная таблица
+    }
+
+//     [ComplexType]//Коплексный тип
+//    public class Language
+//    {
+//         public required string Name {get; set;} //NOT NULL
+//    }
+
+ 
+    public class ApplicationContext: DbContext//Класс контекст данных
+    {
+        public DbSet<MenuItem> MenuItems { get; set; } = null!;
+
+        // public ApplicationContext()//Конструктор
+        // {
+        //     //Пересоздание БД
+        //     Database.EnsureDeleted();//Очистка БД
+        //     Database.EnsureCreated();//Создание БД
+        // }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data Source=helloapp.db");//Подключение
+            //optionsBuilder.UseLazyLoadingProxies().UseSqlite("Data Source=helloapp.db");//Подключение LazyLoading
+            //optionsBuilder.LogTo(Console.WriteLine, new[] { RelationalEventId.CommandExecuted });//Логгирование
+        }
+
+        // protected override void OnModelCreating(ModelBuilder modelBuilder)//FluentAPI 
+        // {
+        //     //modelBuilder.Entity<User>().OwnsOne(u => u.UserProfile);//Настройка связи через FluentAPI 
+        //     //modelBuilder.Entity<User>().OwnsOne(typeof(UserProfile), "Profile");//Настройка связи через FluentAPI
+        //     modelBuilder.Entity<User>(builder => {builder.ComplexProperty(user => user.Language);});//Коплексный тип через FluentAPI 
+        //     modelBuilder.Entity<Company>(builder => {builder.ComplexProperty(user => user.Language);});//Коплексный тип через FluentAPI 
+        // }
+    }
+
+    class Program//Основной класс точки входа
+    {
+        static void Main(string[] args)//Метод как точка входа
+        {
+            void CreateData()//Создание данных
+        {
+            using (ApplicationContext db = new ApplicationContext())//Ввод данных
+            {
+                //Пересоздание БД
+                db.Database.EnsureDeleted();//Очистка БД
+                db.Database.EnsureCreated();//Создание БД
+
+                //Добавление начальных данных
+                
+                MenuItem file = new MenuItem{Title = "File"};
+                MenuItem edit = new MenuItem{Title = "Edit"};
+
+                MenuItem open = new MenuItem{Title = "Open", Parent = file};
+                MenuItem save = new MenuItem{Title = "Save", Parent = file};
+
+                MenuItem copy = new MenuItem{Title = "Copy", Parent = edit};
+                MenuItem paste = new MenuItem{Title = "Paste", Parent = edit};
+                db.MenuItems.AddRange(file, edit, open, save, copy, paste);
+
+                //Добавление начальных данных
+                // Company com1 = new Company{Name = "Microsoft", Languages = new List<Language>{sharp, basic}};
+                // Company com2 = new Company{Name = "Google", Languages = com1.Languages};
+                // Company com3 = new Company{Name = "Google", Languages = com2.Languages};
+            
+                // Company com1 = new Company{Name = "Microsoft", Language = sharp};
+                // Company com2 = new Company{Name = "Google", Language = python};
+                // Company com3 = new Company{Name = "Blits", Language = basic};
+                // db.Companies.AddRange(com1, com2, com3);
+
+
+                //Добавление данных
+              
+                //alice.Courses.Add(algorithms);
+                // alice.Enrollments.Add(new Enrollment {Course = algorithms, Mark = 4});
+
+                // eva.Courses.Add(basics);
+
+                // tom.Enrollments.Add(new Enrollment {Course = basics, Mark = 5}); 
+
+                // jon.Courses.AddRange(algorithms, basics);
+
+                // //basics.Students.AddRange(sam, bob);
+
+                // //Добавляем оценки студентам по курсам
+
+                // sam.Enrollments.Add(new Enrollment {Course = basics, Mark = 4});
+
+                // bob.Enrollments.Add(new Enrollment {Course = algorithms, Mark = 5});
+
+                db.SaveChanges();
+            }
+        }
+            CreateData();//
+
+            void ReadData()//Чтение данных
+        {
+            using (ApplicationContext db = new ApplicationContext())//Получение данных
+            {
+                Console.WriteLine($"=========================All Menu:===============================");
+                Console.WriteLine($"All Menu:");
+                var menuItem = db.MenuItems.ToList();// получаем все пункты меню из БД
+                foreach (var i in menuItem)
+                {
+                    //Console.WriteLine($"Id:{i.Id} Name:{i.Name}\n Language:{i.Language.Name}");
+                    Console.WriteLine($"{i.Id} {i.Title} {i.Parent}");
+                    Console.WriteLine("--------------------------------------");
+                }
+
+                Console.WriteLine($"=========================Under Menu:===============================");
+                var fileMenu = db.MenuItems.FirstOrDefault(f => f.Title == "File");// получаем определенный пункт меню с подменю
+                if(fileMenu != null)
+                {
+                    Console.WriteLine(fileMenu.Title);
+                    foreach(var i in fileMenu.Children)
+                    {
+                        Console.WriteLine($"------{i.Title}");
+                        Console.WriteLine("++++++++++++++++++++++++++++++++++");
+                    }
+                    
+                }
+
+
+            }
+        }
+            Console.WriteLine("Метод вывода до изменений:");
+            ReadData();//1
+
+            void UpdateData()//Редактирование данных
+        {
+            //Изменение данных
+            using (ApplicationContext db = new ApplicationContext())//Редактирование данных
+            {
+                MenuItem? menuItem1 = db.MenuItems.FirstOrDefault(m => m.Title == "File");//изменение имени пользователя
+                if (menuItem1 != null)
+                {
+                    menuItem1.Title = "Файл";
+                    db.SaveChanges();
+                }
+            }
+        }
+            UpdateData();//
+
+            Console.WriteLine("Метод вывода после изменений:");
+            ReadData();//2
+
+            void DeleteData()//Удаление данных
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                MenuItem? menuItem = db.MenuItems.FirstOrDefault(m => m.Id == 2);
+                if (menuItem != null)
+                {
+                    db.MenuItems.Remove(menuItem);
+                    db.SaveChanges();
+                }
+            }
+        }
+            DeleteData();//
+            Console.WriteLine("Метод вывода после удаления:");
+            ReadData();//3
+        }
+    }
+}

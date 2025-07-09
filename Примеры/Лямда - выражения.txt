@@ -1,0 +1,61 @@
+
+
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace Benchmark; // Пространство имен
+
+public delegate void MyDelegate();// Делегат
+public delegate int AddDelegate(int a, int b);// Делегат
+public delegate string StrDelegate(string s, int x);// Делегат
+public delegate void HelloDelegate();// Делегат
+public delegate bool CompareDelegate(int a, int b);
+public delegate bool CompareDelegate2(string a, string b);
+class SomeClass
+{
+    public string SayHello(string s)
+    {
+        return $"Привет, {s}";
+    }
+}  
+
+class Program // Основной класс программы
+{
+
+    //public delegate void MyDelegate();
+
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<delegate(Лямда - выражения)>>>");
+
+        HelloDelegate hD =() => Console.WriteLine("Hello");
+        hD();
+        hD.Invoke();
+        
+        AddDelegate aD = (int x, int y) => x + y;
+        int sum = aD(10, 15);
+        Console.WriteLine(sum);
+
+        CompareDelegate cD = (x, y) => x == y;
+        bool res  = cD(15, 20);
+        Console.WriteLine(res);
+        Console.WriteLine(res.ToString());
+
+        CompareDelegate2 cD2 = (x, y) => x == y;
+        bool res2  = cD2("d", "D");
+        Console.WriteLine(res2);
+        Console.WriteLine(res2.ToString());
+
+        StrDelegate sD = (string str, int num) => str + Convert.ToString(num);
+        string resstr = sD("лет: ", 10);
+        Console.WriteLine(resstr); 
+        Console.WriteLine(resstr.ToString()); 
+
+        //System.Console.WriteLine("Введите число от 1, до 7");
+        //int res = int.Parse(Console.ReadLine());
+   
+    }      
+
+}
+

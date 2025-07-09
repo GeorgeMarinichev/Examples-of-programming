@@ -1,0 +1,64 @@
+
+while (true)
+{
+    Console.ResetColor();
+    Console.Clear();
+    Console.WriteLine("Программа ввод массивов, задание №1 )");
+    Console.ForegroundColor = ConsoleColor.Blue;
+    Console.Write("Введите количество элементов в массиве:\t");
+    int x_Arr = int.Parse(Console.ReadLine());
+    
+    int[] data_Arr;
+    data_Arr = new int[x_Arr];
+
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    for (int i = 0; i < x_Arr; i++)
+    {
+        Console.Write($"Введите элемент под индексом-{i}:");
+        data_Arr[i] = int.Parse(Console.ReadLine());
+    }
+    
+    // try
+    // {
+    //     Console.Write("Введите индекс-1:");
+    //     data_Arr[0] = int.Parse(Console.ReadLine());
+    //     
+    //     Console.Write("Введите индекс-2:");
+    //     data_Arr[1] = int.Parse(Console.ReadLine());
+    //     
+    //     Console.Write("Введите индекс-3:");
+    //     data_Arr[2] = int.Parse(Console.ReadLine());
+    // }
+    // catch (Exception)
+    // {
+    //     Console.ForegroundColor = ConsoleColor.Red;
+    //     Console.WriteLine("Введены не корректные данные!!!");
+    //     Console.ReadLine();
+    //     continue;
+    //     
+    // }
+    
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.WriteLine($"Вывод массива c {x_Arr} элементами");
+    for (int i = 0; i < data_Arr.Length; i++)
+    {
+        Console.WriteLine(data_Arr[i]);
+    }
+
+    //int outData = (inputData < 0) ? (inputData * 2): inputData;
+    //Console.WriteLine(outData);
+    
+    
+    // if (name == parol)
+    // {
+    //     Console.SetCursorPosition(1, 3 );
+    //     Console.Write($"Вверный пароль :) {name}");
+    // }
+    // else
+    //{
+    //    Console.SetCursorPosition(1, 3 );
+    //    Console.Write($"Не верный пароль :( {parol}");
+   // }
+
+   Console.ReadKey();
+}

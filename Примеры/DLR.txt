@@ -1,0 +1,72 @@
+using System.Reflection;
+using System.Reflection.Metadata;
+
+namespace Genesis;
+
+
+class Person
+{
+    public string Name{get;}
+    public dynamic Age{get; set;}
+    public Person(string name, dynamic age)
+    {
+        Name = name; Age = age;
+    }
+    public dynamic GetSalary(dynamic value, string format)
+    {
+        if (format == "string") return $"{value} uero";
+        else if (format == "int") return value;
+        else return 0.0;
+    }
+
+    // public override string ToString()
+    // {
+    //     return $"Name:{Name} Age:{Age}";
+    // }
+}
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("<<<<<<<<<< DLR  >>>>>>>>>>");
+        Person tom = new("Том", '@');
+        Console.WriteLine($"Hello, {tom.Name} - {tom.Age}");
+        Console.WriteLine(tom.GetSalary(30, "int"));
+
+        dynamic bob = new Person("Bob", 16);
+        Console.WriteLine($"Hello, {bob.Name} - {bob.Age}");
+        Console.WriteLine(bob.GetSalary(30, "string"));
+
+
+        // dynamic dyn = 3;
+        // Console.WriteLine(obj);
+
+        // dyn = "RBT";
+        // Console.WriteLine(obj);
+
+        // dyn = '@';
+        // Console.WriteLine(obj);
+
+        // dyn = new Person("Sam", 58);
+        // Console.WriteLine(obj);
+
+        dynamic dyn = 25;
+        object obj = 25;
+
+        dyn += 2;
+        //obj += 2;//Ошибка
+
+    
+        
+                 
+    }
+
+}
+
+    
+        
+
+
+
+

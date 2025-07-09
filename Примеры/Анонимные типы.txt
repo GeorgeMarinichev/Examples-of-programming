@@ -1,0 +1,83 @@
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using System.Security;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using Genesis;
+using static System.Console;
+
+namespace Genesis; // Пространство имен
+
+class Person//Класс для нициализатора с проекцией
+{
+    public string Name{get; set;}//Свойство
+    public int Age{get; set;}//Свойство
+    public Person(string name)//Конструктор
+    {
+        Name = name;
+    }
+
+    public Person(string name, int age)//Конструктор
+    {
+        Name = name;
+        Age = age;
+    }
+}
+class Program // Основной класс программы
+{
+    
+    public static void Main(string[] args)// Основной метод программы
+    {
+        Console.WriteLine("====================<<<Анонимные типы>>>================");
+        /////////////////////////////Методы расширения
+        var user = new{Name = "Alice", Age = 34};//Инициализатор
+        //user.Age = 12;//Ошибка, только для чтения
+        var manager = new{Name = "George", Age = 38, Company = "RBT"};
+
+        
+        Console.WriteLine(user.Name);
+        Console.WriteLine(user.Age);
+        Console.WriteLine(user.GetType().Name);
+        Console.WriteLine(manager.Name);
+        Console.WriteLine(manager.Age);
+        Console.WriteLine(manager.GetType().Name);
+    
+       
+        ///////////////////////////////Инициализатор с проекцией//////////////////////////////
+        Person tom = new Person("Jon", 18);
+        int age = 24;
+
+        //var student = new{tom.Name, tom.Age};//Инициализатор с проекцией
+        //Или
+        var student = new{Name = tom.Name, Age = tom.Age};
+
+        Console.WriteLine(tom.Name);
+        Console.WriteLine(tom.Age);
+        Console.WriteLine(tom.GetType().Name);
+        Console.WriteLine("===============================================");
+        Console.WriteLine(student.Name);
+        Console.WriteLine(student.Age);
+        Console.WriteLine(student.GetType().Name);
+        Console.WriteLine(student.GetType());
+
+        /////////////////////////////////Массивы объектов//////////////////////////////////////
+        Console.WriteLine("===============================================");
+        
+        var people = new[]//Массивы объектов
+        {
+            new{Name = "Zulj"},
+            new{Name = "Lena"},
+            new{Name = "Diana"},
+            new{Name = "Angelina"}
+        };
+        foreach(var p in people)
+        {
+            Console.WriteLine(p.Name);
+        }
+    }  
+
+
+}
+
+
+

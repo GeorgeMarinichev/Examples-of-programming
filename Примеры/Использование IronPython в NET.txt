@@ -1,0 +1,47 @@
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
+
+
+namespace Test1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Использование IronPython в NET");
+
+            //ScriptEngine engine = Python.CreateEngine();
+            ////engine.Execute("print('Hello, World')");
+            //engine.ExecuteFile("C:\\Users\\SmartPlayer\\source\\repos\\Test1\\Test1\\Hello.py");
+            
+            //Console.WriteLine("END");
+            ////////////////////////////////////////////////////////////////
+            //int y = 25;
+
+            //ScriptEngine engine = Python.CreateEngine();
+            //ScriptScope scope = engine.CreateScope();
+
+            //engine.ExecuteFile("C:\\Users\\SmartPlayer\\source\\repos\\Test1\\Test1\\Hello2.py", scope);
+
+            //scope.SetVariable("y", y);
+            //dynamic x = scope.GetVariable("x");
+            //dynamic z = scope.GetVariable("z");
+            //Console.WriteLine($"{x} + {y} = {z}");
+
+            /////////////////////////////////////////////////////////////////
+            int number = 5;
+
+            ScriptEngine engine = Python.CreateEngine();
+            ScriptScope scope = engine.CreateScope();
+
+            engine.ExecuteFile("C:\\Users\\SmartPlayer\\source\\repos\\Test1\\Test1\\Hello3.py", scope);
+            dynamic square = scope.GetVariable("square");
+
+            dynamic result = square(number);
+            Console.WriteLine(result);
+
+            
+
+        }
+    }
+}

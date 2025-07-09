@@ -1,0 +1,94 @@
+// See https://aka.ms/new-console-template for more information
+using System;
+
+class Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public Person(string name, int age)
+    {
+        Name = name;
+        Age = age;
+    }
+}
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Коллекции Список List<T>");
+
+        //List<string> people = new List<string>();//Без инициализации
+        //List<string> people = [];//Без инициал C# 12v
+        var people = new List<string>();
+
+        //List<string> people2 = new List<string>(){"Tom", "Bob", "Sam"};//С инициализацией
+        List<string> people2 = ["Tom", "Bob", "Sam"];//С инициализацией C# 12v
+        Console.WriteLine(people2[0]);//Обращение к элементам списка
+        people2[0] = "Jon";//Изменение первого элемента списка
+        Console.WriteLine(people2[0]);//Обращение к элементам списка
+        Console.WriteLine(people2.Count);//Длина списка при помощи свойства Count
+
+        foreach (var item in people2)//Перебор коллекции циклом foreach
+        {
+            Console.WriteLine(item);
+        }
+
+        for (int i = 0; i < people.Count; i++)//Перебор коллекции циклом for и Count/Lenght
+        {
+            Console.WriteLine(people[i]);
+        }
+
+        List<string> employees = new List<string>(people);//Инициализация элементов из другой коллекции
+        List<string> employees2 = new List<string>(people2) { "Mike" };//Иниц. элемнтов из другой коллекции с добавлением
+
+        //////////////////////////////////////////////////////////////////////////////////////
+        List<string> employees3 = people2;//Инициализация элементов из другой коллекции
+
+        List<Person> employee3 = new List<Person>()
+        {
+            new Person("Tom", 30),
+            new Person("Bob", 40),
+            new Person("Sam", 50)
+        };
+        //////////////////////////////////////////////////////////////////////////////////// <summary>
+        //Конструктор класса List принимает в качестве параметра начальную емкость списка
+        List<string> people3 = new List<string>(16);//Установка начальной емкости списка
+                                                    //List<string> people4 = new (16);//Установка начальной емкости списка
+
+        ///////////////////////////////////////////////////////////////////////
+
+        var people5 = new List<string>() { "Alica" };
+        Console.WriteLine(people5.Count);//Количество элементов в списке
+
+        people5.Add("Britni");//Добавление в список
+        Console.WriteLine(people5.Count);
+
+        //people5.AddRange(new { "Jon", "Richi" });//Добавление в список
+        //Console.WriteLine(people5.Count);
+
+        people5.Insert(0, "Jon");//Вставляем на место первого элемента в списке
+        //people5.RemoveAt(0);//Удаляем первый элемент в списке
+        //people.Remove("Britni");//Удаляем элемент "Britni" в списке
+        //people.RemoveRange(1, 2);//Удаление из списка 2 элемента начиная с индекса 1
+        //people.Clear();//Полная очистка списка
+
+        var peopleCon = people5.Contains("Bob");//Поиск элемента "Bob"
+        Console.WriteLine(peopleCon);//false
+        Console.WriteLine(people5.Contains("Jon"));//Поиск элемента "Jon" = true
+
+        Console.WriteLine(people5.Exists(p => p.Length == 6));//Поиск элемента из 6 символов
+        Console.WriteLine(people5.Find(p => p.Length == 3));//Получение первого элемента из 3 символов
+
+        people5.Reverse();//Расположение элементов в обратном порядке
+
+        foreach (var item in people5)//Перебор коллекции циклом foreach
+        {
+            Console.WriteLine(item);
+        }
+
+
+
+    }
+}
+

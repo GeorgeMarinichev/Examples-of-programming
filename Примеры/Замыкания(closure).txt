@@ -1,0 +1,81 @@
+using System.Drawing;
+using System.Net.Http.Headers;
+using System.Xml.XPath;
+using BenchmarkDotNet.Jobs;
+using CommandLine.Text;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Diagnostics.Tracing.Parsers.Clr;
+
+namespace Benchmark; // Пространство имен
+
+delegate int Operation(int n);// к третему способу с  применением параметров
+class Program // Основной класс программы
+{
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<Замыкания(closure)>>>");
+ 
+    
+    Console.WriteLine("----------------Реализация через локальную функцию--------------------------");
+        var fn1 = Outher();// fn = Inner, так как метод Outher(Внешний) возвращает функцию Inner(Внутренний)
+        //вызываем внутреннюю функцию Inner
+        fn1();//6
+        fn1();//7
+        fn1();//8
+
+        Action Outher()//метод или внешняя функция
+        {
+            int x = 10;//лексическое окружение - локальная функция
+            void Inner()//локальная(внутренняя) функция
+            {
+                x++;//операция с лексическим окружением
+                Console.WriteLine(x);
+            }
+            return Inner;//Возвращаем локальную функцию
+        }
+    
+    Console.WriteLine("----------------Реализация с помощью лямда-выражений--------------------------");
+    var outherFn = ()=>
+    {
+        int x = 10;
+        var innerFn = () => Console.WriteLine(++x);
+        return innerFn;
+    };
+
+    var fn2 = outherFn();
+    fn2();
+    fn2();
+    fn2();
+
+    Console.WriteLine("----------------Применение параметров--------------------------");
+    var fn3 = Myltiply(5);
+    Console.WriteLine(fn3(5));//25
+    Console.WriteLine(fn3(6));//30
+    Console.WriteLine(fn3(7));//35
+
+    Operation Myltiply(int n)
+    {
+        int Inner3(int m)
+        {
+            return n * m;
+        }
+        return Inner3;
+    }
+
+    // Или сокращение через лямбд:
+    var myltiply = (int n) => (int m) => n * m;
+    var fn4 = myltiply(5);
+    Console.WriteLine(fn4(5));//25
+    Console.WriteLine(fn4(6));//30
+    Console.WriteLine(fn4(7));//35
+
+  
+        //System.Console.WriteLine("Введите число от 1, до 7");
+        //int res = int.Parse(Console.ReadLine());
+        
+    }
+
+}
+

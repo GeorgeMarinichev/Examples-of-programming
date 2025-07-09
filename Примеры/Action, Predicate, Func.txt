@@ -1,0 +1,88 @@
+using System.Drawing;
+using System.Net.Http.Headers;
+using System.Xml.XPath;
+using BenchmarkDotNet.Jobs;
+using CommandLine.Text;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Diagnostics.Tracing.Parsers.Clr;
+
+namespace Benchmark; // Пространство имен
+
+//public delegate void Action();
+//Action<in T1>(T1 obj); Action<in T1.......T16>(T1 obj,......T16 obj16); Делегат Action представляет 
+//некоторое действие, которое ничего не возвращает, то есть в качестве возвращаемого типа имеет тип void:
+
+delegate void MessageDelegate(string message);//Action
+delegate bool Predicate<in T>(T obj);//Predicate
+public delegate TResult Func<out TResult>();//Func
+
+class Program // Основной класс программы
+{
+    static void Add(int x, int y) => Console.WriteLine($"{x}+{y}={x + y}");//Action
+    static int Myltiplay(int x, int y) => x * y;//Func
+
+    /////////////////////////////////////////////////////////////////////////////////
+
+    static void SetMessage(string text)
+    {
+        Console.WriteLine($"Message:{text}");
+    }
+    //////////////////////////////////////////////////////////////////////////////////
+
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<Action, Predicate, Func>>>");
+ 
+
+       MessageDelegate mD;
+       mD = SetMessage;
+       mD("123");
+
+       MessageDelegate mD1 = new(SetMessage);
+       mD1("000");
+
+        Console.WriteLine("-----------------Action----------------");//Action
+        MyClass mC = new();
+        MyClass.Operation(10,15, Add);
+
+        Console.WriteLine("----------------Predicate-----------------");//Predicate
+        Console.WriteLine(MyClass.CheckCondition(5, (int x) => x > 10));
+
+        Console.WriteLine("------------------Func-----------------");//Func
+        MyClass.DoOperation(10,15,Myltiplay);
+        Console.WriteLine(MyClass.DoOperation(10,15,Myltiplay));
+
+    
+
+
+  
+        //System.Console.WriteLine("Введите число от 1, до 7");
+        //int res = int.Parse(Console.ReadLine());
+        
+    }
+
+}
+////////////////////////////////////////////////////////////////////////////////
+using System.Runtime.CompilerServices;
+
+namespace Benchmark;
+
+class MyClass
+{
+   public static void Operation(int x, int y, Action<int, int> operation)//Action
+    {
+        operation(x, y);
+    }
+
+    public static bool CheckCondition(int x, Predicate<int> condition)//Predicate
+    {
+        return condition(x);
+    }
+
+    public static int DoOperation(int x, int y, Func<int, int, int> operation)//Func
+    {
+        return operation(x, y);
+    }
+}

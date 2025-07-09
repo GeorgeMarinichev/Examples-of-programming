@@ -1,0 +1,41 @@
+//////////////////////////////
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+
+namespace Space
+{
+    record Person(string Name, int Age);
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            /////////////////////////////////////////////////////
+            ////WebApplicationBuilder builder = CreateBuilder();
+            var builder = WebApplication.CreateBuilder(args);
+
+            //builder.Services.AddTransient<ITime, Time>();
+           //builder.Services.AddSingleton<TimeService>();  
+
+            var app = builder.Build();
+
+            
+            //app.Map("/", ()=> "Index Page");
+            app.Map("/about", ()=> "About Page");
+            // app.MapGet("/user/{name}", (string name, int? age)=> $"Name:{name} Age:{age}");//Не обязательный параметр (users?name=tom&age=45)
+            // app.MapGet("/", ()=> "Hello");
+
+
+            //////Объединение параметров при помощи класса Person
+            app.MapGet("/pers", ([AsParameters] Person person)=> $"Name:{person.Name} Age:{person.Age}");//pers?name=Tom&age=30
+        
+            //app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            app.Run();
+
+
+        }
+    }
+    
+}

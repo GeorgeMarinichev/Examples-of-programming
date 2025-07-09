@@ -1,0 +1,75 @@
+namespace Genesis; // Пространство имен
+
+//delegate void MoveHandler();// Делегат перемещения
+
+interface IUser<T>//Интерфейс
+{
+    T Id {get;}// Свойство
+}
+
+class User<T>: IUser<T>// Класс
+{
+    public T Id {get;}
+    public User(T id)// Конструктор
+    {
+        Id = id;
+    }
+}
+
+class IntUser: IUser<int>// Класс с явным указанием используемого тип int
+{
+    public int Id {get;}
+    public IntUser(int id)
+    {
+        Id = id;
+    }
+}
+
+class StringUser: IUser<string>// Класс с явным указанием используемого тип string
+{
+    public string Id {get;}
+    public StringUser(string id)
+    {
+        Id = id;
+    }
+}
+
+
+
+
+class Program // Основной класс программы
+{
+    
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<Интерфейсы в обобщениях>>>");
+       
+       User<int> us = new(12);
+       Console.WriteLine(us.Id);
+
+       User<string> us1 = new User<string>("1985");
+       Console.WriteLine(us1.Id);
+
+       IntUser iu = new(100);
+       Console.WriteLine(iu.Id);
+
+       StringUser su = new("www");
+       Console.WriteLine(su.Id);
+
+       IUser<int> iu1 = new IntUser(120);
+       Console.WriteLine(iu1.Id);
+
+       IUser<string> ius1 = new StringUser("333");
+       Console.WriteLine(iu1.Id);
+
+
+        //System.Console.WriteLine("Введите число от 1, до 10");
+        //int res = int.Parse(Console.ReadLine());
+        
+    }
+
+}
+
+

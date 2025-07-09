@@ -1,0 +1,87 @@
+
+
+namespace Genesis; // Пространство имен
+
+
+class Program // Основной класс программы
+{
+    public static void Main(string[] args)// Основной метод программы
+    {
+        Console.WriteLine("====================<<<Мониторы>>>================");
+
+        // int x = 0;
+        // object locker = new();//Объект заглушка
+        // //Запускаем пять потоков
+        // for (int i = 1; i < 6; i++)
+        // {
+        //     Thread myT1 = new(Print);
+        //     myT1.Name = $"Поток-{i}";//Установка имени для каждого потока
+        //     myT1.Start();
+        // }
+
+        //   void Print()
+        // {
+        //     lock (locker)
+        //     {
+        //         x = 1;
+        //         for (int i = 1; i < 6; i++)
+        //         {
+        //             Console.WriteLine($"{Thread.CurrentThread.Name}:{x}");
+        //             x++;
+        //             Thread.Sleep(500);
+                
+        //         }
+        //     }
+        //}
+
+        int x = 0;
+        object locker = new();//Объект заглушка
+        //Запускаем пять потоков
+        for (int i = 1; i < 6; i++)
+        {
+            Thread myT1 = new(Print);
+            myT1.Name = $"Поток-{i}";//Установка имени для каждого потока
+            myT1.Start();
+        }
+
+        void Print()
+        {
+            bool acquiredLock = false;
+            try
+            {
+                Monitor.Enter(locker, ref acquiredLock);
+                x = 1;
+                for (int i = 1; i < 6; i++)
+                {
+                    Console.WriteLine($"{Thread.CurrentThread.Name}:{x}");
+                    x++;
+                    Thread.Sleep(500);
+                
+                }
+            }
+            finally
+            {
+                if(acquiredLock) Monitor.Exit(locker);
+            }
+        }
+    }
+}
+
+    
+
+
+
+
+
+        
+
+    
+
+
+
+
+
+
+
+
+

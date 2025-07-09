@@ -1,0 +1,58 @@
+namespace WebTest1
+{
+    public interface ITimer
+    {
+        string Time { get; }
+    }
+    public class Timer : ITimer
+    {
+        public Timer()
+        {
+            Time = DateTime.Now.ToLongTimeString();
+        }
+        public string Time { get; }
+    }
+    public class TimeService
+    {
+        private ITimer timer;
+        public TimeService(ITimer timer)
+        {
+            this.timer = timer;
+        }
+        public string GetTime() => timer.Time;
+    }
+
+    public class TimerMiddleware
+    {
+        TimeService timeService;
+        public TimerMiddleware(RequestDelegate next, TimeService timeService)
+        {
+            this.timeService = timeService;
+        }
+
+        public async Task Invoke(HttpContext context)
+        {
+            await context.Response.WriteAsync($"Time: {timeService?.GetTime()}");
+        }
+    }
+    public class Program
+        {
+            public static void Main(string[] args)
+            {
+                var builder = WebApplication.CreateBuilder(args);
+                var app = builder.Build();
+
+                builder.Services.AddTransient<ITimer, Timer>();
+                app.Run(); builder.Services.AddTransient<TimeService>();
+
+                //app.MapGet("/", () => "Scoped-сервисы в singlton-объектах");
+
+                app.UseMiddleware<TimerMiddleware>();
+
+
+                app.Run();
+            }
+
+        }
+    }
+

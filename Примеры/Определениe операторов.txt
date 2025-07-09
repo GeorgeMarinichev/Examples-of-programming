@@ -1,0 +1,124 @@
+using System.Security;
+using System.Security.Cryptography;
+using Genesis;
+using static System.Console;
+
+namespace Genesis; // Пространство имен
+
+class Counter
+{
+    public int Value {get; set;}// Свойство
+    //////////////////////////////////////////////////////////////////////////////////////////
+    public static int operator +(Counter counter1, int val)// Определен оператор с перегрузкой
+    {
+        return counter1.Value + val;
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////
+    
+    public static Counter operator +(Counter counter1, Counter counter2)// Определен бинарный оператор сложения
+    {
+        return new Counter {Value = counter1.Value + counter2.Value};
+    }
+
+    public static bool operator >(Counter counter1, Counter counter2)// Определен бинарный оператор сравнения
+    {
+        return counter1.Value > counter2.Value;
+    }
+
+    public static bool operator <(Counter counter1, Counter counter2)// Определен бинарный оператор сравнения
+    {
+        return counter1.Value < counter2.Value;
+    }
+
+    public static Counter operator *(Counter counter1, Counter counter2)// Определен бинарный оператор умножения
+    {
+        return new Counter {Value = counter1.Value * counter2.Value};
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////
+    
+    public static Counter operator ++(Counter counter1)// Определен унарный оператор инкремент и декремент
+    {
+        // counter1.Value += 10;// Не правильное определение инкремента(оператор не должен менять значения пар.)
+        // return counter1;
+        return new Counter {Value = counter1.Value += 100};
+
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////
+    
+    public static bool operator !(Counter counter1)// Определен унарный оператор true и false
+    {
+        return counter1.Value == 0;
+    }
+    
+    public static bool operator true(Counter counter1)// Определен унарный оператор true и false
+    {
+        return counter1.Value != 0;
+    }
+
+     public static bool operator false(Counter counter1)// Определен унарный оператор true и false
+    {
+        return counter1.Value == 0;
+    }
+}
+
+//=============================================================================
+
+class Program // Основной класс программы
+{
+    
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<Определениe операторов>>>");
+
+        Counter c1 = new();
+        c1.Value = 25;
+        Counter c2 = new Counter(){Value = 45};
+
+        int result1 = c1 + 100;
+        Console.WriteLine(result1);
+
+        //////////////////////////////////////////////
+        bool result2 = c1 < c2;
+        Console.WriteLine(result2);
+
+        Counter c3 = c1 + c2;
+        Console.WriteLine(c3.Value);
+
+        Counter c4 = c1 * c2;
+        Console.WriteLine(c4.Value);
+
+        ////////////////////////////////////////инкремент и декремент
+        Counter con1 = new Counter{Value = 0};
+        Counter con2 = ++con1;
+        Console.WriteLine(con1.Value);
+        Console.WriteLine(con2.Value);
+        
+        //////////////////////////////////////////true и false
+        Counter cn1 = new Counter{Value = 1};
+        if(cn1)
+        {
+            Console.WriteLine(true);
+        }
+        else
+        {
+            Console.WriteLine(false);
+        }
+
+        Counter cn2 = new Counter{Value = 1};
+        if(!cn2)
+        {
+            Console.WriteLine(true);
+        }
+        else
+        {
+            Console.WriteLine(false);
+        }
+
+        
+    }
+}
+
+
+

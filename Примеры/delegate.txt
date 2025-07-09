@@ -1,0 +1,79 @@
+namespace Benchmark; // Пространство имен
+
+public delegate void AccountHandler(string message);// Делега
+
+public class Account
+{
+     public Account(int sum)
+    {
+        this.sum = sum;
+    }
+
+    int sum = 0;
+
+
+    AccountHandler? taken;
+    public void RegisterHandler(AccountHandler del)
+    {
+        taken += del;
+    }
+
+    public void UhregisterHandler(AccountHandler del)
+    {
+        taken -= del;
+    }
+
+
+    public void Add(int sum) => this.sum += sum;
+
+    public void Take(int sum)
+    {
+        if(this.sum >=sum)
+        {
+            this.sum -= sum;
+            taken?.Invoke($"Со счета списано:{sum} y.e."); 
+        }
+        else
+        {
+            taken?.Invoke($"Не достаточно средств. Баланс:{this.sum} y.e.");
+        }
+    }
+
+   
+}
+
+class Program // Основной класс программы
+{
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<delegate>>>");
+
+        Account ac1 = new(200);
+        ac1.RegisterHandler(PrintSimpleMessage);
+        ac1.RegisterHandler(PrintColorMessage);
+        ac1.Take(100);
+        ac1.Take(150);
+
+        ac1.UhregisterHandler(PrintColorMessage);
+        ac1.Take(50);
+
+
+        
+        void PrintSimpleMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
+
+        void PrintColorMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine(message);
+            Console.ResetColor();
+        }
+   
+    }      
+
+}
+

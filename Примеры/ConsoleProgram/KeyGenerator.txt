@@ -1,0 +1,51 @@
+using System;
+
+using System.Windows.Forms;
+
+namespace KeyGenerator
+{
+    public partial class Form1 : Form
+    {
+        const string listKey = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";// Список символов
+        Random rnd = new Random();// Случайность
+        
+        string GenKey()
+        {
+            string partKey = string.Empty;// Пустое 
+            
+            for (int i = 0; i < 5; i++)// Цикл создания 5 символов
+            {
+                partKey += listKey[rnd.Next(0,listKey.Length)];
+            }
+            return partKey;//Возврат результата
+                
+        }
+        
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+
+        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Console.Beep();// Гудок
+            textBox1.Text = string.Empty; // Пустое
+            for (int i = 0; i < numericUpDown1.Value; i++) // Выбор количество ключей
+            {
+                textBox1.Text += $"\t{GenKey()} - {GenKey()} - {GenKey()}\r\n ";
+            }
+           
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

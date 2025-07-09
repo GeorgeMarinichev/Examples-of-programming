@@ -1,0 +1,68 @@
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        
+        while (true)
+        {
+            Console.WriteLine("Программа генератор паролей через циклы или goto");
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("Введите количество ключей: ");
+
+            int num = 0;
+
+            try
+            {
+                Console.BackgroundColor = ConsoleColor.Blue;
+                num = Convert.ToInt32(Console.ReadLine());
+            }
+            catch(Exception)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.WriteLine("Введено не числовое значение!");
+                Console.ReadLine();
+                Console.ResetColor();
+                continue;
+            }
+
+            string listKey = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random rnd = new Random();
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            System.Console.WriteLine("\t=========================");
+            numKey();
+
+            string GenKey()
+            {
+                string part = string.Empty;
+
+                for (int i = 0; i < 5; i++)
+                {
+                    part += listKey[rnd.Next(0, listKey.Length)];
+                }
+                return part;
+            }
+
+            void numKey()
+            {
+                for (int i = 0; i < num; i++)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"\t{GenKey()} - {GenKey()} - {GenKey()}\r\n");
+                }
+                 
+            }
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            System.Console.WriteLine("\t=========================");
+
+            Console.ReadLine(); 
+            Console.ResetColor();
+
+        }
+        Console.Clear();
+    }
+}
+
+
+

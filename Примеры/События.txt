@@ -1,0 +1,175 @@
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Diagnostics.Tracing.Parsers.Clr;
+
+namespace Benchmark; // Пространство имен
+
+// class Account// Класс
+// {
+//     public delegate void AccountHandler(string message);// Делегат
+//     public event AccountHandler? Notify;// Определение события
+   
+//     public Account(int sum)// Конструктор класса
+//     {
+//         Sum = sum;
+//     }
+//     public int Sum {get; private set;}// Свойства
+
+//     public void Put(int sum)// Метод ввод
+//     {
+//         Sum += sum;
+//         Notify?.Invoke("На счет поступило: " + sum);// Вызов события
+//     }
+
+//     public void Take(int sum)// Метод вывод
+//     {
+//         if(Sum >= sum)
+//         {
+//             Sum -= sum;
+//             Notify?.Invoke("Со счета сняли: " + sum);// Вызов события
+//         }
+//         else
+//         {
+//             Notify?.Invoke("Не достаточно денег на счете. Текущий баланс: " + sum);// Вызов события
+//         }
+//     }
+// }
+
+
+// class Account// Класс вариант с акссесорами add/remove
+// {
+//     public delegate void AccountHandler(string message);// Делегат
+
+//     AccountHandler? notify;
+//     public event AccountHandler Notify// Определение события
+//     {
+//         add// Определение акссесоров add/remove
+//         {
+//             notify += value;
+//             Console.WriteLine($"{value.Method.Name} добавлен");
+//         }
+//         remove
+//         {
+//             notify -= value;
+//             Console.WriteLine($"{value.Method.Name} удален");
+//         }
+//     }
+   
+//     public Account(int sum)// Конструктор класса
+//     {
+//         Sum = sum;
+//     }
+//     public int Sum {get; private set;}// Свойства
+
+//     public void Put(int sum)// Метод ввод
+//     {
+//         Sum += sum;
+//         notify?.Invoke("На счет поступило: " + sum);// Вызов события
+//     }
+
+//     public void Take(int sum)// Метод вывод
+//     {
+//         if(Sum >= sum)
+//         {
+//             Sum -= sum;
+//             notify?.Invoke("Со счета сняли: " + sum);// Вызов события
+//         }
+//         else
+//         {
+//             notify?.Invoke("Не достаточно денег на счете. Текущий баланс: " + sum);// Вызов события
+//         }
+//     }
+// }
+
+class Account// Класс
+{
+    public delegate void AccountHandler(Account sender, AccountEventArgs e);// Делегат
+    public event AccountHandler? Notify;// Определение события
+   
+    public Account(int sum)// Конструктор класса
+    {
+        Sum = sum;
+    }
+    public int Sum {get; private set;}// Свойства
+
+    public void Put(int sum)// Метод ввод
+    {
+        Sum += sum;
+        Notify?.Invoke(this, new AccountEventArgs($"На счет поступило: {sum}", sum));// Вызов события
+    }
+
+    public void Take(int sum)// Метод вывод
+    {
+        if(Sum >= sum)
+        {
+            Sum -= sum;
+            Notify?.Invoke(this, new AccountEventArgs($"Со счета сняли: {sum}", sum));// Вызов события
+        }
+        else
+        {
+            Notify?.Invoke(this, new AccountEventArgs("Не достаточно денег на счете. Текущий баланс: {sum}", sum));// Вызов события
+        }
+    }
+}
+
+class AccountEventArgs
+{
+    public string Message {get;}
+
+    public int Sum {get;}
+
+    public AccountEventArgs(string message, int sum)
+    {
+        Message = message;
+        Sum = sum;
+    }
+}
+class Program // Основной класс программы
+{
+
+    //public delegate void MyDelegate();
+
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<События>>>");
+        
+        Account acc = new Account(100);// Экземпляр класса
+        acc.Notify += DisplayMessage;// Обработчик событий 1
+        acc.Put(20);
+        //acc.Notify += DisplayRedMessage;// Обработчик событий 2
+        Console.WriteLine("-------------------------------------");
+        acc.Take(70);
+        acc.Take(150);
+        //acc.Notify -= DisplayMessage;// Удаление обработчика событий 1
+        
+        Console.WriteLine("-------------------------------------");
+        acc.Take(180);
+
+
+        // void DisplayMessage(string message)// Метод для обработчика событий 1
+        // {
+        //     Console.WriteLine(message);
+        // }
+
+        // void DisplayRedMessage(string message)// Метод для обработчика событий 2
+        // {
+        //     Console.ForegroundColor = ConsoleColor.Red;
+        //     Console.WriteLine(message);
+        //     Console.ResetColor();
+        // }
+
+        void DisplayMessage(Account sender, AccountEventArgs e)// Метод для обработчика событий 1 вариант класса 3
+        {
+            Console.WriteLine($"Сумма транзакции:{e.Sum}");
+            Console.WriteLine(e.Message);
+            Console.WriteLine($"Текущая сумма на счете:{sender.Sum}");
+        }
+
+        //System.Console.WriteLine("Введите число от 1, до 7");
+        //int res = int.Parse(Console.ReadLine());
+        
+    }      
+
+}
+

@@ -1,0 +1,62 @@
+record class Person(string Name, int Age);
+    internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Агрегатные операции");
+        //////////////////////////Метод///////////////////////////////////
+        int[] numbers = {1, 9, 8, 5};
+
+        var qvery = numbers.Aggregate((x, y)=> x + y);
+        Console.WriteLine(qvery);//23
+        /////////////////////////////////////////////////////////////////////////
+        string[] world = {"Gaudemaus", "igitur", "Juvenes", "dum", "sumus"};
+        var sentence = world.Aggregate("Text:", (first, next)=> $"{first} {next}");
+        Console.WriteLine(qvery);//23
+        /////////////////////////////Получение размеров выборки. Метод Count()////////////////////////////////
+        int[] num = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int size = num.Count();
+        Console.WriteLine(size);//9
+
+        int[] numx = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int sizex = numx.Count(i => i % 2 == 0 && i > 10);
+        Console.WriteLine(sizex);//0
+
+        /////////////////////////////Получение суммы. Метод Count()////////////////////////////////
+        int[] num1 = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int size1 = num1.Sum();
+        Console.WriteLine(size1);//9
+
+        Person[] people = {new Person("Tom", 27), new Person("Bob", 38), new Person("Sam", 45)};
+        int size2 = people.Sum(p => p.Age);
+        Console.WriteLine(size2);//110
+        
+        /////////////////////////////Максимальное, минимальное и среднее значения. Метод Count()////////////////
+        int[] num3 = {1, 9, 8, 5};
+
+        int min = num3.Min();//Минимальное значение
+        int max = num3.Max();//Максимальное значение
+        double average = num.Average();//Среднее значение
+
+        Console.WriteLine(min);//1
+        Console.WriteLine(max);//9
+        Console.WriteLine(average);//5
+        /////////////////////////////////////////////////////////////////
+        Person[] people1 = {new Person("Tom", 27), new Person("Bob", 38), new Person("Sam", 45)};
+
+        int minPeple = people1.Min(p => p.Age);//Минимальное значение
+        int maxPeople = people1.Max(p => p.Age);//Максимальное значение
+        double averagePeople = people1.Average(p => p.Age);//Среднее значение
+
+
+        Console.WriteLine(minPeple);//1
+        Console.WriteLine(maxPeople);//9
+        Console.WriteLine(averagePeople);//5
+
+
+    }
+        
+}
+
+
+

@@ -1,0 +1,106 @@
+using System.Security.Cryptography.X509Certificates;
+
+namespace Genesis;
+    public enum Color: Byte
+{
+    Blue,
+    Green,
+    Yellow,
+    Orange,
+    Red
+}
+class Student
+{
+    public Guid id;
+    public string firstName;
+    public string lastName;
+    public string middleName;
+    public int age;
+    public string group;
+    public Color color;
+
+
+}
+public class RecProgram // Мой класс с одним конструкором и двумя методами
+{
+    public RecProgram() // Конструктор класса RecProgram
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("Конструкор класса RecProgram");
+    }
+
+    /// <summary>
+    /// Метод №1 Приветсвие без параметров в сигнатуре
+    /// </summary>
+    public void Rec() // Метод №1
+    {
+        Console.WriteLine("Виды ПП");
+    }
+
+/// <summary> 
+/// // Метод №2 с одним float параметрам в сигнатуре
+/// </summary>
+/// <param name="value"></param>
+    public void Rec(byte value)// // Метод №2
+    {
+        Console.WriteLine(value);
+    } 
+}
+internal class Program ////////////////////// Основной класс программы //////////////////////////
+{
+    private static void Main(string[] args)////////////////////// Основной метод программы //////////////////////////
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("enum - перечесления/классы");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(DateTime.Now);
+
+        // while(true)
+        // {
+        //     Console.ForegroundColor = ConsoleColor.Green;
+        //     ConsoleKey key = Console.ReadKey().Key;
+        //     int keyCode = (int)key;
+        //     Console.WriteLine($"\tEnum:{key}\tKey Code:{keyCode}");
+        //     if (key == ConsoleKey.Enter)
+        //     {
+        //         Console.WriteLine("Вы нажали Enter");
+        //     }
+        // }
+
+        RecProgram rec = new();// Экземпляр класса способ 1
+        //var rec = new RecProgram();//Экземпляр класса способ 2
+
+        static Student GetStudent()
+        {
+            //var student = new Student();//Экземпляр класса способ 2
+            Student student = new();//Экземпляр класса способ 1
+            student.firstName = "George";
+            student.middleName = "Vadimovich";
+            student.lastName = "Marinichev";
+            student.age = 38;
+            student.id = Guid.NewGuid();
+            student.group = "RBT";
+            student.color = Color.Green;
+            
+            return student;
+        }
+
+        static void Print(Student student)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("Информация о студенте:");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"id: {student.id}");
+            Console.WriteLine($"Фамилия: {student.lastName}");
+            Console.WriteLine($"Имя: {student.firstName}");
+            Console.WriteLine($"Отчество: {student.middleName}");
+            Console.WriteLine($"Возраст: {student.age}");
+            Console.WriteLine($"Группа: {student.group}");
+            Console.WriteLine($"Цвет: {student.color}");
+        }
+
+        Console.WriteLine("------------------------------------");
+        Student firstStudent = GetStudent();
+        Print(firstStudent);
+    }
+}

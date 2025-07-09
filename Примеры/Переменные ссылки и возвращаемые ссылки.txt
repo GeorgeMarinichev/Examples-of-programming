@@ -1,0 +1,77 @@
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using System.Security;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using Genesis;
+using static System.Console;
+
+namespace Genesis;  Пространство имен
+
+
+class Program  Основной класс программы
+{
+    
+    public static void Main(string[] args) Основной метод программы
+    {
+        
+        
+        Console.WriteLine(====================Переменные ссылки и возвращаемые ссылки================);
+
+        int x = 5;
+        ref int xRef = ref x;Переменная ссылка
+
+        Console.WriteLine(x);
+
+        xRef = 125;
+
+        Console.WriteLine(xRef);
+
+        x = 200;
+
+        Console.WriteLine(xRef);
+        Console.WriteLine(x);
+
+        
+        int[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9};Возвращаемая ссылка
+
+        ref int numberRef = ref Find(4, numbers);
+        numberRef = 9;Заменяем 4 на 9
+
+        Console.WriteLine(numbers[3]);9
+
+        ref int Find(int number, int[] numbers)
+        {
+            for(int i = 0; i  numbers.Length; i++)
+            {
+                if(numbers[i] == number)
+                {
+                    return ref numbers[i];Возвращаем ссылку на адрес, а не само значение
+                }
+            }
+            throw new IndexOutOfRangeException(Число не найдено);
+        }
+        
+        int a = 5;
+        int b = 8;
+        ref int pointer = ref Max(ref a, ref b);Возвращаем ссылку на адрес, а не само значение
+        pointer = 34;
+        System.Console.WriteLine($a{a} b{b});
+
+        ref int Max(ref int n1, ref int n2)Параметры определены с ref
+        {
+            if(n1  n2)
+            {
+                return ref n1;
+            }
+            else
+            {
+                return ref n2;
+            }     
+        }
+    }
+
+}
+
+
+

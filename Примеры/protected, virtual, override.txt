@@ -1,0 +1,69 @@
+
+using static System.Console;  Импорт
+ using Print = System.Console;  Псевдонимы
+
+namespace Genesis;  Пространство имен
+
+
+public class Car  Класс 1
+{
+    public Car() Пустой конструктор по умолчанию
+    {
+
+    }
+
+    protected void StartEngine()
+    {
+        WriteLine(Двигатель запущен);
+    }
+
+    public virtual void Drive()
+    {
+        StartEngine();
+        WriteLine(Я машина, я еду);
+    }
+}
+
+public class SportCar Car
+{
+    public override void Drive()
+    {
+        base.Drive(); Два метода вместе
+        WriteLine(SportCar);
+        StartEngine();
+        WriteLine(Я еду быстро);
+    }
+}
+
+public class Person  Класс 1
+{
+    public void Drive(Car car)
+    {
+        car.Drive();
+    }
+}
+
+internal class Program  Основной класс программы
+{
+    private static void Main(string[] args) Основной метод программы
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine("<<<protected, virtual, override>>>");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(DateTime.Now);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(-----------------------------);
+        Console.ForegroundColor = ConsoleColor.Green;
+
+        Car car = new(); Экземпляр класса
+        Person per = new();
+        per.Drive(car);
+        per.Drive(new Car());
+        per.Drive(new SportCar());
+
+        
+        Console.WriteLine(========+========================================);
+
+
+    }
+}

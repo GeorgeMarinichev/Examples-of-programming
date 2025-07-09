@@ -1,0 +1,46 @@
+
+
+using System.Globalization;
+
+namespace Genesis; // Пространство имен
+
+
+class Program // Основной класс программы
+{
+    
+    public static void Main(string[] args)// Основной метод программы
+    {
+        Console.WriteLine("====================<<<Преобразование типов и класс Convert>>>================");
+
+        int a = int.Parse("10");
+        double d = double.Parse("20,46");
+        decimal c = decimal.Parse("12,45");
+        byte b = byte.Parse("4");
+        Console.WriteLine($"a={a} d={d} c={c} b = {b}");//a=10 d=20,46 c=12,45 b = 4
+
+        IFormatProvider format = new NumberFormatInfo{NumberDecimalSeparator = "."};
+        double n = double.Parse("23.56", format);
+        Console.WriteLine(n);//23,56
+
+        Console.WriteLine("====================================================");
+        Console.WriteLine("Введите строку:");
+        string? input = Console.ReadLine();
+
+        bool result = int.TryParse(input, out var number);
+        if(result == true)
+            Console.WriteLine($"Преобразование прошло успешно. Число:{number}");
+        else
+            Console.WriteLine("Проебразование завершилось неудачно!");
+
+        Console.WriteLine("====================================================");
+        int num = Convert.ToInt32("23");
+        bool bl = true;
+        double dl = Convert.ToDouble(bl);
+        Console.WriteLine($"num: {num} bl: {bl} dl: {dl}");//num: 23 bl: 1
+
+
+    }
+}
+
+
+

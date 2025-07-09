@@ -1,0 +1,84 @@
+using System;
+using System.Collections;
+using System.Collections.Immutable;//Директива
+
+namespace Genesis;
+
+internal class Program
+    {
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Индексы  и диапазоны");
+
+        ////////////////////////////Индексы/////////////////////////////////// 
+
+        Index myIndex1 = 2;//Соответсует элементу 3, индекс начинается с 0
+
+        Index myIndex2 = ^2;//Оператор ^ относительно конца
+
+        string[] people = {"Tom", "Sam", "Bob", "Alice", "Kati", "Betti"};
+
+        string selected1 = people[myIndex1];
+        string selected2 = people[myIndex2];
+        string selected3 = people[1];
+        string selected4 = people[people.Length -3];
+        Console.WriteLine(selected1);//Bob
+        Console.WriteLine(selected2);//Kati
+        Console.WriteLine(selected3);//Sam
+        Console.WriteLine(selected4);//Alice
+        ///То есть в подобных ситуациях плюсом индексов является большая удобочитаемость.
+        ///Так, people[^2] более читабельно, чем people[people.Length - 2].
+        
+
+
+        ////////////////////////////Диапазоны///////////////////////////////
+        Console.WriteLine("==============================================================");
+        Range myRange = 1..4;//По 1-го индкса включая по 4-й индекс не включая
+
+        Index start = 1;
+        Index end = 4;
+        Range myRange1 = start..end;
+        Range myRange2 = 1..4;
+        Console.WriteLine(myRange1);// 1..4
+        Console.WriteLine(myRange2);// 1..4
+
+        string[] people1 = { "Tom", "Sam", "Bob", "Alice", "Kati", "Betti" };
+
+        //string[] peopleRange = people1[1..4];// получаем 2, 3 и 4-й элементы из массива
+        //string[] peopleRange = people1[1..];// получаем с 2, и до конца
+        //string[] peopleRange = people1[..4];// получаем с 1, 3 и 4-й элементы из массива
+        //string[] peopleRange = people1[..];// получаем все элементы из массива
+
+        //string[] peopleRange = people1[^2..];// два последних - Kate, Betti
+        //string[] peopleRange = people1[..^1];// начиная с предпоследнего - Tom, Bob, Sam, Alice, Kate
+        string[] peopleRange = people1[^3..^1];// два начиная с предпоследнего - Alice, Kate
+
+        foreach (var item in peopleRange)
+        {
+            Console.WriteLine(item);
+        }
+
+        ////////////////////////////Диапазоны///////////////////////////////
+        Console.WriteLine("==============================================================");
+        string[] people2 = { "Tom", "Sam", "Bob", "Alice", "Kati", "Betti" };
+
+        Span<string> peopleSpan = people;
+        foreach (var item in peopleSpan)
+        {
+            Console.WriteLine(item);
+        }
+
+        Console.WriteLine("---------------------------------------");
+
+        Span<string> selectedPeopleSpan = peopleSpan[1..4];
+
+        foreach (var item in selectedPeopleSpan)
+        {
+            Console.WriteLine(item);
+        }
+
+    }
+
+}
+
+

@@ -1,0 +1,74 @@
+//////////////////////////////Фабрика логгеров и провайдеры логгирования
+//////////////////////////////////////////////////////////////////////////////////
+using System;
+using System.Text;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;                   //Необходимый пакет using
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;//
+using Microsoft.VisualBasic;
+using Microsoft.Extensions.FileProviders;//
+//////////////////////////////////////////////////////
+
+namespace Space
+{
+    class Program//Главный класс приложения
+    {  
+        static void Main(string[] args)//Главный метод точка входа
+        {
+        ///////////////////////////////////////////////////////////////////////////
+        //     WebApplicationBuilder builder = WebApplication.CreateBuilder();
+        //     var app = builder.Build();
+
+        //    ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+        //     ILogger logger = loggerFactory.CreateLogger<Program>();//Типизируется классом, который представляет категории
+        //    //Или
+        //    //ILogger logger = loggerFactory.CreateLogger("WebApplication");//Название категории можно передавать в метод в качестве параметра в виде строки
+
+        //     app.Run(async(context)=>//Вывод всех методов расширения
+        //     {
+        //         logger.LogInformation($"Requested Path{context.Request.Path}");
+        //         await context.Response.WriteAsync("Hello, METANIT.COM");
+        //     });
+
+        //     //app.UseMiddleware<PersonMiddleware>();//Метод HTTP-запросов UseMiddleware<T>()
+        //     //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обработки вызовов, если они не соответсвуют другим запросам
+        //     app.Run();
+
+        ////////////////////////////Получение фабрики логгера через внедрение зависимостей(depedency injection(DI))
+            // WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            // var app = builder.Build();
+
+            // app.Map("/hello", (ILoggerFactory loggerFactory)=>
+            // {
+            //     ILogger logger = loggerFactory.CreateLogger("MapLogger");//Создаегм логгер с категорией MapLogger
+            //     logger.LogInformation($"Path:/hello Time:{DateTime.Now.ToLongDateString()}");//Логгируем некоторое сообщение
+            //     return "Hello World!";
+            // });
+
+            // //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обработки вызовов, если они не соответсвуют другим запросам
+            // app.Run();
+
+            ////////////////////////Провайдеры логгирования
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            var app = builder.Build();
+
+           ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());//В место провайдера AddConsole() исползуем AddDebug()
+            ILogger logger = loggerFactory.CreateLogger<Program>();//Типизируется классом, который представляет категории
+           //Или
+           //ILogger logger = loggerFactory.CreateLogger("WebApplication");//Название категории можно передавать в метод в качестве параметра в виде строки
+
+            app.Run(async(context)=>//Вывод всех методов расширения
+            {
+                logger.LogInformation($"Requested Path{context.Request.Path}");
+                await context.Response.WriteAsync("Hello, METANIT.COM");
+            });
+
+            //app.UseMiddleware<PersonMiddleware>();//Метод HTTP-запросов UseMiddleware<T>()
+            //app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));//Кончная точка обработки вызовов, если они не соответсвуют другим запросам
+            app.Run();
+
+        }
+    }
+}

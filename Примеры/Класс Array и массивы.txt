@@ -1,0 +1,116 @@
+using System.Collections;
+using System.Collections.Immutable;//Директива
+
+namespace Genesis;
+
+internal class Program
+    {
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Класс Array и массивы");
+
+        /////////////Сортировка массива по алфавиту
+        string[] alf = {"B", "C", "D", "A"};//Массив
+
+        Array.Sort(alf);//Сортировка массива пр алфавиту
+        //Array.Sort(alf, 1, 3);//Cортировк с 1 индекса 3 элемента
+
+        foreach (var i in alf)
+        {
+            Console.WriteLine(i);
+        }
+
+
+
+        Console.WriteLine("==============================================");
+        /////////////Сортировка массива в обратном порядке
+        string[] alf1 = {"A", "B", "C", "D"};//Массив
+
+        Array.Reverse(alf1);//Сортировка массива в обратном порядке
+        //Array.Reverse(alf1, 1, 3);//Изменение порядок 3 элементов начиная c индекса 1
+
+        foreach (var i in alf1)
+        {
+            Console.WriteLine(i);
+        }
+
+
+
+        Console.WriteLine("==============================================");
+        /////////////Изменение размера массива
+        string[] alf2 = {"A", "B", "C", "D"};//Массив
+
+        Array.Resize(ref alf2, 3);//Уменьшение массива до 3 элементов
+
+        foreach (var i in alf2)
+        {
+            Console.WriteLine(i);
+        }
+
+
+
+        Console.WriteLine("==============================================");
+        /////////////Копирование массива
+        string[] mass1 = { "1", "2", "3", "4", "5" };//Массив
+        string[] mass2 = new string[3];//Массив
+        //var mass2 = new string[3];//Массив 2
+
+        Array.Copy(mass1, 1, mass2, 0, 3);// копируем 3 элемента из массива mass1 c индекса 1  
+                                       // и вставляем их в массив mass2 начиная с индекса 0
+
+        foreach (var i in mass2)
+        {
+            Console.WriteLine(i);
+        }
+
+
+
+        Console.WriteLine("==============================================");
+        /////////////Поиск индекса элемента
+        string[] people = { "Tom", "Sam", "Bob", "Jon", "Alice"};//Массив
+
+        int firstIndex = Array.IndexOf(people, "Sam");//Поиск индекса второго элемента "Sam"
+        Console.WriteLine(firstIndex);// 1
+
+        int lastIndex = Array.LastIndexOf(people, "Bob");//Поиск индекса последнего элемента "Bob"
+        Console.WriteLine(lastIndex);// 2
+
+        int lengthIndex = Array.FindIndex(people, person => person.Length > 3);//Индекс первого элемента, у которого длина строки больше 3
+        Console.WriteLine(lengthIndex);// 4
+
+        int lengthLastIndex = Array.FindLastIndex(people, person => person.Length < 4);//Индекс последнего элемента, у которого длина строки меньше 4
+        Console.WriteLine(lengthLastIndex);// 3
+
+        //Поиск индекса элемента "Bob"
+        //Для бинарного поиска коллекцию нужно отсортировать
+        Array.Sort(people);//Сортировка в алфавитном порядке 
+        int bobIndex = Array.BinarySearch(people, "Bob");
+        Console.WriteLine($"bobIndex: {bobIndex}");
+
+
+
+        Console.WriteLine("==============================================");
+        /////////////Поиск элемента по условию
+        string[] people2 = { "Tom", "Sam", "Bob", "Jon", "Britni", "Alice", "Betti", "Kate"};//Массив
+
+        //Поиск первого и последнего элемента
+        //Где длина строки больше 3 символов
+        string? first = Array.Find(people2, person => person.Length > 3);
+        Console.WriteLine(first); // Britni
+
+        string? last = Array.FindLast(people2, person => person.Length > 3);
+        Console.WriteLine(last); // Kate
+
+        //Поиск элементов, у которых длина строки равна 3
+        string[] group = Array.FindAll(people2, person => person.Length == 3);
+        foreach (var person in group)
+        {
+            Console.WriteLine(person);
+        }
+
+    }
+
+
+}
+
+

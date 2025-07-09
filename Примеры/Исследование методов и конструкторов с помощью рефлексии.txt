@@ -1,0 +1,66 @@
+using System.Reflection;
+
+namespace Genesis;
+ 
+class Person
+{
+    public string Name{get;}
+    public int Age{get;}
+
+    public Person(string name, int age)
+    {
+        Name = name;
+        Age = age;
+    }
+    public Person(string name) : this(name, 1){}
+    private Person() : this("Tom"){}
+
+}
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("<<<<<<<<<< Исследование методов и конструкторов с помощью рефлексии >>>>>>>>>>");
+        Type myType = typeof(Person);
+        Console.WriteLine("Конструкторы");
+        foreach (ConstructorInfo i in myType.GetConstructors(BindingFlags.Instance 
+                                                        | BindingFlags.NonPublic
+                                                        | BindingFlags.Public))
+        {
+            string modificator = "";
+            if(i.IsPublic)
+            modificator += "public";
+            else if(i.IsPrivate)
+            modificator += "private";
+            else if(i.IsAssembly)
+            modificator += "internal";
+            else if(i.IsFamily)
+            modificator += "protected";
+            else if(i.IsFamilyAndAssembly)
+            modificator += "private protected";
+            else if(i.IsFamilyOrAssembly)
+            modificator += "rotected internal";
+            Console.Write($"{modificator} {myType.Name}(");
+            ParameterInfo[] parameters = i.GetParameters();
+
+            for (int j = 0; j < parameters.Length; j++)
+            {
+                var param = parameters[j];
+                Console.WriteLine($"{param.ParameterType.Name} {param.Name}");
+                if(j < parameters.Length - 1) Console.WriteLine(", ");
+            }
+            Console.WriteLine(")");
+        }
+        
+        
+            
+    }
+
+}
+
+    
+        
+
+
+
+

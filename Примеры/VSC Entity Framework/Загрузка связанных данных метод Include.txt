@@ -1,0 +1,182 @@
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;//Логгирование
+
+namespace Space
+{
+    public class Position
+    {
+        public int Id { get; set; }//NOT NULL
+        public string? Name { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        public List<User> Users { get; set; } = new();
+    }
+
+    [Table("People")]//Переименование таблицы
+    public class User//Класс таблицы персона
+    {
+        public int Id { get; set; }//NOT NULL
+        public string? Name { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+
+        //Навигационные свойства
+        public int? CompanyId { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        public Company? Company { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        public int? PositonId { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        public Position? Position { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+
+    }
+
+    public class Company//Класс таблицы компания
+    {
+        public int Id { get; set; }//NOT NULL
+        public string? Name { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        public List<User> Users { get; set; } = new();
+
+        //Навигационные свойства
+        public int? CountryId { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        public Country? Country { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+    }
+
+    public class Country//Класс таблицы страна
+    {
+        public int Id { get; set; }//NOT NULL
+        public string? Name { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        public List<Company> Companies { get; set; } = new();
+
+        //Навигационные свойства
+        public int CapitalId{ get; set; }//
+        public City? Capital{ get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        
+    }
+
+    public class City//Класс таблицы город
+    {
+        public int Id { get; set; }//NOT NULL
+        public string? Name { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        
+    }
+
+    public class ApplicationContext : DbContext//Класс контекст данных
+    {
+        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Position> Positions { get; set; } = null!;
+        public DbSet<Company> Companies { get; set; } = null!;
+        public DbSet<Country> Countries { get; set; } = null!;
+        public DbSet<City> Cities { get; set; } = null!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data Source=helloapp.db");
+		//optionsBuilder.LogTo(Console.WriteLine, new[] { RelationalEventId.CommandExecuted });//Логгирование
+        }
+    }
+    class Program//Основной класс точки входа
+    {
+        static void Main(string[] args)//Метод как точка входа
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                //Пересоздание БД
+                db.Database.EnsureDeleted();//Очистка БД
+                db.Database.EnsureCreated();//Создание БД
+
+                //Добавление начальных данных
+                City washington = new City { Name = "Washington" };
+                City pekin = new City { Name = "Pekin" };
+                db.Cities.AddRange(washington, pekin);
+
+                //Добавление начальных данных
+                Country usa = new Country { Name = "USA", Capital = washington };
+                Country japan = new Country { Name = "Japan", Capital = pekin };
+                db.Countries.AddRange(usa, japan);
+
+                //Добавление начальных данных
+                Position manager = new Position { Name = "Manager" };
+                Position developer = new Position { Name = "Developer" };
+                Position junior = new Position { Name = "Junior" };
+                db.Positions.AddRange(manager, developer, junior);
+
+                //Добавление начальных данных
+                Company microsoft = new Company { Name = "Microsoft", Country = usa };
+                Company google = new Company { Name = "Google", Country = japan };
+                Company valve = new Company { Name = "Valve", Country = usa};
+                db.Companies.AddRange(microsoft, google, valve);
+
+                //Добавление начальных данных
+                User tom = new User { Name = "Tom", Position = manager, Company = microsoft };
+                User sam = new User { Name = "Sam", Position = developer, Company = microsoft };
+                User alice = new User { Name = "Alice", Company = google, Position = developer };
+                User kate = new User { Name = "Kate", Position = junior, Company = valve };
+                db.Users.AddRange(tom, sam, alice, kate);
+
+                db.SaveChanges();
+
+                //Получение //Подгружаемые данные по компаниям
+                // var users = db.Users.ToList();//Без метода Include  //LINQ 
+                // foreach (var i in users)
+                // {
+                //     Console.WriteLine($"Id:{i.Id}-Name:{i.Name}-Company:{i.Company?.Name}");
+                // }
+            }
+
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                // //Получение данных по людям
+                // var us = db.Users.ToList();//LINQ
+
+                ///////////////////////////////////////Include//////////////////////////////////
+                //Получение //Подгружаемые данные по компаниям
+                // var users = db.Users.Include(u => u.Company).ToList();//LINQ
+
+                // foreach (var i in users)
+                // {
+                //     Console.WriteLine($"Id:{i.Id}-Name:{i.Name}-Company:{i.Company?.Name}");
+                // }
+                ////////////////////////////////////////////////////////////////////////////////
+
+                var users = db.Users.Include(use => use.Company)
+                                    .ThenInclude(com => com!.Country)
+                                    .ThenInclude(cou => cou!.Capital)
+                                    .Include(use => use.Position).ToList();//Без метода Include  //LINQ 
+
+                foreach (var i in users)
+                {
+                    Console.WriteLine("==========================================");//Для красоты
+                    Console.WriteLine($"{i.Id}-{i.Name}");
+                    Console.WriteLine("-------------------------------------------");//Для красоты
+                    Console.WriteLine($"{i.Position?.Name}");
+                    Console.WriteLine("-------------------------------------------");//Для красоты
+                    Console.WriteLine($"{i.Company?.Name}");
+                    Console.WriteLine("-------------------------------------------");//Для красоты
+                    Console.WriteLine($"{i.Company?.Country?.Name}");
+                    Console.WriteLine("-------------------------------------------");//Для красоты
+                    Console.WriteLine($"{i.Company?.Country?.Capital?.Name}");
+                }
+
+
+                /////////////////////////////////////////////////
+                //var user = db.Users.ToList();//
+                // var countries = db.Countries.Include(c => c.Companies).ThenInclude(u => u.Users).ToList();//LINQ
+                // foreach (var i in countries)
+                // {
+                //     Console.WriteLine(i.Name);
+                //     Console.WriteLine("==========================================");//Для красоты
+                //     foreach (var j in i.Companies)
+                //     {
+                //         Console.WriteLine(j.Name);
+                //         Console.WriteLine("-------------------------------------------");//Для красоты
+                //         foreach (var t in j.Users)
+                //         {
+                //             Console.WriteLine(t.Name);
+                //         }
+                //         Console.WriteLine("-------------------------------------------");//Для красоты
+                //     }
+                //     Console.WriteLine("==========================================");//Для красоты
+                // }
+                //////////////////////////////////////////////////
+            }
+
+        }
+    }
+}

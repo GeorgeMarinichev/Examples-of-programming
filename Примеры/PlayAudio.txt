@@ -1,0 +1,63 @@
+
+using NAudio.Wave;
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Thread myThread = Thread.CurrentThread;
+        myThread.Name = $"Основной";
+        Thread audioPlay = new Thread(PlayAudio);
+        audioPlay.Name = "AudioPlay";
+        audioPlay.Start();
+
+
+        Console.Title = $"{myThread.Name + " поток:" + myThread.ManagedThreadId} " +
+                        $"{audioPlay.Name + " поток:" + audioPlay.ManagedThreadId}";
+        Console.WriteLine("Для  воспроизведения нажмите 'P' ");
+
+
+
+        audioPlay.Join();
+        //PlayAudio();
+    }
+    static void PlayAudio()
+    {
+        using (var audioFile = new AudioFileReader(@"C:\Users\User\Desktop\Ovnimoon.mp3")) // или .wav
+        using (var outputDevice = new WaveOutEvent())
+        {
+            outputDevice.Init(audioFile);
+            while (true)
+            {
+                var key = Console.ReadKey().Key; // Считывание нажатой клавиши
+                if(key == ConsoleKey.P)
+                {
+                    Console.WriteLine($"Воспроизведение:{audioFile.FileName}");
+                    outputDevice.Play();
+                }
+                else if (key == ConsoleKey.Q)
+                {
+                    Console.WriteLine("Выход...");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Для  воспроизведения нажмите 'P' ");
+                    
+                }
+
+                // Проверяем, завершилось ли воспроизведение
+                if (outputDevice.PlaybackState == PlaybackState.Stopped)
+                {
+                    Console.WriteLine("Музыка закончилась.");
+                }
+
+            }
+            // Останавливаем воспроизведение, если оно идет
+            if (outputDevice.PlaybackState == PlaybackState.Playing)
+            {
+                outputDevice.Stop();
+            }
+        }
+    }
+}

@@ -1,0 +1,237 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+
+class Program
+{
+    static int height = 30; // Высота экрана
+    static int width = 20; // Ширина экрана
+    static char playerCar = 'A'; // Символ машины игрока
+    static char bullet = '*'; // Символ снаряда
+    static int shotsFired = 0;//
+    static char obstacle = '#'; // Символ препятствия
+    static char empty = '.';  // Символ пустого места
+    static int playerY = height - 1; // Начальная позиция машины
+    static int playerX = width / 2; // Начальная позиция машины
+    static List<(int x, int y)> obstacles = new List<(int, int)>(); // Список препятствий
+    static bool isGameRunning = true; // Флаг для управления игрой
+    static bool isBulletInFlight = false; // Флаг для отслеживания состояния пули
+    static Random ran = new Random();
+    static void Main()
+    {
+        // Запуск потока для создания препятствий
+        Thread gameThread = new Thread(PlayGame);
+        gameThread.Name = "PlayGame";
+        gameThread.Start();
+
+        Thread obstacleThread = new Thread(GenerateObstacles);
+        obstacleThread.Name = "GenerateObstacles";
+        obstacleThread.Start();
+
+        Console.CursorVisible = false; // Скрыть курсор
+        Console.Title = $"{gameThread.Name} " +
+                        $"{gameThread.ManagedThreadId} " +
+                        $"{gameThread.IsThreadPoolThread}";
+
+        gameThread.Join();
+        obstacleThread.Join();
+    }
+
+    // Метод главного цикла игры
+    static void PlayGame()
+    {
+        while (isGameRunning)// Главный цикл игры
+        {
+            PrintScreen();// Отображение экрана
+            MoveObstaclesDown(); // Движение препятствий вниз
+            PlayerMove();// Движение машины игрока
+            CheckCollisions();// Проверка на столкновения
+
+            Thread.Sleep(100); // Задержка
+        }
+    }
+
+
+    // Метод для генерации препятствий
+    static void GenerateObstacles()
+    {
+        while (isGameRunning)
+        {
+            int obstacleX = ran.Next(0, width); // Случайная позиция препятствия по X
+            obstacles.Add((obstacleX, 0)); // Добавляем препятствие в список
+            Thread.Sleep(1000); // Интервал появления препятствий
+        }
+    }
+
+    static void PrintScreen()
+    {
+        // Отображение пустого пространства
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                // Изначально заполняем строку пустым пространством
+                Console.SetCursorPosition(x, y);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(empty);
+            }
+        }
+
+        // Отображение прерывистых препятствий по бокам
+        for (int y = 0; y < height; y++)
+        {
+            // Левое боковое прерывистое препятствие
+            if (y % 2 == 0) // Условие для размещения через одну клетку
+            {
+                Console.SetCursorPosition(0, y);
+                Console.Write(obstacle); // Отображение левого препятствия
+            }
+
+            // Правое боковое прерывистое препятствие (при условии, что ширина больше 1)
+            if (width > 1 && y % 2 == 0) // Условие для размещения через одну клетку
+            {
+                Console.SetCursorPosition(width - 1, y);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(obstacle); // Отображение правого препятствия
+            }
+        }
+
+        // Отображение препятствий
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                if (obstacles.Exists(o => o.x == x && o.y == y))
+                {
+                    Console.SetCursorPosition(x, y);
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write(obstacle); // Отображение препятствий
+                }
+            }
+        }
+
+        // Отображение игрока
+        Console.SetCursorPosition(playerX, playerY - 3);
+        Console.ForegroundColor = ConsoleColor.DarkCyan;
+        Console.Write(playerCar); // Отображение машины игрока
+
+    }
+   
+    // Метод для движения препятствий вниз
+    static void MoveObstaclesDown()
+    {
+        for (int i = 0; i < obstacles.Count; i++)
+        {
+            obstacles[i] = (obstacles[i].x, obstacles[i].y + 1); // Двигаем препятствие вниз
+        }
+
+        // Удаление препятствий, которые вышли за пределы экрана
+        obstacles.RemoveAll(o => o.y >= height);
+    }
+
+    static void MoveObstaclesUp()
+    {
+        for (int i = 0; i < obstacles.Count; i++)
+        {
+            obstacles[i] = (obstacles[i].x, obstacles[i].y - 1); // Двигаем препятствие вверх
+        }
+
+        // Удаление препятствий, которые вышли за пределы экрана
+        obstacles.RemoveAll(o => o.y >= height);
+    }
+
+    // Метод для управления движением машины игрока
+    static void PlayerMove()
+    {
+        if (Console.KeyAvailable)
+        {
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            if (keyInfo.Key == ConsoleKey.UpArrow)
+            {
+                MoveObstaclesDown();// Движение вперед
+            }
+            else if (keyInfo.Key == ConsoleKey.DownArrow)
+            {
+                MoveObstaclesUp();// Движение назад
+            }
+
+            if (keyInfo.Key == ConsoleKey.A && playerX > 0)
+            {
+                playerX--; // Движение влево
+            }
+            else if (keyInfo.Key == ConsoleKey.D && playerX < width - 1)
+            {
+                playerX++; // Движение вправо
+            }
+
+            if (keyInfo.Key == ConsoleKey.W)
+            {
+                shotsFired++;
+                Console.WriteLine($"Вы выстрелили! Это выстрел номер {shotsFired}.");
+                Shoot();
+            }
+
+            if (keyInfo.Key == ConsoleKey.Escape)
+            {
+                isGameRunning = false; // Выход из игры
+            }
+        }
+    }
+
+    // Метод выстрела
+    static void Shoot()
+    {
+        Thread bulletThread = new Thread(() =>
+        {
+            int bulletPosition = playerY - 3; // Пуля начинает с позиции над машиной
+
+            while (bulletPosition >= 0) // Пуля движется вверх
+            {
+                // Обновляем экран только для пули
+                Console.SetCursorPosition(playerX, bulletPosition);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write(bullet); // Отображение пули
+
+                // Проверка попадания
+                foreach (var obstacle in obstacles)
+                {
+                    if (obstacle.x == playerX && obstacle.y == bulletPosition)
+                    {
+                        Console.SetCursorPosition(0, 3);
+                        Console.WriteLine("Попадание! Вы сбили цель!");
+                        obstacles.Remove(obstacle); // Удаляем препятствие
+                        return; // Выход из функции после попадания
+                    }
+                }
+
+                Thread.Sleep(100); // Задержка для анимации
+                Console.SetCursorPosition(playerX, bulletPosition); // Стираем пулю
+                Console.Write(empty); // Стираем предыдущую позицию пули
+                bulletPosition--; // Пуля движется вверх
+            }
+
+            Console.SetCursorPosition(0, 3);
+            Console.WriteLine("Промах! Пуля не достигла цели.");
+        });
+
+        bulletThread.Start(); // Запускаем поток для пули
+    }
+
+    // Проверка на столкновения
+    static void CheckCollisions()
+    {
+        foreach (var obstacle in obstacles)
+        {
+            if (obstacle.x == playerX && obstacle.y == playerY)
+            {
+                isGameRunning = false; // Завершение игры при столкновении
+                Console.Clear();
+                Console.SetCursorPosition(0, 0);
+                Console.WriteLine("Game Over!");
+                Environment.Exit(0);
+            }
+        }
+    }
+
+
+}

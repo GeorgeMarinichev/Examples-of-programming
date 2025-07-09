@@ -1,0 +1,17 @@
+const btn = document.getElementById("btn");
+ 
+const request = new XMLHttpRequest();
+document.cookie = "login=tom32;";   // куки, которые будут отправляться
+ 
+btn.addEventListener("click", function () {
+    request.open("GET", "https://localhost:44313/");
+    request.onreadystatechange = reqReadyStateChange;
+    request.withCredentials = true; //  устанавливаем отправку
+    request.send();
+});
+function reqReadyStateChange() {
+    if (request.readyState == 4) {
+        if (request.status == 200)
+            console.log(request.responseText);
+    }
+}

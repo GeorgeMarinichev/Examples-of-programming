@@ -1,0 +1,79 @@
+//using System;
+
+namespace Space
+{
+    public class Neuron
+    {
+        private decimal weight = 0.5m;// Случаное стартовое значение весов
+        public decimal LastError {get; private set;}
+
+        public decimal Smoothig{get; set;} = 0.0001m;// Сглаживание шагов при выборке правильного значения
+        public decimal ProgressInputData(decimal input)// Метод конвертации входящего значения, в исходящее
+        {
+            return input * weight;
+        }
+
+        public decimal RestoreInputData(decimal output)// Метод обратной конвертации значения(инвертирования)
+        {
+            return output / weight;
+        }
+
+        public void Train(decimal input, decimal expectedResult)// Метод обучения
+        {
+            var actualResult = input * weight;
+            LastError = expectedResult - actualResult;
+            var correction = (LastError / actualResult) * Smoothig;
+            weight += correction;
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            System.Console.WriteLine("Программа нейрон(Конвертация валюты и расстояния)");
+            // int i = 1;
+            // do
+            // {
+            // Console.WriteLine(i);
+            // i++;
+            // }
+            // while (i <= 6);
+
+
+            decimal km = 100;
+            decimal miles = 62.1371m;
+
+            decimal rub = 200;
+            decimal usd = 0.018563m;
+
+            Neuron neuron = new Neuron();
+
+            // int i = 0;
+            // do
+            // {
+            //     i++;
+            //     neuron.Train(km, miles);
+            //     System.Console.WriteLine($"Итерация: {i}\tОшибка:\t{neuron.LastError}");
+            // }while(neuron.LastError > neuron .Smoothig || neuron.LastError < -neuron.Smoothig);
+
+            int i = 0;
+            do
+            {
+                i++;
+                neuron.Train(rub, usd);
+                if(i % 100 == 0)
+                {
+                    System.Console.WriteLine($"Итерация: {i}\tОшибка:\t{neuron.LastError}");
+                }
+            }while(neuron.LastError > neuron .Smoothig || neuron.LastError < -neuron.Smoothig);
+
+            System.Console.WriteLine("Обучение завершено!");
+
+            // Console.WriteLine($"{neuron.ProgressInputData(500)} миль в {500}км");
+            // Console.WriteLine($"{neuron.RestoreInputData(10)} км в {10}миль");
+
+            Console.WriteLine($"{neuron.ProgressInputData(500)} USD в {500}RUB");
+            Console.WriteLine($"{neuron.RestoreInputData(100)} RUB в {100}USD");
+        }
+    }
+}

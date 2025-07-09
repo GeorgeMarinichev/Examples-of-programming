@@ -1,0 +1,93 @@
+////////////////////////////Отправка текста и json в Results API
+using System;
+using System.Text.Json.Serialization;
+
+
+namespace Space
+{
+    // class Person
+    // {
+    //     public string Name {get; set;} = "";
+    //     public int Age {get; set;} = 0;
+    // }
+
+    record class Person(string Name, int Age);
+
+   
+    internal class Program
+    {
+        private static void Main(string[] args)
+        {
+           ////////////////////////
+            // var builder = WebApplication.CreateBuilder();
+            // var app = builder.Build();
+
+            // //app.Map("/hello", () => Results.Text("Hello, ASP.NET Core");
+            // app.Map("/hello", () => SendHello());//Как отдельный метод
+            // app.Map("/", ()=> "Hello");
+
+            // app.Run(async (context) => //Через конечный компонент
+            // {
+            //     await Results.Text("Hello, ASP.NET Core").ExecuteAsync(context);
+            //     //await context.Response.WriteAsync("Hello");
+            // });
+
+            // app.Run();
+
+            // IResult SendHello()
+            // {
+            //     return Results.Text("Hello, ASP.NET Core");
+            // }
+
+            // ////////////////////////
+            // var builder = WebApplication.CreateBuilder();
+            // var app = builder.Build();
+
+
+            // //app.Map("/hello", () => Results.Text("Hello, ASP.NET Core", "text/plan", System.Text.Encoding.Unicode));
+            // app.Map("/hello", () => Results.Content("Hello, ASP.NET Core", "text/plan", System.Text.Encoding.Unicode));
+           
+            // app.Map("/", ()=> "Hello");
+
+            // app.Run();
+
+            ////////////////////////Отравка json
+            // var builder = WebApplication.CreateBuilder();
+            // var app = builder.Build();
+
+            // app.Map("/person", () => Results.Json(new Person("George", 39)));// отправка объекта Person
+            // app.Map("/", () => Results.Json(new {name="Tom", age=39}));// отправка анонимного объекта
+
+            // app.Run();
+
+            // //////////////Конкретизировать параметры сериализации в json
+            // var builder = WebApplication.CreateBuilder();
+            // var app = builder.Build();
+         
+            // app.Map("/sam", () => Results.Json(new Person("Sam", 40), // отправка объекта Person
+            //     new()
+            //     {
+            //         PropertyNameCaseInsensitive = false,
+            //         NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.WriteAsString
+            //     }));
+
+            // app.Map("/bob", () => Results.Json(new Person("Bob", 50), // отправка объекта Person
+            //     new(System.Text.Json.JsonSerializerDefaults.Web)));
+
+            // app.Map("/tom", () => Results.Json(new Person("Tom", 55), // отправка объекта Person
+            //     new(System.Text.Json.JsonSerializerDefaults.General)));
+
+            // app.Run();
+
+            //////////////Json также применяется и для отправки ошибок
+            var builder = WebApplication.CreateBuilder();
+            var app = builder.Build();
+         
+            app.Map("/error", () => Results.Json(new {message="Unexpected error"}, statusCode: 500));
+            app.Map("/", () => "Hello, World!");
+
+            app.Run();
+            
+        }
+    }
+}

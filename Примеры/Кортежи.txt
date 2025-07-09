@@ -1,0 +1,91 @@
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Metadata.Ecma335;
+using System.Security;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using Genesis;
+using static System.Console;
+
+namespace Genesis; // Пространство имен
+
+class Program // Основной класс программы
+{
+    
+    public static void Main(string[] args)// Основной метод программы
+    {
+        Console.WriteLine("====================<<<Кортежи>>>================");
+       
+        var tuple = (1, 9, 8, 5);// Неявное определение типа
+        Console.WriteLine(tuple);
+        Console.WriteLine(tuple.Item4);
+        tuple.Item4 += 20;
+        Console.WriteLine(tuple.Item4);
+        Console.WriteLine(tuple);
+        /////////////////////////////////////////////////////////////////////////////
+        (int, int, int, int) tupleAge = (1, 9, 9, 9);// Явное определение типа
+        Console.WriteLine(tupleAge);
+        Console.WriteLine(tupleAge.Item3);
+        (string, int, double) person = ("Denis", 40, 81.23);//Явное определение типа
+        Console.WriteLine(person);
+        Console.WriteLine(person.Item3);
+        /////////////////////////////////////////////////////////////////////////////
+        var tuple1 = (count:5, sum:10);// Именованные параметры в место Item
+        tuple1.sum += 30;
+        Console.WriteLine(tuple1.sum);
+        Console.WriteLine(tuple1);
+
+        /////////////////////////////////////////////////////////////////////////////
+        var (name, age) = ("Tom", 23);// Декомпозиция кортежа на отдельные переменные
+        Console.WriteLine(name);
+        Console.WriteLine(age);
+        /////////////////////////////////////////////////////////////////////////////
+        string main = "Java";
+        string second = "C#";
+        (main, second) = (second, main);//Обмен значениями
+        Console.WriteLine(main);
+        Console.WriteLine(second);
+        /////////////////////////////////////////////////////////////////////////////
+        int[] nums = {1, 9, 8, 5};
+
+        for (int i = 0; i < nums.Length - 1; i++)
+        {
+            for (int j = i +1; j < nums.Length; j++)
+            {
+                if(nums[i] > nums[j])
+                {
+                    (nums[i], nums[j]) = (nums[j], nums[i]);//Обмен значениями
+                }
+            }
+        }
+        Console.WriteLine("Вывод отсортированного массива");
+        for(int i = 0; i < nums.Length; i++)
+        {
+            Console.WriteLine(nums[i]);
+        }
+
+        /////////////////////////////////////////////////////////////////////////////
+        var tuple3 = GetValues();//Картеж как результат метода
+        Console.WriteLine(tuple3.Item1);
+        Console.WriteLine(tuple3.Item2);
+        Console.WriteLine(tuple3);
+
+        (int, int) GetValues()//Метод
+        {
+            var result = (5,7);
+            return result;
+        }
+
+        /////////////////////////////////////////////////////////////////////////////
+        PrintPerson(("Dima", 37));//Картеж как параметр метода
+        PrintPerson(("Boris", 37));//Картеж как параметр метода
+
+        void PrintPerson((string name, int age) person)
+        {
+            Console.WriteLine($"{person.name}:{person.age}");
+        }
+    }
+}
+
+
+

@@ -1,0 +1,64 @@
+using System;
+using System.Security.Cryptography.X509Certificates;
+
+namespace MonadExample;
+class Monad<T> //Определение класса представляющий монаду
+{
+    private T value;//Поле определение переменной 
+
+    public Monad(T value)//Конструктор класса монады
+    {
+        this.value = value;
+    }
+
+    //Метод для получения значения монады
+    public T GetValue()
+    {
+        return value;
+    }
+
+    //Метод для применения функции к значению монады
+    public Monad<Tresult> Bind<Tresult>(Func<T, Tresult> func)
+    {
+        return new Monad<Tresult>(func(value));
+    }
+
+    //Метод для создания новой монады из значения
+    public static Monad<T> Return(T value)
+    {
+        return new Monad<T>(value);
+    }
+
+}
+class Program
+{
+    private static void Main(string[] args)
+    {
+       Console.WriteLine("Монадология Лейбница");
+
+       //var intMonad = new Monad<int>(5);//Пример использования монады int
+       var intMonad = Monad<int>.Return(5);//Через метот Return() (или unit в функциональном программировании), в рамках патерна
+       //Применение функции к значению монады
+       var intResultMonad = intMonad.Bind(x => x + 5).Bind(x => x * 2).Bind(x => x + 5);//Лямбда выражение
+        Console.WriteLine($"Результат:{intResultMonad.GetValue()}");//Вывод int монад
+       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        var stringMonad = Monad<string>.Return("Hello");//Пример использования монады string
+        var stringResiltMonad = stringMonad.Bind(a => a + " World");
+         Console.WriteLine($"Результат:{stringResiltMonad.GetValue()}");//Вывод string монад
+
+     
+         var boolMonad = Monad<bool>.Return(true);
+         var boolResultMonad = boolMonad.Bind(b => b = false);
+         Console.WriteLine($"Результат:{boolResultMonad.GetValue()}");//Вывод bool монад
+
+ 
+    }
+}
+// Монадология: Это философская работа Лейбница, в которой он описывает свою концепцию монад — 
+// простых, неделимых сущностей, которые являются основными строительными блоками реальности. 
+// Монады, по Лейбницу, не взаимодействуют друг с другом напрямую, но каждая из них отражает 
+// Вселенную в своем собственном "окне", что приводит к гармонии, называемой предустановленной гармонией.
+// Этот пример демонстрирует, как можно использовать концепцию монад в программировании, 
+// создавая абстракции, которые позволяют работать с данными и их преобразованиями. 
+// Можно расширить этот пример, добавляя больше функциональности, чтобы лучше отразить идеи монадологии Лейбница.

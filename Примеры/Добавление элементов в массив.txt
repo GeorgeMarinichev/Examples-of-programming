@@ -1,0 +1,57 @@
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+        static void insert(ref int[] array, int value, int index)
+        {
+            int[] newarray = new int[array.Length + 5];
+
+            newarray[index] = value;
+            
+            for (int i = 0; i < index; i++)
+            {
+                newarray[i] = array[i];
+            }
+                
+            for (int i = index; i < array.Length; i++)
+            {
+                newarray[i + 1] = array[i];
+                //Console.WriteLine(arra[i]);
+            }
+            array = newarray;
+            foreach (int i in array)
+            {
+                Console.WriteLine(i);
+            }
+            //Console.WriteLine("==========================");
+            //for (int i = 0; i < newarray.Length;i++)
+            //{
+            //    Console.WriteLine(newarray[i]);
+            //}
+        }
+        static void addFirst(ref int[] array, int value)
+        {
+            insert(ref array, value, 0);
+            
+        }
+
+        static void addLast(ref int[] array, int value)
+        {
+            insert(ref array, value, array.Length);
+
+        }
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Добавление элементов в массив");
+
+            int[] array = { 1, 9, 8, 5 };
+
+            //insert(ref array, 7, 0);
+            //addFirst(ref array, 7);
+            Console.WriteLine("==========================");
+            addLast(ref array, 7);
+
+        }
+    }
+}

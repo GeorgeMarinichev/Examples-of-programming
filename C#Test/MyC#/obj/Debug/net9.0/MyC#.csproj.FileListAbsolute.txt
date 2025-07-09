@@ -1,0 +1,14 @@
+C:\Users\SmartPlayer\Desktop\C#Test\MyC#\obj\Debug\net9.0\MyC#.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\SmartPlayer\Desktop\C#Test\MyC#\obj\Debug\net9.0\MyC#.AssemblyInfoInputs.cache
+C:\Users\SmartPlayer\Desktop\C#Test\MyC#\obj\Debug\net9.0\MyC#.AssemblyInfo.cs
+C:\Users\SmartPlayer\Desktop\C#Test\MyC#\obj\Debug\net9.0\MyC#.csproj.CoreCompileInputs.cache
+C:\Users\SmartPlayer\Desktop\C#Test\MyC#\bin\Debug\net9.0\MyC#.exe
+C:\Users\SmartPlayer\Desktop\C#Test\MyC#\bin\Debug\net9.0\MyC#.deps.json
+C:\Users\SmartPlayer\Desktop\C#Test\MyC#\bin\Debug\net9.0\MyC#.runtimeconfig.json
+C:\Users\SmartPlayer\Desktop\C#Test\MyC#\bin\Debug\net9.0\MyC#.dll
+C:\Users\SmartPlayer\Desktop\C#Test\MyC#\bin\Debug\net9.0\MyC#.pdb
+C:\Users\SmartPlayer\Desktop\C#Test\MyC#\obj\Debug\net9.0\MyC#.dll
+C:\Users\SmartPlayer\Desktop\C#Test\MyC#\obj\Debug\net9.0\refint\MyC#.dll
+C:\Users\SmartPlayer\Desktop\C#Test\MyC#\obj\Debug\net9.0\MyC#.pdb
+C:\Users\SmartPlayer\Desktop\C#Test\MyC#\obj\Debug\net9.0\MyC#.genruntimeconfig.cache
+C:\Users\SmartPlayer\Desktop\C#Test\MyC#\obj\Debug\net9.0\ref\MyC#.dll

@@ -1,0 +1,106 @@
+using System.Text;
+
+namespace Genesis
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Работа с файлами");
+            ///////////////////Получение информации о файле
+            string path = @"C:\Users\eugene\Documents\content.txt";
+            FileInfo fileInfo = new FileInfo(path);
+            if (fileInfo.Exists)
+            {
+                Console.WriteLine($"Имя файла:{fileInfo.Name}");
+                Console.WriteLine($"Время создания:{fileInfo.CreationTime}");
+                Console.WriteLine($"Размер:{fileInfo.Length}");
+            }
+            else
+            {
+                Console.WriteLine("Отсутсвует файл");
+            }
+
+            Console.WriteLine("---------------------------------");
+            ///////////////////Удаление файла
+            string path2 = @"C:\app\content.txt";
+            FileInfo fileInfo2 = new FileInfo(path2);
+            if (fileInfo2.Exists)
+            {
+                fileInfo.Delete();
+                Console.WriteLine("Файл удален");
+            }
+            else
+            {
+                Console.WriteLine("Отсутсвует файл");
+            }
+
+            Console.WriteLine("---------------------------------");
+            ///////////////////Перемещение файла
+            string p1 = @"C:\OldDir\content.txt";
+            string p2 = @"C:\NewDir\index.txt";
+            FileInfo fileIn = new FileInfo(p1);
+            if (fileIn.Exists)
+            {
+                //fileIn.MoveTo(p2);
+                fileIn.MoveTo(p2, true);//При true значении файл перезаписывается
+                Console.WriteLine("Файл перемещен");
+            }
+            else
+            {
+                Console.WriteLine("Отсутсвует файл");
+            }
+
+            Console.WriteLine("---------------------------------");
+            ///////////////////Копирование файла
+            string pth1 = @"C:\OldDir\content.txt";
+            string pth2 = @"C:\NewDir\index.txt";
+            FileInfo fileIn2 = new FileInfo(pth1);
+            if (fileIn2.Exists)
+            {
+                fileIn2.CopyTo(p2);
+                //fileIn2.CopyTo(p2, true);//При true значении файл перезаписывается
+                Console.WriteLine("Файл копирован");
+            }
+            else
+            {
+                Console.WriteLine("Отсутсвует файл");
+            }
+
+            //Console.WriteLine("---------------------------------");
+            /////////////////////Запись и считывание файла
+            //string pth = @"C:\app\content.txt";
+            //string originalText = "Hello Metanit.com";
+
+            //await File.WriteAllTextAsync(pth, originalText);//Запись строки
+            //await File.AppendAllTextAsync(pth, "\n george");//Дозапись строки
+
+            //string fileText = await File.ReadAllTextAsync(pth);//Чтение файла
+            //Console.WriteLine(fileText);
+
+            //Console.WriteLine("---------------------------------");
+            /////////////////////Кодировка 1
+            //string pt = "/Users/eugene/Documents/app/content.txt";
+            //string originalText = "Привет Metanit.com";
+
+            //await File.WriteAllTextAsync(pt, originalText, Encoding.Unicode);//Запись строки
+            //await File.AppendAllTextAsync(pt, "\n george", Encoding.Unicode);//Дозапись строки
+
+            //string fileText = await File.ReadAllTextAsync(pt, Encoding.Unicode);//Чтение файла
+            //Console.WriteLine(fileText);
+
+            Console.WriteLine("---------------------------------");
+            ///////////////////Кодировка 2
+            string pt = @"C:\app\content.txt";
+            string originalText = "Привет Metanit.com";
+
+            await File.WriteAllTextAsync(pt, originalText, Encoding.GetEncodings("iso-8859-1"));//Запись строки
+            await File.AppendAllTextAsync(pt, "\n george", Encoding.GetEncodings("iso-8859-1"));//Дозапись строки
+
+            string fileText = await File.ReadAllTextAsync(pt, GetEncodings("iso-8859-1"));//Чтение файла
+            Console.WriteLine(fileText);
+        }
+    }
+}
+
+

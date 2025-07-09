@@ -1,0 +1,105 @@
+////////////////////////////Web API
+//////Пример приложения Web API
+//Web API представляет приложение в стиле REST("передача состояния представления")
+//RESTархитектура предпологает применение методов или типов запрсов HTTP для 
+//взаимодействия с сервером.
+
+//GET-получение данных (MapGet)
+//POST-добавление данных (MapPost)
+//PUT/PUSH-изменение данных (MapPut)
+//DELETE-удаление данных (MapDelete)
+
+using System;//Подключение директивы
+
+namespace Space//Пространство имен
+{
+    class Person
+    {
+        public string Id { get; set; } = "";
+        public string Name { get; set; } = "";
+        public int Age { get; set; } = 0;
+    }
+
+    //record class Person(string Id, string Name, int Age);
+
+    class Program//Главный класс приложения
+    {  
+        static void Main(string[] args)
+        {
+            //////////Реализация простешего API
+            /////////////////////Создание сервера
+            /////////////////////////////Начальные данные(БД)///////////////////////
+            List<Person> users = new List<Person>
+            {
+                new() {Id = Guid.NewGuid().ToString(), Name ="George", Age = 39},
+                new() {Id = Guid.NewGuid().ToString(), Name ="Tatjana", Age = 28},
+                new() {Id = Guid.NewGuid().ToString(), Name ="Bob", Age = 50},
+                new() {Id = Guid.NewGuid().ToString(), Name ="Alice", Age = 30}
+            };
+            ////////////////////////////////////////////////////////////////////////
+            
+            var builder = WebApplication.CreateBuilder(args);//Имя папки для хранения файлов
+            var app = builder.Build();
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
+            app.MapGet("/api/users", ()=> users);
+            app.MapGet("/api/users/{id}", (string id)=>
+            {
+                Person? user = users.FirstOrDefault(u => u.Id == id);//Получение пользователя по Id
+                if(user == null)//Если не найден, отправляется статус код и сообщение об ошибке
+                {
+                    Results.NotFound(new{message = "Пользователь не найден!"});
+                }
+                else
+                {
+                    Results.Json(user);//Если пользователь найден, отправляем его
+                }
+            });
+
+            app.MapDelete("/api/users/{id}", (string id)=>
+            {
+                Person? user = users.FirstOrDefault(u => u.Id == id);//Получение пользователя по Id
+                if(user == null)//Если не найден, отправляется статус код и сообщение об ошибке
+                {
+                    Results.NotFound(new{message = "Пользователь не найден!"});
+                }
+                else
+                {
+                    users.Remove(user);//Если пользователь найден, удаляем его
+                    Results.Json(user);//Если пользователь найден, отправляем его
+                }
+            });
+
+            app.MapPost("/api/users", (Person user)=>
+            {
+                user.Id = Guid.NewGuid().ToString();//Устанавливаем Id для нового пользователя
+                users.Add(user);//Добавление пользователя в список
+                return user;
+            });
+
+            app.MapPut("/api/users", (Person userData)=>
+            {
+                var user = users.FirstOrDefault(u => u.Id == userData.Id);//Получение пользователя по Id
+                if(user == null)//Если не найден, отправляется статус код и сообщение об ошибке
+                {
+                    Results.NotFound(new{message = "Пользователь не найден!"});
+                }
+                else
+                {
+                    user.Name = userData.Name;//Если пользователь найден, изменяем его данные и отправляем обратно клиенту
+                    user.Age = userData.Age;//Если пользователь найден, изменяем его данные и отправляем обратно клиенту
+                    Results.Json(user);//Если пользователь найден, отправляем его
+                }
+            }); 
+
+            //app.Map("/", ()=> "Hello, World");
+            //app.Run(async(context)=> await context.Response.WriteAsync($"Text:{context.Items["text"]}"));
+            app.Run();
+
+
+        }
+     
+    }
+}

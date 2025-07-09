@@ -1,0 +1,159 @@
+using System.Data;
+using System.Linq.Expressions;
+using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using Microsoft.VisualBasic;// Деректива поделючения пространство имен многопоточности
+
+namespace Genesis; // Пространство имен
+
+class Program // Основной класс программы
+{
+    public static async Task Main(string[] args)// Основной метод программы
+    {
+        //Console.SetWindowSize(80, 40);//
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("===<<<Обработка ошибок>>>===");
+        Console.ResetColor();
+        ///////////////////////////////////////////////////////////////////////////////////////
+        try
+        {
+            await PrintAsync("Hello C#");
+            await PrintAsync("Hi");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        async Task PrintAsync(string message)
+        {
+            if (message.Length < 3)//Если длина строки меньше 3 символов, генерируется исключение
+            {
+                throw new ArgumentNullException($"Invalid string length:{message.Length}");
+            }
+            await Task.Delay(100);//Имитация продолжительной операции
+            Console.WriteLine(message);
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////
+        Console.WriteLine("-----------------------------------------------------------------");
+        PrintAsync1("Hello C#");
+        PrintAsync1("Hi");
+        await Task.Delay(1000);//Ожидание завершение задачи
+
+        async void PrintAsync1(string message)
+        {
+            try
+            {
+                if (message.Length < 3)//Если длина строки меньше 3 символов, генерируется исключение
+                {
+                    throw new ArgumentNullException($"Invalid string length:{message.Length}");
+                }
+                await Task.Delay(100);//Имитация продолжительной операции
+                Console.WriteLine(message);
+            }
+            catch (Exception ex1)
+            {
+                Console.WriteLine(ex1.Message);
+            }
+
+            //////////////////////////////////////Исследование исключения/////////////////////////////////
+            Console.WriteLine("-----------------------------------------------------------------");
+            var task = PrintAsync2("Hi");
+            try
+            {
+
+            }
+            catch
+            {
+                Console.WriteLine(task.Exception?.InnerException?.Message);// Invalid string lenght:2
+                Console.WriteLine($"IsFaulted:{task.IsFaulted}");// IsFaulted:True
+                Console.WriteLine($"Status:{task.Status}");// Status:IFaulted
+            }
+
+            async Task PrintAsync2(string message)
+            {
+                if (message.Length < 3)//Если длина строки меньше 3 символов, генерируется исключение
+                {
+                    throw new ArgumentNullException($"Invalid string length:{message.Length}");
+                }
+                await Task.Delay(1000);//Имитация продолжительной операции
+                Console.WriteLine(message);
+            }
+        }
+
+        //////////////////////////////////////Исследование исключения/////////////////////////////////
+        Console.WriteLine("-----------------------------------------------------------------");
+        var task = PrintAsync2("Hi");
+        try
+        {
+
+        }
+        catch
+        {
+            Console.WriteLine(task.Exception?.InnerException?.Message);// Invalid string lenght:2
+            Console.WriteLine($"IsFaulted:{task.IsFaulted}");// IsFaulted:True
+            Console.WriteLine($"Status:{task.Status}");// Status:IFaulted
+        }
+
+        async Task PrintAsync2(string message)
+        {
+            if (message.Length < 3)//Если длина строки меньше 3 символов, генерируется исключение
+            {
+                throw new ArgumentNullException($"Invalid string length:{message.Length}");
+            }
+            await Task.Delay(1000);//Имитация продолжительной операции
+            Console.WriteLine(message);
+        }
+    
+    //////////////////////////////////////Исследование исключения/////////////////////////////////
+    // определяем и запускаем задачи
+    var task1 = PrintAsync3("H");
+    var task2 = PrintAsync3("Hi");
+    var allTasks = Task.WhenAll(task1, task2);
+    try
+    {
+        await allTasks;
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Exception: {ex.Message}");
+        Console.WriteLine($"IsFaulted: {allTasks.IsFaulted}");
+        if(allTasks.Exception is not null)
+        {
+            foreach (var exception in allTasks.Exception.InnerExceptions)
+            {
+                Console.WriteLine($"InnerException: {exception.Message}");
+            }
+        }
+    }
+ 
+    async Task PrintAsync3(string message)
+    {
+    // если длина строки меньше 3 символов, генерируем исключение
+        if (message.Length < 3)
+        throw new ArgumentException($"Invalid string: {message}");
+        await Task.Delay(1000);     // имитация продолжительной операции
+        Console.WriteLine(message);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

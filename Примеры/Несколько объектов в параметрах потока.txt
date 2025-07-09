@@ -1,0 +1,85 @@
+using System.Threading;// Деректива поделючения пространство имен многопоточности
+
+namespace Genesis; // Пространство имен
+
+class Pocket
+{
+    //public Sword sword;
+    //public Helmet helmet;
+    //public Meet meet;
+    public char cr = '@';
+    public string message;
+    public int time;
+}
+class Program // Основной класс программы
+{
+    static void WriteSecond(object argument)
+    {
+        // Thread thread = Thread.CurrentThread;
+        // thread.Name = "Вторичный";
+        // System.Console.WriteLine($"ID потока {thread.Name}:{thread.GetHashCode()}");
+
+        // for (int counter = 0; counter < 10; counter++)
+        // {
+        //     Console.WriteLine(new string(' ', 10) + thread.Name + "" + counter);
+        //     Thread.Sleep(1000);
+        // }
+
+        Pocket pocket1 = argument as Pocket;
+
+        for (int i = 0; i < 10; i++)
+        {
+            Console.WriteLine(pocket1.message);
+            Thread.Sleep(pocket1.time);
+        }
+        
+    }
+    public static void Main(string[] args)// Основной метод программы
+    {
+        Console.WriteLine("===================<<<Несколько объектов в параметрах потока>>>================");
+
+        // Thread primaryThread = Thread.CurrentThread;
+        // primaryThread.Name = "Первичный";
+        // Console.WriteLine($"ID потока {primaryThread.Name}: {primaryThread.GetHashCode()}");
+        // Thread secondaryThread = new Thread(WriteSecond);
+        // secondaryThread.Start();
+
+        // for (int counter = 0; counter < 10; counter++)
+        // {
+        //     Console.WriteLine(primaryThread.Name + " " + counter);
+        //     Thread.Sleep(1500);
+        // }
+        Pocket pocket = new Pocket();
+        pocket.time = 500;
+        pocket.message = "Все работает!";
+
+
+        ParameterizedThreadStart parameterizedThreadStart = new ParameterizedThreadStart(WriteSecond);//Делегат
+        Thread thread = new Thread(parameterizedThreadStart);
+        thread.Start((object)pocket);
+
+        Thread.Sleep(500);
+        
+        // Console.WriteLine("===================================");
+       
+    }
+}
+
+    
+
+
+
+
+
+        
+
+    
+
+
+
+
+
+
+
+
+

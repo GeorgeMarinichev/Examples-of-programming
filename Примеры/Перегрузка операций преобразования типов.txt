@@ -1,0 +1,103 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Security;
+using System.Security.Cryptography;
+using Genesis;
+using static System.Console;
+
+namespace Genesis; // Пространство имен
+
+class Dollar
+{
+    public decimal Sum {get; set;}
+}
+
+class Euro
+{
+    public decimal Sum{get; set;}
+
+    public static implicit operator Dollar(Euro euro)
+    {
+        return new Dollar{Sum = euro.Sum * 1.14M};
+    }
+
+    public static explicit operator Euro(Dollar dollar)
+    {
+        return new Euro{Sum = dollar.Sum / 1.14M};
+    }
+}
+
+class Timer
+{
+    public int Hours{get; set;}
+    public int Minutes{get; set;}
+    public int Seconds{get; set;}
+}
+
+class Counter
+{
+    public int Seconds {get; set;}// Свойство
+    //////////////////////////////////////////////////////////////////////////////////////////
+    public static implicit operator Counter(int x)// Определен оператор с перегрузкой под неявное преобразование
+    {
+        return new Counter {Seconds = x};
+    }
+
+    public static explicit operator int(Counter counter)// Определен оператор с перегрузкой под явное преобразование
+    {
+        return counter.Seconds;
+    }
+
+    public static explicit operator Counter(Timer timer)
+    {
+        int h = timer.Hours * 3600;
+        int m = timer.Minutes * 60;
+        return new Counter {Seconds = h + m + timer.Seconds};
+    }
+
+    public static implicit operator Timer(Counter counter)
+    {
+        int h = counter.Seconds / 3600;
+        int m = (counter.Seconds % 3600) / 60;
+        int s = counter.Seconds % 60;
+        return new Timer {Hours = h, Minutes = m, Seconds = s};
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////
+    
+}
+
+class Program // Основной класс программы
+{
+    
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //BenchmarkRunner.Run<BoxingTest>();
+
+        Console.WriteLine("<<<Перегрузка операций преобразования типов>>>");
+        /////////////////////////////////////////////////////////////////////
+        Counter c1 = new();
+        c1.Seconds = 600;
+
+        int x =(int)c1;
+        Console.WriteLine(x);
+
+        Timer t1 = c1;
+        Console.WriteLine($"{t1.Hours}:{t1.Minutes}:{t1.Seconds}");
+        Console.WriteLine(t1);
+        /////////////////////////////////////////////////////////////////////
+        
+        Dollar dollar = new();
+        dollar.Sum = 100;
+        Console.WriteLine(dollar);
+        Console.WriteLine(dollar.Sum);
+
+        
+        
+        Euro euro = (Euro)dollar;
+        Console.WriteLine(euro);
+        Console.WriteLine(euro.Sum);
+        
+    }
+}
+
+
+

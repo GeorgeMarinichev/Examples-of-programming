@@ -1,0 +1,184 @@
+//Создание ветки конвейера UseWhen и MapWhen
+////////////////////////////////////Упрощенный подход при помощи (WebApplication)
+using System;
+using System.Runtime.CompilerServices;
+
+namespace Space
+{
+    public class Program//Главный класс приложения
+    {  
+        public static void Main(string[] args)//Главный метод точка входа
+        {
+            // WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            // WebApplication app = builder.Build();
+
+            var builder = WebApplication.CreateBuilder(args);//Создание Builder
+            // builder.Services.AddControllers();//Добавление поддержки контроллеров
+            var app = builder.Build();//Стройка приложения
+
+            string? date = "";
+            string? time = "";
+
+            // /////////////////////////////////////////Метод UseWhen(); Добавляет middleware в существующий конвейер
+            // app.UseWhen(context => context.Request.Path == "/date", appBuilder =>//Если путь запроса
+            // {
+            //     //Логгирование данные - вывод на консоль приложения
+            //     appBuilder.Use(async(context, next)=>
+            //     {
+            //         var date = DateTime.Now.ToShortDateString();
+            //         Console.WriteLine($"Date:{date}");
+            //         await next();//Вызываем следующий middleware
+            //     });
+
+            //     //Отправка ответа
+            //     appBuilder.Run(async context =>
+            //     {
+            //         var date = DateTime.Now.ToShortDateString();
+            //         await context.Response.WriteAsync($"Date:{date}");
+            //     });
+            // });
+
+            // app.UseWhen(context => context.Request.Path == "/time", appBuilder =>//Если путь запроса
+            // {
+            //     //Логгирование данные - вывод на консоль приложения
+            //     appBuilder.Use(async(context, next)=>
+            //     {
+            //         var time = DateTime.Now.ToShortTimeString();
+            //         Console.WriteLine($"Time:{time}");
+            //         await next();//Вызываем следующий middleware
+            //     });
+
+            //     //Отправка ответа
+            //     appBuilder.Run(async context =>
+            //     {
+            //         var time = DateTime.Now.ToShortTimeString();
+            //         await context.Response.WriteAsync($"Time:{time}");
+            //     });
+            // });
+            // app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            /////////////////////////////////////////////Вынос получение времени вов вне, без дублирования в каждом middleware
+            // app.UseWhen(context => context.Request.Path == "/date", appBuilder =>//Если путь запроса
+            // {
+            //     var date = DateTime.Now.ToShortDateString();
+            //     //Логгирование данных - вывод на консоль приложения
+            //     appBuilder.Use(async(context, next)=>
+            //     {
+            //         Console.WriteLine($"Date:{date}");
+            //         await next();//Вызываем следующий middleware
+            //     });
+
+            //     //Отправка ответа
+            //     appBuilder.Run(async context =>
+            //     {
+            //         await context.Response.WriteAsync($"Date:{date}");
+            //     });
+            // });
+
+            // app.UseWhen(context => context.Request.Path == "/time", appBuilder =>//Если путь запроса
+            // {
+            //     var time = DateTime.Now.ToShortTimeString();
+            //     //Логгирование данные - вывод на консоль приложения
+            //     appBuilder.Use(async(context, next)=>
+            //     {
+            //         Console.WriteLine($"Time:{time}");
+            //         await next();//Вызываем следующий middleware
+            //     });
+
+            //     //Отправка ответа
+            //     appBuilder.Run(async context =>
+            //     {
+            //         await context.Response.WriteAsync($"Time:{time}");
+            //     });
+            // });
+            // app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            ///////////////////////////////////////////Вынос получение времени вов вне, без дублирования в каждом middleware
+            // app.UseWhen(context => context.Request.Path == "/date", appBuilder =>//Если путь запроса
+            // {
+            //     appBuilder.Use(async(context, next)=>
+            //     {
+            //         var date = DateTime.Now.ToShortDateString();
+            //         await context.Response.WriteAsync($"Date:{date}");//Отправка ответа
+            //         Console.WriteLine($"Date:{date}");
+            //         await next();//Вызываем следующий middleware
+            //     });
+            // });
+
+            // app.UseWhen(context => context.Request.Path == "/time", appBuilder =>//Если путь запроса
+            // {
+            //     appBuilder.Use(async(context, next)=>
+            //     {
+            //         var time = DateTime.Now.ToShortTimeString();
+            //         await context.Response.WriteAsync($"Time:{time}");//Отправка ответа
+            //         Console.WriteLine($"Time:{time}");
+            //         await next();//Вызываем следующий middleware
+            //     });
+            // });
+            // app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            // /////////////////////////////////////////////Создание ветки отдельным метод
+            // app.UseWhen(context => context.Request.Path == "/date", HandleDateRequest);//Если путь запроса /date
+            // app.UseWhen(context => context.Request.Path == "/time", HandleTimeRequest);//Если путь запроса /time
+
+            // app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            // void HandleDateRequest(IApplicationBuilder appBuilder)//Метод: /date
+            // {
+            //     appBuilder.Use(async(context, next)=>
+            //     {
+            //         var date = DateTime.Now.ToShortDateString();
+            //         await context.Response.WriteAsync($"Date:{date}");//Отправка ответа
+            //         Console.WriteLine($"Date:{date}");
+            //         await next();//Вызываем следующий middleware
+            //     });
+            // }
+
+            // void HandleTimeRequest(IApplicationBuilder appBuilder)//Метод: /time
+            // {
+            //     appBuilder.Use(async(context, next)=>
+            //     {
+            //         var time = DateTime.Now.ToShortTimeString();
+            //         await context.Response.WriteAsync($"Time:{time}");//Отправка ответа
+            //         Console.WriteLine($"Time:{time}");
+            //         await next();//Вызываем следующий middleware
+            //     });
+            // }
+
+
+            //////////////////////////////////////Метод: MapWhen(); Создает новый подконвейер для обработки запросов
+            app.MapWhen(
+                context => context.Request.Path == "/date", 
+                appBuilder => appBuilder.Run(async(context)=>
+                {
+                    var date = DateTime.Now.ToShortDateString();
+                    await context.Response.WriteAsync($"Date:{date}");//Отправка ответа
+                    Console.WriteLine($"Date:{date}");
+                })
+            );
+
+            app.MapWhen(
+                context => context.Request.Path == "/time", 
+                appBuilder => appBuilder.Run(async(context)=>
+                {
+                    var time = DateTime.Now.ToShortTimeString();
+                    await context.Response.WriteAsync($"Time:{time}");//Отправка ответа
+                    Console.WriteLine($"Time:{time}");
+                })
+            );
+          
+
+            app.Run(async context => await context.Response.WriteAsync("Hello, METANIT.COM"));
+            app.Run();
+
+            // await StartAsync();//
+            // await Task.Delay(10000);//
+            // await StopAsync();//
+
+        }
+    }
+}

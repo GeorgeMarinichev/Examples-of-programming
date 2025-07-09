@@ -1,0 +1,14 @@
+C:\Users\SmartPlayer\Desktop\Maze\bin\Debug\net8.0\Maze.exe
+C:\Users\SmartPlayer\Desktop\Maze\bin\Debug\net8.0\Maze.deps.json
+C:\Users\SmartPlayer\Desktop\Maze\bin\Debug\net8.0\Maze.runtimeconfig.json
+C:\Users\SmartPlayer\Desktop\Maze\bin\Debug\net8.0\Maze.dll
+C:\Users\SmartPlayer\Desktop\Maze\bin\Debug\net8.0\Maze.pdb
+C:\Users\SmartPlayer\Desktop\Maze\obj\Debug\net8.0\Maze.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\SmartPlayer\Desktop\Maze\obj\Debug\net8.0\Maze.AssemblyInfoInputs.cache
+C:\Users\SmartPlayer\Desktop\Maze\obj\Debug\net8.0\Maze.AssemblyInfo.cs
+C:\Users\SmartPlayer\Desktop\Maze\obj\Debug\net8.0\Maze.csproj.CoreCompileInputs.cache
+C:\Users\SmartPlayer\Desktop\Maze\obj\Debug\net8.0\Maze.dll
+C:\Users\SmartPlayer\Desktop\Maze\obj\Debug\net8.0\refint\Maze.dll
+C:\Users\SmartPlayer\Desktop\Maze\obj\Debug\net8.0\Maze.pdb
+C:\Users\SmartPlayer\Desktop\Maze\obj\Debug\net8.0\Maze.genruntimeconfig.cache
+C:\Users\SmartPlayer\Desktop\Maze\obj\Debug\net8.0\ref\Maze.dll

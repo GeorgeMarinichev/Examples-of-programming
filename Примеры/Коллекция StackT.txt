@@ -1,0 +1,63 @@
+using System;
+using System.Collections;
+using System.Diagnostics;
+
+namespace Genesis;
+
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Коллекция Stack<T>");
+
+            //Stack<string> peop = new Stack<string>();//Пустой стек
+            //Stack<string> peop = [];//Пустой стек
+            var peop = new Stack<string>();//Пустой стек
+
+            Stack<string> animal = new Stack<string>(19);//Емкость стека
+        
+            var employees = new List<string> { "Tom", "Bob", "Sam" };//Лист 
+            Stack<string> people = new Stack<string>(employees);//Инициализация стека элементами из другой коллекции или массива
+        
+            foreach (var person in people) Console.WriteLine(person);//Перебор элементов стека циклом
+            Console.WriteLine(people.Count); //Колличество элементов в стеке
+            Console.WriteLine(people.First()); //Первый элемент в стеке
+            Console.WriteLine(people.Last()); //Последний элемент в стеке
+
+        /////////////////////////////////////////////////////////////////////////
+        var people1 = new Stack<string>();
+        people1.Push("Alice");//Добавляет элемент в верхушку стек 
+        people1.Push("Britni");//Добавляет элемент в верхушку стек 
+        people1.Push("Ceti");//Добавляет элемент в верхушку стек
+
+        foreach (var person in people1) Console.WriteLine(person);//Перебор элементов стека циклом
+
+        /////////////////////////////////////////////////////////////////////////
+        Console.WriteLine(people.Pop());//Извлекает и возвращает первый элемент из стека
+        Console.WriteLine(people.Peek());//Возвращает первый элемент из стека
+        Console.WriteLine(people.Clear);//Очищает стек
+        Console.WriteLine("-----------------------------------------------");
+        foreach (var person in people) Console.WriteLine(person);//Перебор элементов стека циклом
+
+        /////////////////////////////////////////////////////////////////////////
+        var people3 = new Stack<string>();//Пустой стек
+        people3.Push("Chippi");//Добавляет элемент в верхушку стек 
+        var success1 = people3.TryPop(out var person1);//success1 = true
+        if (success1) Console.WriteLine(person1);//Chippi
+
+        var success2 = people3.TryPeek(out var person2);//success2 = false
+        if (success2) Console.WriteLine(person2);//null
+
+        if (people3.Count > 0)
+        {
+            Console.WriteLine(people3.Pop());
+        }
+        else
+        {
+            Console.WriteLine("Отсутсвует элемент в стеке!");
+        }
+    }
+
+}
+

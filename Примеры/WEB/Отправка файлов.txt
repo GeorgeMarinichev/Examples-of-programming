@@ -1,0 +1,96 @@
+using Microsoft.Extensions.FileProviders;
+
+namespace WebApplication3
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+
+            Console.WriteLine("Отправка файлов");
+            //////////////////////////
+
+            //var builder = WebApplication.CreateBuilder();
+            //var app = builder.Build();
+            //app.Run(async (context) => await context.Response.SendFileAsync("D:\\FOREST.jpg"));
+            //app.Run();
+            //Или через отдельный метод
+            //var builder = WebApplication.CreateBuilder();
+            //var app = builder.Build();
+            //app.Run(SendFile);
+            //app.Run();
+            //async Task SendFile(HttpContext context)
+            //{
+            //    await context.Response.SendFileAsync("C:\\Users\\SmartPlayer\\Desktop\\forest.jpg");
+            //}
+
+            //Относительные пути
+            //var builder = WebApplication.CreateBuilder();
+            //var app = builder.Build();
+            //app.Run(SendFile);
+            //app.Run();
+            //async Task SendFile(HttpContext context)
+            //{
+            //    await context.Response.SendFileAsync("space.jpg");
+            //}
+
+            //Отправка страницы html
+            //var builder = WebApplication.CreateBuilder();
+            //var app = builder.Build();
+            //app.Run(async(context)=>
+            //{
+            //    context.Response.ContentType = "text/html; charset=utf-8";
+            //    await context.Response.SendFileAsync("html/index.html");
+            //});
+            //app.Run();
+            //
+            //var builder = WebApplication.CreateBuilder();
+            //var app = builder.Build();
+            //app.Run(async (context) =>
+            //{
+            //    var path = context.Request.Path;
+            //    var fullPath = $"html/{path}";
+            //    var response = context.Response;
+
+            //    response.ContentType = "text/html; charset=utf-8";
+            //    if(File.Exists(fullPath))
+            //    {
+            //        await response.SendFileAsync(fullPath);
+            //    }
+            //    else
+            //    {
+            //        response.StatusCode = 404;
+            //        await response.WriteAsync("<h2>Not Found</h2>");
+            //    }
+            //});
+            //app.Run();
+
+
+            ////Загрузеа файла
+            //var builder = WebApplication.CreateBuilder();
+            //var app = builder.Build();
+            //app.Run(async (context) =>
+            //{
+            //    context.Response.Headers.ContentDisposition = "attahment; filename=my_space.jpg";
+            //    await context.Response.SendFileAsync("forest.jpg");
+            //});
+            //app.Run();
+
+
+            //IFileInfo
+            var builder = WebApplication.CreateBuilder();
+            var app = builder.Build();
+            app.Run(async (context) =>
+            {
+                var fileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory());//using Microsoft.Extensions.FileProviders;
+                var fileInfo = fileProvider.GetFileInfo("forest.jpg");
+
+                context.Response.Headers.ContentDisposition = "attahment; filename=my_space.jpg";
+                await context.Response.SendFileAsync(fileInfo);
+            });
+            app.Run();
+
+
+        }
+    }
+}

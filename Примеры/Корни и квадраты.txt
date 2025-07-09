@@ -1,0 +1,41 @@
+using System;
+
+
+namespace Space
+{
+    public class Program
+    {
+        static int Square(int x)//
+        {
+            int input = x;
+            return input * input;
+        }
+
+        static double MySqrt(double x)//
+        {
+            return Math.Pow(x, 0.5);//Возводит в степень 0.5, что эквивалентно квадратному корню
+        }
+
+
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("Корни и квадраты");
+
+            byte x = 2;
+
+            var xSqrt = Math.Sqrt(x);//Вычесляет квадратный корень числа(обратная операция к возведению в квадрат)
+            var xSqrtMy = MySqrt(x);//Вычесляет квадратный корень числа(обратная операция к возведению в квадрат)
+
+            var xSquare = Math.Pow(x, 2);//Вычесляет квадрат числа(возводит числов квадрат)
+            var xSquareMy = Square(x);//Вычесляет квадрат числа(возводит числов квадрат)
+            
+            Console.WriteLine($"Корень числа:{x} = {xSqrt}");
+            Console.WriteLine($"Корень числа:{x} = {xSqrtMy}");
+
+            Console.WriteLine($"Корень числа:{x} = {xSquare}");
+            Console.WriteLine($"Корень числа:{x} = {xSquareMy}");
+
+        }
+    }
+}
+

@@ -1,0 +1,91 @@
+
+record class Person(string Name, int Age, List<string> Languages);
+record class Person1(string Name);
+record class Student(string Name): Person1(Name);
+record class Employee(string Name): Person1(Name);
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Фильтрация коллекции");
+        
+        string[] people = {"Tom", "Alice", "Bob", "Sam", "Tim", "Tomas", "Bill"};
+        //var selectedPeople = people.Where(p => p.Length == 3);//При помощи метода расширения Where()
+        //Или
+        var selectedPeople = from p in people where p.Length == 3 select p;//При помощи оператора запросов LINQ
+        
+
+        foreach (var item in selectedPeople)
+        {
+            Console.WriteLine(item);
+        }
+       
+        ///////////////////////////////////////////////////////////////
+        Console.WriteLine("----------------------------------------------------");
+        int[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
+        //Метод расширения
+        var selectNumbers = numbers.Where(n => n % 2 == 0 && n > 10);//Условие выбора четного числа
+        // Оператор запросов
+        // var selectNumbers = from n in numbers where n % 2 == 0 && n > 10 select n;
+
+        // foreach (var item in selectNumbers)
+        // {
+        //     Console.WriteLine(item.);
+        // }
+
+        //////////////////////////////Выборка сложных объектов/////////////////////////
+        Console.WriteLine("----------------------------------------------------");
+        var peopleP = new List<Person>
+        {
+            new Person("George", 38, new List<string> {"russian", "german", "english"}),
+            new Person("Tanj", 27, new List<string> {"russian", "english"}),
+            new Person("Kati", 30, new List<string> {"russian", "french"})
+
+        };
+        //var selectPeopleP = from p in peopleP where p.Age > 25 select p;//При помощи оператора запросов LINQ
+        //Или
+        var selectPeopleP = peopleP.Where(p1 => p1.Age > 25);//При помощи метода расширения Where()
+        foreach (var item in selectPeopleP)
+        {
+            Console.WriteLine($"{item.Name} - {item.Age}");
+        }
+
+        ////////////////////////////////Сложные фильтры//////////////////////////////
+        Console.WriteLine("----------------------------------------------------");
+        // var selectePeopleL = from p in peopleP 
+        //                     from l in p.Languages
+        //                     where p.Age < 28
+        //                     where l == "english"
+        //                     select p;
+        //Или При помощи метода расширения Where()
+        // var selectedPeopleL = peopleP.SelectMany(u => u.Languages,
+        //                     (u, l) => new { Person = u, Lang = l })
+        //                   .Where(u => u.Lang == "english" && u.Person.Age < 28)
+        //                   .Select(u=>u.Person);
+
+        // foreach (var item in selectedPeopleL)
+        // {
+        //     Console.WriteLine($"{item.Name} - {item.Age}");
+        // }
+
+        ////////////////////////////////Фильтрация по типу данных//////////////////////////////
+        Console.WriteLine("----------------------------------------------------");
+        var people1 = new List<Person1>
+        {
+            new Person1("Tom"),
+            new Student("Sam"),
+            new Employee("Bob")
+        };
+        var selectType = people1.OfType<Student>();
+
+        foreach (var item in selectType)
+        {
+            Console.WriteLine(item.Name);
+        }        
+
+
+    }
+}
+
+

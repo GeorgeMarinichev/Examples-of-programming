@@ -1,0 +1,14 @@
+C:\Users\User\Desktop\VSC WinForms\bin\Debug\net9.0-windows\VSC WinForms.exe
+C:\Users\User\Desktop\VSC WinForms\bin\Debug\net9.0-windows\VSC WinForms.deps.json
+C:\Users\User\Desktop\VSC WinForms\bin\Debug\net9.0-windows\VSC WinForms.runtimeconfig.json
+C:\Users\User\Desktop\VSC WinForms\bin\Debug\net9.0-windows\VSC WinForms.dll
+C:\Users\User\Desktop\VSC WinForms\bin\Debug\net9.0-windows\VSC WinForms.pdb
+C:\Users\User\Desktop\VSC WinForms\obj\Debug\net9.0-windows\VSC WinForms.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\VSC WinForms\obj\Debug\net9.0-windows\VSC WinForms.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\VSC WinForms\obj\Debug\net9.0-windows\VSC WinForms.AssemblyInfo.cs
+C:\Users\User\Desktop\VSC WinForms\obj\Debug\net9.0-windows\VSC WinForms.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\VSC WinForms\obj\Debug\net9.0-windows\VSC WinForms.dll
+C:\Users\User\Desktop\VSC WinForms\obj\Debug\net9.0-windows\refint\VSC WinForms.dll
+C:\Users\User\Desktop\VSC WinForms\obj\Debug\net9.0-windows\VSC WinForms.pdb
+C:\Users\User\Desktop\VSC WinForms\obj\Debug\net9.0-windows\VSC WinForms.genruntimeconfig.cache
+C:\Users\User\Desktop\VSC WinForms\obj\Debug\net9.0-windows\ref\VSC WinForms.dll

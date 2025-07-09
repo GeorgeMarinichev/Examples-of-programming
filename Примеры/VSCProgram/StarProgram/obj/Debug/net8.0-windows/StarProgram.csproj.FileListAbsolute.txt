@@ -1,0 +1,16 @@
+C:\Users\SmartPlayer\Desktop\StarProgram\bin\Debug\net8.0-windows\StarProgram.exe
+C:\Users\SmartPlayer\Desktop\StarProgram\bin\Debug\net8.0-windows\StarProgram.deps.json
+C:\Users\SmartPlayer\Desktop\StarProgram\bin\Debug\net8.0-windows\StarProgram.runtimeconfig.json
+C:\Users\SmartPlayer\Desktop\StarProgram\bin\Debug\net8.0-windows\StarProgram.dll
+C:\Users\SmartPlayer\Desktop\StarProgram\bin\Debug\net8.0-windows\StarProgram.pdb
+C:\Users\SmartPlayer\Desktop\StarProgram\obj\Debug\net8.0-windows\StarProgram.Form1.resources
+C:\Users\SmartPlayer\Desktop\StarProgram\obj\Debug\net8.0-windows\StarProgram.csproj.GenerateResource.cache
+C:\Users\SmartPlayer\Desktop\StarProgram\obj\Debug\net8.0-windows\StarProgram.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\SmartPlayer\Desktop\StarProgram\obj\Debug\net8.0-windows\StarProgram.AssemblyInfoInputs.cache
+C:\Users\SmartPlayer\Desktop\StarProgram\obj\Debug\net8.0-windows\StarProgram.AssemblyInfo.cs
+C:\Users\SmartPlayer\Desktop\StarProgram\obj\Debug\net8.0-windows\StarProgram.csproj.CoreCompileInputs.cache
+C:\Users\SmartPlayer\Desktop\StarProgram\obj\Debug\net8.0-windows\StarProgram.dll
+C:\Users\SmartPlayer\Desktop\StarProgram\obj\Debug\net8.0-windows\refint\StarProgram.dll
+C:\Users\SmartPlayer\Desktop\StarProgram\obj\Debug\net8.0-windows\StarProgram.pdb
+C:\Users\SmartPlayer\Desktop\StarProgram\obj\Debug\net8.0-windows\StarProgram.genruntimeconfig.cache
+C:\Users\SmartPlayer\Desktop\StarProgram\obj\Debug\net8.0-windows\ref\StarProgram.dll

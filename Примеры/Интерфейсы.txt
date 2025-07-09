@@ -1,0 +1,163 @@
+
+using System.Security.AccessControl;
+using static System.Console;
+
+interface IDataProvider
+{
+    string GetData();
+}
+
+interface IDataProcessor
+{
+    void ProcessData(IDataProvider dataProvider);
+}
+
+class ConsoleDataProcessor : IDataProcessor
+{
+    public void ProcessData(IDataProvider dataProvider)
+    {
+        WriteLine(dataProvider.GetData());
+    }
+}
+class DbDataProvider : IDataProvider
+{
+    public string GetData()
+    {
+        return "Данные из БД";
+    }
+}
+
+class FileDataProvider : IDataProvider
+{
+public string GetData()
+    {
+        return "Данные из файла";
+    }
+}
+
+class APIDataProvider : IDataProvider
+{
+public string GetData()
+    {
+        return "Данные из API";
+    }
+}
+
+//  }
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        ForegroundColor = ConsoleColor.Yellow;
+        WriteLine("Интерфейсы");
+        ForegroundColor = ConsoleColor.Green;
+
+        IDataProcessor dataProcessor = new ConsoleDataProcessor();
+
+        dataProcessor.ProcessData(new DbDataProvider());
+        dataProcessor.ProcessData(new FileDataProvider());
+        dataProcessor.ProcessData(new APIDataProvider());
+
+
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+using System.Diagnostics;
+using static System.Console; // Импорт
+// using Print = System.Console; // Псевдонимы
+using User = Genesis.Player;
+
+namespace Genesis; // Пространство имен
+
+interface IHasInfo
+{
+    void ShowInfo();
+}
+abstract class Weapon: IHasInfo // Абстрактый класс
+{
+    public abstract int Damage{get;}
+    public abstract void Fire();
+    public void ShowInfo()
+    {
+        WriteLine($"{GetType().Name} Урон:{Damage}");
+    }
+
+}
+
+class Gun : Weapon // Производный абстрактного класса 1
+{
+    public override int Damage {get{return 35;}}
+    public override void Fire()
+    {
+        //throw new NotImplementedException();
+        WriteLine("Пыщь!");
+    }
+}
+
+class LaserGun : Weapon // Производный абстрактного класса 2
+{
+    public override int Damage {get{return 55;}}
+    public override void Fire()
+    {
+        //throw new NotImplementedException();
+        WriteLine("Пиу!");
+    }
+}
+class Bow : Weapon // Производный абстрактного класса 3
+{
+    public override int Damage => 85;
+    public override void Fire()
+    {
+        //throw new NotImplementedException();
+        WriteLine("Бах!");
+    }
+}
+class Player // Класс персонажа
+{
+    public Player()// Пустой конструктор по умолчанию
+    {
+
+    }
+    public void Fire(Weapon weapon)
+    {
+        weapon.Fire();
+    }
+    public void CheckInfo(Weapon weapon)
+    {
+        weapon.ShowInfo();
+    }
+}
+
+internal class Program // Основной класс программы
+{
+    private static void Main(string[] args)// Основной метод программы
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine("<<< Абстрактный класс, метод, свойство >>>");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(DateTime.Now);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("-----------------------------");
+        Console.ForegroundColor = ConsoleColor.Green;
+       
+        Player player = new();
+
+        Weapon [] inventory = {new Gun(), new LaserGun(), new Bow()};
+        foreach(var i in inventory)
+        {
+            player.CheckInfo(i);
+            player.Fire(i);
+            WriteLine();
+        }
+
+        WriteLine("================================================");
+
+
+    }
+}
+
+

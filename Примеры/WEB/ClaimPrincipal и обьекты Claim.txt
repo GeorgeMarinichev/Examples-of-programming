@@ -1,0 +1,374 @@
+////////////////////////////ClaimPrincipal и обьекты Claim
+
+using System;
+using Microsoft.AspNetCore.Authorization;//Деректива для аутентификации
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
+// Не обходимый пакет NuGet: Microsoft.AspNetCore.Authentication.JwtBearer, для аутентификации на основе jwt-токенов.
+
+namespace Space
+{
+    class Program
+    {
+        //record class Person(string Email, string Password);//Для представления пользователя в приложении
+        static void Main(string[] args)
+        {
+            // //WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);
+
+            // //Аутентификация с помощью куки
+            // builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)//Добавление сервисов аутентификации
+            // .AddCookie();
+
+        
+            // //WebApplication app = builder.Build();
+            // var app = builder.Build();
+
+            // app.UseAuthentication();//Добавление middleware аутентификации
+
+
+            // app.MapGet("/login/{username}", async(string username, HttpContext context) =>//Создание идентичности
+            // {
+            //     var claims = new List<Claim> {new (ClaimTypes.Name, username)};
+            //     var claimsIdentity = new ClaimsIdentity(claims,"Cookies");//Создание идентичности с типом аутентификации(Undefined-неопределенный). Это может быть произвольная строка
+            //     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);//Создание обьекта принимающего идентичность claimsIdentity
+        
+            //     await context.SignInAsync(claimsPrincipal);//Используя обьект claimsPrincipal устанавливаются аутентификационные куки
+            //     return $"Установлено имя:{username}";
+            // });
+
+            // app.Map("/", (HttpContext context) =>
+            // {
+            //     var user = context.User.Identity;//Получаем через механизм(DI) текущего пользователя, по сути обьект claimsPrincipal сохраненный в куках
+            //     //Если 
+            //     if(user is not null && user.IsAuthenticated)
+            //     {
+            //         return ($"Пользователь:{user.Name} аутентифицирован. Тип аутентификации:{user.AuthenticationType}");
+            //     }
+            //     else
+            //     {
+            //         return ("Пользователь не аутентифицирован!");
+            //     }
+            // });
+            // //Или если не нужен весь обьект HttpContext, доступный через механизм(DI) в любой точке приложения
+            // //А нужно только свойство User, то можно через механизм(DI), полусить сервис ClaimsPrincipal
+            // //который будет будет аналогичен свойству context.User
+            // // app.Map("/", (ClaimsPrincipal claimsPrincipal) =>
+            // // {
+            // //     var user = claimsPrincipal.Identity;//Получаем через механизм(DI) текущего пользователя, по сути обьект claimsPrincipal сохраненный в куках
+            // //     //Если 
+            // //     if(user is not null && user.IsAuthenticated)
+            // //     {
+            // //         return ($"Пользователь:{user.Name} аутентифицирован. Тип аутентификации:{user.AuthenticationType}");
+            // //     else
+            // //     {
+            // //         return ("Пользователь не аутентифицирован!");
+            // //     }
+            // // });
+
+            // app.MapGet("/logout", async(HttpContext context) =>
+            // {
+            //     await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            //     return "Данные удалены";
+            // });
+
+            // //app.Map("/", () => "Hello World!");
+            // app.Run();
+
+
+
+            //////////////Определения у пользователя несколько обьектов Claim:
+            // //WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);
+
+            // //Аутентификация с помощью куки
+            // builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)//Добавление сервисов аутентификации
+            // .AddCookie();
+
+        
+            // //WebApplication app = builder.Build();
+            // var app = builder.Build();
+
+            // app.UseAuthentication();//Добавление middleware аутентификации
+
+
+            // app.MapGet("/login", async(HttpContext context) =>//Создание идентичности
+            // {
+            //     var username = "George";
+            //     var company = "Valve";
+            //     var lang = "C#";
+            //     var phone = "+79964180110";
+
+            //     var claims = new List<Claim>
+            //     {
+            //         new (ClaimTypes.Name, username),
+            //         new ("company", company),
+            //         new ("lang", lang),
+            //         new (ClaimTypes.MobilePhone, phone)
+            //     };
+
+            //     var claimsIdentity = new ClaimsIdentity(claims,"Cookies");//Создание идентичности с типом аутентификации(Undefined-неопределенный). Это может быть произвольная строка
+            //     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);//Создание обьекта принимающего идентичность claimsIdentity
+        
+            //     await context.SignInAsync(claimsPrincipal);//Используя обьект claimsPrincipal устанавливаются аутентификационные куки
+            //     return Results.Redirect("/");
+            // });
+
+            // // app.Map("/", (HttpContext context) =>
+            // // {
+            // //     //var user = context.User.Identity.Name;//Получаем через механизм(DI) текущего пользователя, по сути обьект claimsPrincipal сохраненный в куках
+                
+            // //     var username = context.User.FindFirst(ClaimTypes.Name);
+            // //     var phone = context.User.FindFirst(ClaimTypes.MobilePhone);
+            // //     var company = context.User.FindFirst("company");
+            // //     var lang = context.User.FindFirst("lang");
+
+            // //     return ($"Name:{username?.Value}\nPhone:{phone?.Value}\nCompany:{company?.Value}\nLanguage:{lang?.Value}");
+            // // });
+            // //Или если не нужен весь обьект HttpContext, доступный через механизм(DI) в любой точке приложения
+            // //А нужно только свойство User, то можно через механизм(DI), полусить сервис ClaimsPrincipal
+            // //который будет будет аналогичен свойству context.User
+            // app.Map("/", (ClaimsPrincipal claimsPrincipal) =>
+            // {
+            //     //var user = claimsPrincipal.Identity.Name;//Получаем через механизм(DI) текущего пользователя, по сути обьект claimsPrincipal сохраненный в куках
+
+            //     var username = claimsPrincipal.FindFirst(ClaimTypes.Name);
+            //     var phone = claimsPrincipal.FindFirst(ClaimTypes.MobilePhone);
+            //     var company = claimsPrincipal.FindFirst("company");
+            //     var lang = claimsPrincipal.FindFirst("lang");
+
+            //     return ($"Name:{username?.Value}\nPhone:{phone?.Value}\nCompany:{company?.Value}\nLanguage:{lang?.Value}");
+            // });
+
+            // app.MapGet("/logout", async(HttpContext context) =>
+            // {
+            //     await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            //     return "Данные удалены";
+            // });
+
+            // //app.Map("/", () => "Hello World!");
+            // app.Run();
+
+
+
+
+            // ///////////Динамическое добавление и удаление новых claim:
+            // var builder = WebApplication.CreateBuilder(args);
+
+            // //Аутентификация с помощью куки
+            // builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)//Добавление сервисов аутентификации
+            // .AddCookie();
+
+            // var app = builder.Build();
+
+            // app.UseAuthentication();//Добавление middleware аутентификации
+
+
+            // app.MapGet("/login", async(HttpContext context) =>//Создание идентичности
+            // {
+            //     var username = "George";
+            //     var company = "Valve";
+            //     var lang = "C#";
+            //     var phone = "+79964180110";
+
+            //     var claims = new List<Claim>
+            //     {
+            //         new (ClaimTypes.Name, username),
+            //         new ("company", company),
+            //         new ("lang", lang),
+            //         new (ClaimTypes.MobilePhone, phone)
+            //     };
+
+            //     var claimsIdentity = new ClaimsIdentity(claims,"Cookies");//Создание идентичности с типом аутентификации(Undefined-неопределенный). Это может быть произвольная строка
+            //     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);//Создание обьекта принимающего идентичность claimsIdentity
+        
+            //     await context.SignInAsync(claimsPrincipal);//Используя обьект claimsPrincipal устанавливаются аутентификационные куки
+            //     return Results.Redirect("/");
+            // });
+
+            // app.MapGet("/addage", async(HttpContext context)=>//Добавление нового claim:
+            // {
+            //     if(context.User.Identity is ClaimsIdentity claimsIdentity)
+            //     {
+            //         claimsIdentity.AddClaim(new Claim("age", "39"));
+            //         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            //         await context.SignInAsync(claimsPrincipal);
+            //     }
+            //     return Results.Redirect("/");
+            // });
+
+            // app.MapGet("/removephone", async(HttpContext context)=>//Удаление claim:
+            // {
+            //     if(context.User.Identity is ClaimsIdentity claimsIdentity)
+            //     {
+            //         var phoneClaim = claimsIdentity.FindFirst(ClaimTypes.MobilePhone);
+            //         if(claimsIdentity.TryRemoveClaim(phoneClaim))
+            //         {
+            //             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            //             await context.SignInAsync(claimsPrincipal);
+            //         }
+            //     }
+            //     return Results.Redirect("/");
+            // });
+
+            // app.Map("/", (HttpContext context) =>
+            // {
+            //     //var user = context.User.Identity.Name;//Получаем через механизм(DI) текущего пользователя, по сути обьект claimsPrincipal сохраненный в куках
+                
+            //     var username = context.User.FindFirst(ClaimTypes.Name);
+            //     var phone = context.User.FindFirst(ClaimTypes.MobilePhone);
+            //     var company = context.User.FindFirst("company");
+            //     var lang = context.User.FindFirst("lang");
+            //     var age = context.User.FindFirst("age");
+
+            //     return $"Name:{username?.Value}\nPhone:{phone?.Value}\nCompany:{company?.Value}\nLanguage:{lang?.Value}\nAge:{age?.Value}";
+            // });
+            // //Или если не нужен весь обьект HttpContext, доступный через механизм(DI) в любой точке приложения
+            // //А нужно только свойство User, то можно через механизм(DI), полусить сервис ClaimsPrincipal
+            // //который будет будет аналогичен свойству context.User
+            // // app.Map("/", (ClaimsPrincipal claimsPrincipal) =>
+            // // {
+            // //     //var user = claimsPrincipal.Identity.Name;//Получаем через механизм(DI) текущего пользователя, по сути обьект claimsPrincipal сохраненный в куках
+
+            // //     var username = claimsPrincipal.FindFirst(ClaimTypes.Name);
+            // //     var phone = claimsPrincipal.FindFirst(ClaimTypes.MobilePhone);
+            // //     var company = claimsPrincipal.FindFirst("company");
+            // //     var lang = claimsPrincipal.FindFirst("lang");
+            // //     var age = claimsPrincipal.FindFirst("age");
+
+            // //     return $"Name:{username?.Value}\nPhone:{phone?.Value}\nCompany:{company?.Value}\nLanguage:{lang?.Value}\nAge:{age?.Value}";
+            // // });
+
+            // app.MapGet("/logout", async(HttpContext context) =>
+            // {
+            //     await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            //     return "Данные удалены";
+            // });
+
+            // //app.Map("/", () => "Hello World!");
+            // app.Run();
+
+
+
+            ///////////Метод FindAll(), список значений:
+            var builder = WebApplication.CreateBuilder(args);
+
+            //Аутентификация с помощью куки
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)//Добавление сервисов аутентификации
+            .AddCookie();
+
+            var app = builder.Build();
+
+            app.UseAuthentication();//Добавление middleware аутентификации
+
+
+            app.MapGet("/login", async(HttpContext context) =>//Создание идентичности
+            {
+                var username = "George";
+              
+                var claims = new List<Claim>
+                {
+                    new (ClaimTypes.Name, username),
+                    new ("languages", "English"),
+                    new ("languages", "German"),
+                    new ("languages", "Spanish")
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims,"Cookies");//Создание идентичности с типом аутентификации(Undefined-неопределенный). Это может быть произвольная строка
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);//Создание обьекта принимающего идентичность claimsIdentity
+        
+                await context.SignInAsync(claimsPrincipal);//Используя обьект claimsPrincipal устанавливаются аутентификационные куки
+                return Results.Redirect("/");
+            });
+
+            app.MapGet("/addlang", async(HttpContext context)=>//Добавление нового claim:
+            {
+                if(context.User.Identity is ClaimsIdentity claimsIdentity)
+                {
+                    claimsIdentity.AddClaim(new Claim("languages", "Russland"));
+                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                    await context.SignInAsync(claimsPrincipal);
+                }
+                return Results.Redirect("/");
+            });
+
+            app.MapGet("/removelang", async(HttpContext context)=>//Удаление claim:
+            {
+                if(context.User.Identity is ClaimsIdentity claimsIdentity)
+                {
+                    var langClaim = claimsIdentity.FindFirst(с => с.Type == "languages" && с.Value == "Spanish");
+
+                    //Первый способ
+                    // if(claimsIdentity.TryRemoveClaim(langClaim))// Пытаемся удалить claim
+                    // {
+                    //     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                    //     await context.SignInAsync(claimsPrincipal);
+                    // }
+
+                    //Второй способ
+                    // if(langClaim != null)// Проверяем, найден ли claim
+                    // {
+                    //     claimsIdentity.RemoveClaim(langClaim);// Удаляем claim
+                    //     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                    //     await context.SignInAsync(claimsPrincipal);// Обновляем аутентификационные куки
+                    // }
+
+                    //Третий способ
+                    if(langClaim != null)// Проверяем, найден ли claim
+                    {
+                        if (claimsIdentity.TryRemoveClaim(langClaim))// Пытаемся удалить claim
+                        {         
+                            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                            await context.SignInAsync(claimsPrincipal);// Обновляем аутентификационные куки
+                        }
+                    }
+                }
+                return Results.Redirect("/");
+            });
+
+            // app.Map("/", (HttpContext context) =>
+            // {
+            //     var username = context.User.FindFirst(ClaimTypes.Name);
+            //     var languages = context.User.FindAll("languages");
+            //     //Обьеденение списка claims в строку
+            //     var languagesToString = "";
+            //     foreach (var item in languages)
+            //     {
+            //         languagesToString = $"{languagesToString}{item.Value}";
+            //     }
+
+            //     return $"Name:{username?.Value}\nLanguage:{languagesToString}";
+            // });
+            //Или если не нужен весь обьект HttpContext, доступный через механизм(DI) в любой точке приложения
+            //А нужно только свойство User, то можно через механизм(DI), полусить сервис ClaimsPrincipal
+            //который будет будет аналогичен свойству context.User
+            app.Map("/", (ClaimsPrincipal claimsPrincipal) =>
+            {
+                var username = claimsPrincipal.FindFirst(ClaimTypes.Name);
+                var languages = claimsPrincipal.FindAll("languages");
+                //Обьеденение списка claims в строку
+                var languagesToString = "";
+                foreach (var item in languages)
+                {
+                    languagesToString = $"{languagesToString}{item.Value}";
+                }
+
+                return $"Name:{username?.Value} \nLanguage:{languagesToString}";
+            });
+
+            app.MapGet("/logout", async(HttpContext context) =>
+            {
+                await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                return "Данные удалены";
+            });
+
+            //app.Map("/", () => "Hello World!");
+            app.Run();
+
+
+        }
+    }
+}
+

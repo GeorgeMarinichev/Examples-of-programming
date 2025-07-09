@@ -1,0 +1,26 @@
+ Console.WriteLine("Программа проверки числа на четность");
+            restart:
+            Console.WriteLine("Введите число:");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            var x = Convert.ToInt32(Console.ReadLine());
+            x %= 2;
+
+            if (x == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Четное число:" + x);
+            }
+            else if(x != 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("Не четное:" + x);
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Не корректные данные!");
+            }
+
+            goto restart;
+            Console.ResetColor();
+            Console.ReadKey();

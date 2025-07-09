@@ -1,0 +1,228 @@
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore.Diagnostics;//Логгирование
+
+namespace Space
+{
+    public class Account//Класс таблицы персона
+    {
+        public int Id { get; set; }//NOT NULL
+        public string? Login { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        public string? Password { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+
+        //Навигационные свойства
+        public User? User{ get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+    }
+
+    [Table("People")]//Переименование таблицы
+    public class User
+    {
+        public int Id { get; set; }//NOT NULL
+        public string? Name { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        public int Age { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+
+        //Навигационные свойства
+        // public int AccountId { get; set; }
+        // public User? Account { get; set; }
+
+        public int? CompanyId { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        public Company? Company { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+    }
+
+    public class Company//Класс таблицы компания
+    {
+        public int Id { get; set; }//NOT NULL
+        public string? Name { get; set; }//Не обязательное свойство допускающие значение null(nullable-тип)
+        public List<User> Users { get; set; } = new();
+
+        //Навигационные свойства
+    }
+
+
+    public class ApplicationContext : DbContext//Класс контекст данных
+    {
+        //public DbSet<Account> Accounts { get; set; } = null!;
+        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Company> Companies { get; set; } = null!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data Source=helloapp.db");//Подключение
+            //optionsBuilder.UseLazyLoadingProxies().UseSqlite("Data Source=helloapp.db");//Подключение LazyLoading
+            //optionsBuilder.LogTo(Console.WriteLine, new[] { RelationalEventId.CommandExecuted });//Логгирование
+        }
+        
+        // protected override void OnModelCreating(ModelBuilder modelBuilder)
+        // {
+        //     modelBuilder
+        //     .Entity<User>()
+        //     .HasOne(u => u.Account)
+        //     .WithOne(p => p.Account)
+        //     .HasForeignKey<User>(p => p.AccountId);
+        // }
+    }
+    
+    class Program//Основной класс точки входа
+    {
+        static void Main(string[] args)//Метод как точка входа
+        {
+            void CreateData()//Создание данных
+            {
+                using (ApplicationContext db = new ApplicationContext())//Ввод данных
+                {
+                    //Пересоздание БД
+                    db.Database.EnsureDeleted();//Очистка БД
+                    db.Database.EnsureCreated();//Создание БД
+
+                    //Добавление начальных данных
+                    // Account acc1 = new Account { Login = "login1", Password = "111" };
+                    // Account acc2 = new Account { Login = "login2", Password = "222" };
+                    // Account acc3 = new Account { Login = "login3", Password = "333" };
+                    // db.Accounts.AddRange(acc1, acc2, acc3);
+
+                    //Добавление начальных данных
+                    Company microsoft = new Company { Name = "Microsoft" };
+                    Company google = new Company { Name = "Google" };
+                    Company valve = new Company { Name = "Valve" };
+                    db.Companies.AddRange(microsoft, google, valve);
+
+                    //Добавление начальных данных
+                    User tom = new User { Name = "Tom", Age = 30, Company = microsoft};
+                    User sam = new User { Name = "Sam", Age = 45, Company = google};
+                    User bob = new User { Name = "Bob", Age = 65, Company = valve};
+                    db.Users.AddRange(tom, sam, bob);
+
+                    db.SaveChanges();
+                }
+            }
+            CreateData();//
+            
+            void ReadData()//Чтение данных
+            {
+                using (ApplicationContext db = new ApplicationContext())//Получение данных
+                {
+                    Console.WriteLine($"==========================вывод пользователей===============================");
+                    var users = db.Users.Include(u => u.Company).ToList();//вывод пользователей
+                    foreach (var i in users)
+                    {
+                        Console.WriteLine($"Id:{i.Id} Name:{i.Name} Age:{i.Age}");
+                        Console.WriteLine($"Company:{i.Company?.Name}\n");
+                    }
+
+                    Console.WriteLine($"==========================вывод компаний===============================");
+                    var company = db.Companies.Include(c => c.Users).ToList();//вывод компаний
+                    foreach (var i in company)
+                    {
+                        Console.WriteLine($"Company:{i.Name}");
+                        foreach(var j in i.Users)
+                        {
+                            Console.WriteLine($"Name:{j.Name}");
+                        }
+                    }
+
+                }
+            }
+            Console.WriteLine("Метод вывода до изменений:");
+            ReadData();//1
+
+            void UpdateData()//Редактирование данных
+            {
+                //Изменение данных
+                using (ApplicationContext db = new ApplicationContext())//Редактирование данных
+                {   
+                    User? user = db.Users.FirstOrDefault(p => p.Name == "Tom");//изменение имени пользователя
+                    if (user != null)
+                    {
+                        user.Name = "Tomek";
+                        db.SaveChanges();
+                    }
+
+                    Company? com = db.Companies.FirstOrDefault(c => c.Name == "Microsoft");//изменение названия компании
+                    if(com != null)
+                    {
+                        com.Name = "EA";
+                        db.SaveChanges();
+                    }
+
+                    User? user1 = db.Users.FirstOrDefault(u1 => u1.Name == "Bob");//смена компании сотрудника
+                    if(user1 != null)
+                    {
+                        user1.Company = com;
+                        db.SaveChanges();
+                    }
+
+                }
+            }
+            UpdateData();//
+
+            Console.WriteLine("Метод вывода после изменений:");
+            ReadData();//2
+
+            void DeleteData()//Удаление данных
+            {
+                using(ApplicationContext db = new ApplicationContext())
+                {
+                    User? user = db.Users.FirstOrDefault(u => u.Name == "Bob");
+                    if(user != null)
+                    {
+                        db.Users.Remove(user);
+                        db.SaveChanges();
+                    }
+
+                    Company? com = db.Companies.FirstOrDefault();
+                    if(com != null)
+                    {
+                        db.Companies.Remove(com);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            DeleteData();//
+            Console.WriteLine("Метод вывода после удаления:");
+            ReadData();//3
+
+
+            // using (ApplicationContext db = new ApplicationContext())//Редактирование данных
+            // {
+            //     //Получение данных по людям
+            //     ////////////////////////////////////////////////////////////////////////////////
+            //     //var users = db.Users.ToList();//Без метода //LINQ  
+            //     //var userProfile = db.UserProfiles.ToList();//Без метода //LINQ  
+            //     // var users = db.Users.Include(use => use.Company).ToList();//Без метода //LINQ 
+            //     // foreach (var i in users)
+            //     // {
+            //     //     //Console.WriteLine("==========================================");//Для красоты
+            //     //     Console.WriteLine($"Name:{i.UserProfile?.Name} Age:{i.UserProfile?.Age}");
+            //     //     Console.WriteLine($"Login:{i.Login} Password:{i.Password}");
+            //     //     //Console.WriteLine("-------------------------------------------");//Для красоты
+            //     // }
+
+            //     ////////////////////////////////////////////////////////////////////////////////////
+           
+            //     /////////////////////////////////////////////////
+            //     //var user = db.Users.ToList();//
+            //     // var countries = db.Countries.Include(c => c.Companies).ThenInclude(u => u.Users).ToList();//LINQ
+            //     // foreach (var i in countries)
+            //     // {
+            //     //     Console.WriteLine(i.Name);
+            //     //     Console.WriteLine("==========================================");//Для красоты
+            //     //     foreach (var j in i.Companies)
+            //     //     {
+            //     //         Console.WriteLine(j.Name);
+            //     //         Console.WriteLine("-------------------------------------------");//Для красоты
+            //     //         foreach (var t in j.Users)
+            //     //         {
+            //     //             Console.WriteLine(t.Name);
+            //     //         }
+            //     //         Console.WriteLine("-------------------------------------------");//Для красоты
+            //     //     }
+            //     //     Console.WriteLine("==========================================");//Для красоты
+            //     // }
+            //     //////////////////////////////////////////////////
+            // }
+
+        }
+    }
+}

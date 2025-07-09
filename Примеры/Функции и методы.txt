@@ -1,0 +1,93 @@
+using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace ConsoleApp7
+{
+
+    internal class Program
+    {
+        static int myMetod(int[] massiv, int val)// Метод поиска чиисла в массиве
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Поиск числа...)");
+            for (int i = 0; i < massiv.Length; i++)
+            {
+                if (massiv[i] == val)
+                {
+                    Console.WriteLine($"Есть такое число:{i}");
+                    return i;
+                }
+            }
+            Console.WriteLine("Нет такого числа:");
+            return -1;
+        }
+
+        static int[] myMassiv(uint lenght, int min_val, int max_val)//Метод генератор одномерного массива
+        {
+            int[] massiv = new int[lenght];
+            Random rand = new Random();
+            
+            
+            for (int i = 0; i < massiv.Length; i++)
+            {
+                massiv[i] = rand.Next(min_val, max_val);
+            }
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            for (int i = 0; i < massiv.Length; i++)
+            {
+                Console.Write(massiv[i] + "\t");
+            }
+            Console.WriteLine();
+            return massiv;
+        }
+
+        static void Main(string[] args)
+        {
+            //static void myMetod2(object res1, object res2) => Console.WriteLine($"Символ:{res1} количество:{res2}");
+
+            Console.WriteLine("Программа методы массивы и цыклы");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            uint mass_x;
+            int data_x, data_y, val;
+            mass_x = 0;
+            val = 0;
+            data_x = 0;
+            data_y = 0;
+            Random rand = new Random();
+
+            try
+            {
+                Console.Write("Введите длину массива: ");
+                mass_x = uint.Parse(Console.ReadLine());
+                Console.Write("Введите диапазон значения от: ");
+                data_x = int.Parse(Console.ReadLine());
+                Console.Write("Введите диапазон значения до: ");
+                data_y = int.Parse(Console.ReadLine());
+                Console.Write("Введите число поиска: ");
+                val = int.Parse(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(" Не верное значение!!!");
+                Console.ReadKey();
+                //throw;
+            }
+            
+            myMetod(myMassiv(mass_x, data_x, data_y), val);
+            
+            //Console.WriteLine();
+            //Console.ForegroundColor = ConsoleColor.Cyan;
+            //Console.WriteLine("Измерение: "+mass.Rank);
+            //Console.WriteLine("Количество элементов: "+mass.Length);
+            //Console.WriteLine("Первый элемент :" + mass[0]);
+            //Console.WriteLine("Последний элемент :"+mass[^1]);
+            //Console.WriteLine("Индексы :" + mass[..]);
+            //Console.WriteLine("Результат поиска числа :"+x);
+
+            Console.ResetColor();
+        }
+
+    }  
+}

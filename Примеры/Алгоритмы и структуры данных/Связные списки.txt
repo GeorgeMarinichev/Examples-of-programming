@@ -1,0 +1,85 @@
+using System.Data;
+
+namespace Linked_List
+{
+    public class Node<T>
+    {
+        public T Data;//Поле
+        public T data { get; set; }//Автосвойства
+
+        public Node<T> Next;//Ссылка на следующий узел в списке
+
+        public Node(T data)//Контсруктор
+        {
+            Data = data;
+            Next = null;//Изначально следующий узел равен null
+        }
+    }
+
+    public class LinkedList<T>
+    {
+        public Node<T> Head;//Указатель на первый узел списка (голова списка)
+        public void AddLinkedList(T data)//Метод для добавления нового узла с данными в конец списка
+        {
+            Node<T> newNode = new Node<T>(data);
+
+            if(Head == null)//Проверка, является ли список пустым
+            {
+                Head = newNode;//Если список пуст, новый узел становится головой списка
+            }
+            else
+            {
+                Node<T> current = Head;
+                while(current.Next != null)
+                {
+                    current = current.Next;//Переход к следующему узлу
+                }
+                current.Next = newNode;//Присоединяем новый узел к концу списка
+            }
+        }
+
+        public void PrintLinkedList()//Метод для перебора и вывода данных всех узлов списка
+        {
+            Node<T> current = Head;//Начинаем с головы списка
+
+            while (current != null)
+            {
+                Console.WriteLine(current.Data);//Выводим данные текущего узла
+                current = current.Next;//Переход к следующему узлу
+            }
+
+        }
+
+    }
+
+
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Связные списки");
+
+            //Создание связного списка для хранения целых чисел
+            var intList = new LinkedList<int>();
+            intList.AddLinkedList(1);//Добавление первого элемента
+            intList.AddLinkedList(9);
+            intList.AddLinkedList(8);
+            intList.AddLinkedList(5);
+
+            intList.PrintLinkedList();//Перебор и вывод элементов списка
+
+            //Создание связного списка для хранения строк
+            var stringList = new LinkedList<string>();
+            stringList.AddLinkedList("G");//Добавление первого элемента
+            stringList.AddLinkedList("E");
+            stringList.AddLinkedList("O");
+            stringList.AddLinkedList("R");
+            stringList.AddLinkedList("G");
+            stringList.AddLinkedList("E");
+
+            stringList.PrintLinkedList();//Перебор и вывод элементов списка
+            
+        }
+    }
+}

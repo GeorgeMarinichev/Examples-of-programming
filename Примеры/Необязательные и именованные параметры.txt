@@ -1,0 +1,30 @@
+namespace Cosmos
+{
+    internal class Program
+    {
+        static int Sum1(int a, int b, bool enableLogging = true) // Метод с необязательными параметрами
+        {
+            int res = a + b;
+            if (enableLogging)
+            {
+                Console.WriteLine("Значение переменной:a-" + a);
+                Console.WriteLine("Значение переменной:b-" + b);
+                Console.WriteLine("Значение переменной:=" + res);
+            }
+            return res;
+        }
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("<<< Необязательные параметры >>>");
+
+            Sum1(5, 10, false);// Вызов метода с необязательными параметрами
+            Sum1(5, 10);// Или
+
+            Console.WriteLine("<<< Именованные параметры >>>");
+
+            Sum1(a: 50, b: 100);//Вызов метода с именованными параметрами
+
+        }
+    }
+}

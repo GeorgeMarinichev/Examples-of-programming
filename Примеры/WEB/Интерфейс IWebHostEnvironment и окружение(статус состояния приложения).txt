@@ -1,0 +1,38 @@
+//////////////////////////////Интерфейс IWebHostEnvironment и окружение(статус состояния приложения)
+//using System.WebApplication;
+
+
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.Environment.EnvironmentName = "GEORGE";//Изменение статуса приложения
+
+//app.Run(async (context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+if(app.Environment.IsDevelopment())
+{
+    app.Run(async(context)=> await context.Response.WriteAsync("IsDevelopment"));
+    //Console.WriteLine("IsDevelopment");
+}
+else
+{
+    app.Run(async(context)=> await context.Response.WriteAsync("In Production Stage"));
+    //Console.WriteLine("IsProduction");
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+//if(app.Environment.IsEnvironment("Development"))
+if(app.Environment.IsEnvironment(GEORGE))
+{
+    app.Run(async(context)=> await context.Response.WriteAsync("GEORGE"));
+    //Console.WriteLine("IsDevelopment");
+}
+else
+{
+    app.Run(async(context)=> await context.Response.WriteAsync("In Production Stage"));
+    //Console.WriteLine("IsProduction");
+}
+//////////////////////////////////////////////////////////////////////////////////////
+
+Console.WriteLine($"Действующий статус:{app.Environment.EnvironmentName}");//Действующий статус приложения
+
+app.Run();

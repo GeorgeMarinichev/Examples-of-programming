@@ -1,0 +1,72 @@
+//////////////////////////Программа конвертации текста в изображение
+
+using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+
+namespace Space // Пространство имен
+{
+    class Program // Основной класс программы
+    {
+        static void Main(string[] args) // Главный метод как точка входа
+        {
+            Console.Title = "Конвертер txt в jpeg";
+            Console.BackgroundColor = ConsoleColor.DarkBlue;//Цвет фона 
+            Console.Clear(); // Обновление консоли, чтобы применить цвет фона
+            Console.ForegroundColor = ConsoleColor.Yellow;//Цвет текста
+            string inputFilePath;
+
+            // Цикл для повторного ввода пути к файлу
+            while (true)
+            {
+                Console.WriteLine("Введите полный путь к текстовому файлу:");
+
+                inputFilePath = Console.ReadLine();
+
+                // Проверка существует ли файл
+                if (File.Exists(inputFilePath))
+                {
+                    break; // Выход из цикла, если файл найден
+                }
+                else
+                {
+                    Console.WriteLine($"Файл не найден по пути: {inputFilePath}. Пожалуйста, введите корректный путь!");
+                }
+            }
+
+            // Запрос имени выходного файла
+            Console.WriteLine("Пожалуйста, введите название выходного файла (например, output.png):");
+            string outputFilePath = Console.ReadLine();
+
+            try
+            {
+                // Чтение текста из текстового файла
+                string text = File.ReadAllText(inputFilePath);
+
+                // Создание изображения
+                using (Bitmap bitmap = new Bitmap(800, 600))
+                {
+                    using (Graphics graphics = Graphics.FromImage(bitmap))
+                    {
+                        graphics.Clear(Color.White);
+                        using (Font font = new Font("Arial", 20))
+                        {
+                            graphics.DrawString(text, font, Brushes.Black, new PointF(10, 10));
+                        }
+                    }
+                    // Сохранение изображения в формате PNG
+                    bitmap.Save(outputFilePath, ImageFormat.Png);
+                }
+                Console.WriteLine($"Изображение сохранено как: {outputFilePath}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Произошла ошибка: {ex.Message}");
+            }
+
+            Console.WriteLine("Нажмите любую клавишу для выхода...");
+            Console.ReadKey(); // Ожидание ввода перед закрытием
+        }
+    }
+}

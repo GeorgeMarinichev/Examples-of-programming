@@ -1,0 +1,241 @@
+//Метод Use()
+////////////////////////////////////Упрощенный подход при помощи (WebApplication)
+using System;
+using System.Runtime.CompilerServices;
+
+namespace Space
+{
+    public class Program//Главный класс приложения
+    {  
+        public static void Main(string[] args)//Главный метод точка входа
+        {
+            // WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            // WebApplication app = builder.Build();
+
+            var builder = WebApplication.CreateBuilder(args);//Создание Builder
+            // builder.Services.AddControllers();//Добавление поддержки контроллеров
+            var app = builder.Build();//Стройка приложения
+
+            string? date = "";
+            string? time = "";
+
+            // date = DateTime.Now.ToString();
+            // time = DateTime.Now.ToString();
+
+            /////////////////////////////////////////////Обычный метод Run();//////////////////////////////////////////////////
+            // app.Run(async(context)=> 
+            // {
+            //     var response = context.Response;
+            //     var request = context.Request;
+            //     response.Headers.ContentLanguage = "ru-RU";
+            //     response.ContentType = "text/html; charset=utf-8";
+
+            //     date = DateTime.Now.ToShortDateString();
+            //     time = DateTime.Now.ToShortTimeString();
+            //     await context.Response.WriteAsync($"Date: {date} Time: {time}");
+            // });
+            // app.Run();
+            // ////////////////////////////////////////////////////Use();//////////////////////////////////////////////////
+            // app.Use(async(context, next)=>
+            // {
+            //     var response = context.Response;
+            //     var request = context.Request;
+            //     response.Headers.ContentLanguage = "ru-RU";
+            //     response.ContentType = "text/html; charset=utf-8";
+            //     //response.ContentLength = null;
+            //     //var cL = response.Headers.ContentLength;
+
+            //     date = DateTime.Now.ToShortDateString();
+            //     time = DateTime.Now.ToShortTimeString();
+            //     await next.Invoke();//Вызов middleware из app.Run()
+            //     Console.WriteLine($"Date: {date} Time: {time}");
+            //     //Console.WriteLine($"Content Length: {cL}");
+            // });
+            //app.Run();
+
+            // ////////////////////////////////////////////////////Use(); next.Invoke(context)//////////////////////////////////////////////////
+            // app.Use(async(context, next)=>
+            // {
+            //     var response = context.Response;
+            //     var request = context.Request;
+            //     response.Headers.ContentLanguage = "ru-RU";
+            //     response.ContentType = "text/html; charset=utf-8";
+            //     //response.ContentLength = null;
+            //     //var cL = response.Headers.ContentLength;
+
+            //     date = DateTime.Now.ToShortDateString();
+            //     time = DateTime.Now.ToShortTimeString();
+            //     await next.Invoke(context);//Здесь next - RequestDelegate
+            //     Console.WriteLine($"Date: {date} Time: {time}");
+            //     //Console.WriteLine($"Content Length: {cL}");
+
+            // });
+
+             ////////////////////////////////////////////////////Терминальный(конечный)компонент middleware//////////////////////////////////////////////////
+            // app.Use(async(context, next)=>
+            // {
+            //     var response = context.Response;
+            //     var request = context.Request;
+            //     response.Headers.ContentLanguage = "ru-RU";
+            //     response.ContentType = "text/html; charset=utf-8";
+            //     //response.ContentLength = null;
+            //     //string? cL = response.Headers.ContentLength.Value?.ToString();
+
+            //     date = DateTime.Now.ToShortDateString();
+            //     time = DateTime.Now.ToShortTimeString();
+
+            //     string? path = context.Request.Path.Value?.ToLower();
+            //     if(path == "/date")
+            //     {
+            //         await context.Response.WriteAsync($"Date: {date} Time: {time}");
+            //     }
+            //     else
+            //     {
+            //         await next.Invoke(context);//Здесь next - RequestDelegate
+            //         Console.WriteLine($"Date: {date} Time: {time}");
+
+            //     }
+
+            //     Console.WriteLine("END");
+            // });
+
+            //app.Run(async(context)=> await context.Response.WriteAsync($"Date: {date} Time: {time}"));
+            //app.Run(async(context)=> await context.Response.WriteAsync($"Date: {date}"));
+            //app.Run(async(context)=> await context.Response.WriteAsync($"Time: {time}"));
+
+            // app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+           
+            // app.Run();
+
+            ////////////////////////////////////////////////////Терминальный(конечный)-единтсвенный компонент middleware//////////////////////////////////////////////////
+            // app.Use(async(HttpContext context, Func<Task> next)=>
+            // {
+            //     await context.Response.WriteAsync("Hello, METANIT.COM");
+            //     Console.WriteLine("END");
+            // });
+
+            // app.Run();
+
+            ////////////////////////////////////////////////////Вынесен в отдельный метод Use();//////////////////////////////////////////////////
+            // app.Use(GetDate);
+            // app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            // async Task GetDate(HttpContext context, Func<Task> next)
+            // {
+            //     date = DateTime.Now.ToShortDateString();
+            //     time = DateTime.Now.ToShortTimeString();
+
+            //     string? path = context.Request.Path.Value?.ToLower();
+            //     if(path == "/date")
+            //     {
+            //         await context.Response.WriteAsync($"Date: {date} Time: {time}");
+            //     }
+            //     else
+            //     {
+            //         await next.Invoke();//Вызов middleware из app.Run()
+            //         Console.WriteLine($"Date: {date} Time: {time}");
+
+            //     }
+            //     //await context.Response.WriteAsync("Hello, METANIT.COM");
+            //     Console.WriteLine("END");
+            // }
+
+            ////////////////////////////////////////////////////Вынесен в отдельный метод Use();//////////////////////////////////////////////////
+            // app.Use(GetDate);
+            // app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            // async Task GetDate(HttpContext context, RequestDelegate next)
+            // {
+                //date = DateTime.Now.ToShortDateString();
+                //time = DateTime.Now.ToShortTimeString();
+
+            //     string? path = context.Request.Path.Value?.ToLower();
+            //     if(path == "/date")
+            //     {
+            //         await context.Response.WriteAsync($"Date: {date} Time: {time}");
+            //     }
+            //     else
+            //     {
+            //         await next.Invoke(context);//Здесь next - RequestDelegate
+            //         Console.WriteLine($"Date: {date} Time: {time}");
+
+            //     }
+            //     //await context.Response.WriteAsync("Hello, METANIT.COM");
+            //     Console.WriteLine("END");
+            // }
+
+            ////////////////////////////////////////////////////Метод Use() и условные выражения;//////////////////////////////////////////////////
+            // app.Use(async(context, next)=>
+            // {
+            //     var response = context.Response;
+            //     var request = context.Request;
+            //     response.Headers.ContentLanguage = "ru-RU";
+            //     response.ContentType = "text/html; charset = utf-8";
+
+            //     string? path = request.Path.Value?.ToLower();
+
+            //     date = DateTime.Now.ToShortDateString();
+            //     time = DateTime.Now.ToShortTimeString();
+
+            //     if(path == "/date")
+            //     {
+            //         await response.WriteAsync($"Date: {date}");
+            //         Console.WriteLine($"Date: {date}");
+            //     }
+            //     else if(path == "/time")
+            //     {
+            //         await response.WriteAsync($"Time: {time}");
+            //         Console.WriteLine($"Time: {time}");
+            //     }
+            //     else
+            //     {
+            //         await next.Invoke();
+            //         Console.WriteLine("<<0>>");
+            //     }
+            //     await response.WriteAsync("Введите запрос: /date, /time...");
+            //     Console.WriteLine("END");
+            // });
+
+            // app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            ////////////////////////////////////////////////////Метод Use(); добавление нескольких элементов в конвеер middleware//////////////////////////////////////////////////
+            app.Use(async(context, next)=>
+            {
+                date = DateTime.Now.ToShortDateString();
+                await context.Response.WriteAsync($"Date: {date}/");
+                await next.Invoke();
+                Console.WriteLine("Элемент конвеера: 1");
+            });
+
+            app.Use(async(context, next)=>
+            {
+                time = DateTime.Now.ToShortTimeString();
+                await context.Response.WriteAsync($"Time: {time}/");
+                await next.Invoke();
+                Console.WriteLine("Элемент конвеера: 2");
+            });
+
+            app.Use(async(context, next)=>
+            {
+                await context.Response.WriteAsync("Third element/");
+                await next.Invoke();
+                Console.WriteLine("Элемент конвеера: 3");
+            });
+            
+            app.Run(async(context)=>
+            {
+                await context.Response.WriteAsync("Hello, METANIT.COM");
+                Console.WriteLine("END");
+            });
+            app.Run();
+
+            // await StartAsync();//
+            // await Task.Delay(10000);//
+            // await StopAsync();//
+
+        }
+    }
+}

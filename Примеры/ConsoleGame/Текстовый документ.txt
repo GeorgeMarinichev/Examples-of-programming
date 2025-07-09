@@ -1,0 +1,270 @@
+using System;
+using System.Text;
+using System.Threading;
+
+class Program
+{
+    // Константы для карты и домов
+    static int widthWorld = 120;  // Ширина карты
+    static int heightWorld = 25; // Высота карты
+    static int widthHome = 20;// Ширина дома Высота дома
+    static int heightHome = 10;// Высота дома
+    static int homeQuantity = 3;//
+
+    // Символы для отображения
+    static char player = 'P'; // Символ игрока
+    static char bot = 'Z';    // Символ бота
+    static char empty = '.';  // Символ пустого места
+    static char wall = '#';   // Символ стены
+    static Random ran = new(); // Генератор случайных чисел
+
+    // Позиции игрока и бота
+    static int playerX = widthWorld / 2; // Начальная позиция игрока по X
+    static int playerY = heightWorld / 2; // Начальная позиция игрока по Y
+    static int botX = widthWorld / 2 + 2; // Начальная позиция бота по X
+    static int botY = heightWorld / 2 + 2; // Начальная позиция бота по Y
+
+    // Двумерный массив для карты
+    static char[,] map = new char[heightWorld, widthWorld];
+
+    static void Main()
+    {
+        GenerateStreetWithHouses(); // Генерация улицы с домами
+        Thread playGameThread = new Thread(PlayGame); // Поток для игры
+        playGameThread.Start(); // Запуск потока
+        Console.CursorVisible = false; // Скрытие курсора
+        
+    }
+
+    // Основной цикл игры
+    static void PlayGame()
+    {
+        while (true)
+        {
+            //Console.Clear(); // Очистка консоли
+            Console.SetCursorPosition(0, 0);
+            PrintMap(); // Вывод карты
+            PlayerMove(); // Движение игрока
+            BotMove(); // Движение бота
+            Thread.Sleep(100); // Задержка
+        }
+    }
+
+    // Генерация улицы с домами
+    static void GenerateStreetWithHouses()
+    {
+        // Заполнение карты пустыми местами
+        for (int y = 0; y < heightWorld; y++)
+            for (int x = 0; x < widthWorld; x++)
+                map[y, x] = empty;
+
+        // Генерация стен по периметру карты
+        for (int x = 0; x < widthWorld; x++)
+        {
+            map[0, x] = wall; // Верхняя стена
+            map[heightWorld - 1, x] = wall; // Нижняя стена
+        }
+        for (int y = 0; y < heightWorld; y++)
+        {
+            map[y, 0] = wall; // Левая стена
+            map[y, widthWorld - 1] = wall; // Правая стена
+        }
+
+        // Генерация домов
+        for (int i = 0; i < homeQuantity; i++) // Генерация домов
+        {
+            int homeX = ran.Next(1, widthWorld - widthHome - 1);
+            int homeY = ran.Next(1, heightWorld - heightHome - 1);
+            GenerateHouse(homeX, homeY); // Генерация дома
+        }
+    }
+
+    // Генерация дома с случайными стенами и одним проходом
+    // Генерация дома с случайными стенами и одним проходом
+    static void GenerateHouse(int startX, int startY)
+    {
+        // Устанавливаем стены по периметру дома
+        for (int y = 0; y < heightHome; y++)
+        {
+            for (int x = 0; x < widthHome; x++)
+            {
+                map[startY + y, startX + x] = wall;
+            }
+        }
+
+        // Случайное размещение стен внутри дома
+        for (int y = 1; y < heightHome - 1; y++)
+        {
+            for (int x = 1; x < widthHome - 1; x++)
+            {
+                if (ran.Next(0, 5) == 0) // 50% шанс на стену
+                {
+                    map[startY + y, startX + x] = wall;
+                }
+                else
+                {
+                    map[startY + y, startX + x] = empty;
+                }
+            }
+        }
+
+        // Создание входа в дом
+        int entranceDirection = ran.Next(0, 4); // Случайное направление для прохода
+        int entranceX = startX + ran.Next(1, widthHome - 1);
+        int entranceY = startY + ran.Next(1, heightHome - 1);
+
+        switch (entranceDirection)
+        {
+            case 0: // Верхний проход
+                entranceX = startX + ran.Next(1, widthHome - 1);
+                map[startY, entranceX] = empty; // Вход в верхней стене
+                break;
+            case 1: // Нижний проход
+                entranceX = startX + ran.Next(1, widthHome - 1);
+                map[startY + heightHome - 1, entranceX] = empty; // Вход в нижней стене
+                break;
+            case 2: // Левый проход
+                entranceY = startY + ran.Next(1, heightHome - 1);
+                map[entranceY, startX] = empty; // Вход в левой стене
+                break;
+            case 3: // Правый проход
+                entranceY = startY + ran.Next(1, heightHome - 1);
+                map[entranceY, startX + widthHome - 1] = empty; // Вход в правой стене
+                break;
+        }
+    }
+
+
+    // Вывод карты на экран
+    static void PrintMap()
+    {
+        for (int y = 0; y < heightWorld; y++)
+        {
+            for (int x = 0; x < widthWorld; x++)
+            {
+                // Отображение игрока и бота
+                if (x == playerX && y == playerY)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(player);
+                }
+                else if (x == botX && y == botY)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write(bot);
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write(map[y, x]);
+                }
+            }
+            Console.WriteLine(); // Переход на новую строку
+        }
+    }
+
+    // Движение игрока
+    static void PlayerMove()
+    {
+        int newPlayerX = playerX;
+        int newPlayerY = playerY;
+
+        // Чтение нажатой клавиши
+        ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+        switch (keyInfo.Key)
+        {
+            case ConsoleKey.W: newPlayerY--; break; // Вверх
+            case ConsoleKey.S: newPlayerY++; break; // Вниз
+            case ConsoleKey.A: newPlayerX--; break; // Влево
+            case ConsoleKey.D: newPlayerX++; break; // Вправо
+        }
+
+        // Проверка на столкновение со стенами
+        if (newPlayerX >= 0 && newPlayerX < widthWorld && newPlayerY >= 0 && newPlayerY < heightWorld && map[newPlayerY, newPlayerX] != wall)
+        {
+            playerX = newPlayerX; // Обновляем позицию игрока
+            playerY = newPlayerY;
+        }
+    }
+
+
+    // Движение бота
+    static void BotMove()
+    {
+        int newBotX = botX;
+        int newBotY = botY;
+        if(BotAggressive())
+        {
+            BotAggressiveMove();
+        }
+        else
+        {
+            BotMoveRandom();
+        }
+
+
+        // Проверка видимости игрока
+        static bool BotAggressive()
+        {
+            int dx = Math.Abs(botX - playerX);
+            int dy = Math.Abs(botY - playerY);
+
+            // Проверка на расстояние
+            if (dx <= 3 && dy <= 3)
+            {
+                // Проверка на наличие стен
+                if (dx == 0) // Вертикальная видимость
+                {
+                    for (int y = Math.Min(botY, playerY) + 1; y < Math.Max(botY, playerY); y++)
+                        if (map[y, botX] == wall) return false;
+                    return true;
+                }
+                else if (dy == 0) // Горизонтальная видимость
+                {
+                    for (int x = Math.Min(botX, playerX) + 1; x < Math.Max(botX, playerX); x++)
+                        if (map[botY, x] == wall) return false;
+                    return true;
+                }
+            }
+            return false; // Игрок вне видимости
+        }
+        void BotMoveRandom()
+        {
+            // Случайное движение бота
+            switch (ran.Next(0, 4))
+            {
+                case 0: newBotY--; break; // Вверх
+                case 1: newBotY++; break; // Вниз
+                case 2: newBotX--; break; // Влево
+                case 3: newBotX++; break; // Вправо
+            }
+
+            // Проверка на столкновение со стенами
+            if (newBotX >= 0 && newBotX < widthWorld && newBotY >= 0 && newBotY < heightWorld && map[newBotY, newBotX] != wall)
+            {
+                botX = newBotX; // Обновляем позицию бота
+                botY = newBotY;
+            }
+        }
+
+        void BotAggressiveMove()
+        {
+            if (botX < playerX)
+            {
+                botX++;
+            }
+            else if (botX > playerX)
+            {
+                botX--;
+            }
+            if (botY < playerY)
+            {
+                botY++;
+            }
+            else if (botY > playerY)
+            {
+                botY--;
+            }
+        }
+    }
+}

@@ -1,0 +1,119 @@
+//Вывод списка процессов
+////////////////////////////////////Упрощенный подход при помощи (WebApplication)
+using System;
+using System.Diagnostics;
+using System.ComponentModel;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+namespace app70_Windows_Processes
+{
+  
+    //Главный класс приложения
+    public class Program
+    {
+        public static Process theProc;//Поле
+        
+        public static void ListAllRunningProcesses()//Метод выводящий список процессов
+        {
+            var runProc = from proc in Process.GetProcesses(".") orderby proc.Id select proc;//
+
+            foreach (var p in runProc)
+            {
+                //string info = string.Format("PID: {0}\tName: {1}", p.Id, p.ProcessName);//Форматирование и использование индексов
+                string info = $"PID: {p.Id}, Name: {p.ProcessName}";
+                Console.WriteLine(info);
+            }
+        }
+
+        static void EnumThreadForPid(int pId)//Метод вывода информаци по конкретному процессу
+        {
+            //theProc = null;
+            try
+            {
+                theProc = Process.GetProcessById(pId);
+                Console.WriteLine("Имя компьютера: {0}", theProc.MachineName);
+                if(theProc.MachineName == ".")
+                {
+                    Console.WriteLine("Имя компьютера: текущий");
+                }
+            }
+            catch(ArgumentException ex)
+            {
+                Console.WriteLine("Исключение: {0}", ex.Message);
+                theProc = null;//Убедитесь, что theProc равен null, если произошла ошибка
+            }
+        }
+
+        static void EnumModsForPid(int pId) // Метод вывода списка модулей процесса
+        {
+            try
+            {
+                theProc = Process.GetProcessById(pId);
+                Console.WriteLine("Модули, загруженные процессом: {0}", theProc.ProcessName);
+
+                try
+                {
+                    ProcessModuleCollection theMods = theProc.Modules;
+                    foreach (ProcessModule pm in theMods)
+                    {
+                        string info = string.Format("Имя модуля: {0}\tРазмер модуля: {1}", pm.ModuleName, pm.ModuleMemorySize);
+                        Console.WriteLine(info); // Исправлено: выводим правильную переменную
+                    }
+                }
+                catch (Exception ex) // Обрабатываем все исключения, связанные с модулями
+                {
+                    Console.WriteLine("Не удалось получить модули: {0}", ex.Message);
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine("Исключение: {0}", ex.Message);
+                theProc = null; // Убедитесь, что theProc равен null, если произошла ошибка
+            }
+        }
+        
+        public static void Main(string[] args)//
+        {
+            Console.WriteLine("Процессы, запущенные" + "на текущем компьютере:");
+            ListAllRunningProcesses();
+
+            //Console.Write("Введите номер процесса: ");
+            //int num = int.Parse(Console.ReadLine());
+            //int num = Convert.ToInt32(Console.ReadLine());
+            //string? str = Console.ReadLine();
+            //int num = Convert.ToInt32(str);
+            //Console.WriteLine("Данные по одному конкретному процессу:{0}", num);
+            //EnumThreadForPid(num);
+            Console.Write("Введите номер процесса: ");
+            int num;
+            while (!int.TryParse(Console.ReadLine(), out num))
+            {
+                Console.WriteLine("Пожалуйста, введите корректный номер процесса.");
+            }
+
+            Console.WriteLine("Данные по одному конкретному процессу: {0}", num);
+
+            EnumThreadForPid(num);//Процесс по индетификатору
+            EnumModsForPid(num);//Модули процесса
+
+            if (theProc != null) // Проверка, существует ли процесс
+            {
+                Console.WriteLine("Потоки, используемые процессом: {0}: Id: {1}", theProc.ProcessName, num);
+                ProcessThreadCollection theThread = theProc.Threads;
+
+                foreach (ProcessThread pt in theThread)
+                {
+                    string info = string.Format("Thread Id: {0}\tStart Time: {1}\tPriority: {2}\tAdress: {3}",
+                        pt.Id, pt.StartTime.ToShortTimeString(), pt.PriorityLevel, pt.StartAddress);
+                    Console.WriteLine(info);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Процесс с таким ID не найден.");
+            }
+        }
+  
+    } 
+}

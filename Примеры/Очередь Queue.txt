@@ -1,0 +1,111 @@
+using System;
+using System.Collections;
+using System.Diagnostics;
+
+namespace Genesis;
+
+    class Person
+    {
+        public string Name { get; }
+
+        public Person(string name)
+        {
+            Name = name;
+        }
+    }
+
+    class Doctor
+    {
+        public void TakePatients(Queue<Person> patients)
+        {
+            while (patients.Count > 0)
+            {
+                var patient = patients.Dequeue();
+                Console.WriteLine($"Осмотр пациента {patient.Name}");
+            }
+            Console.WriteLine("Доктор закончил осматривать пациентов");
+        }
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Очередь Queue");
+
+            //Queue<string> peop = new Queue<string>();//Пустая очередь
+            //Queue<string> peop = [];//Пустая очередь
+            var peop = new Queue<string>();//Пустая очередь
+
+
+            /////////////////////////////////////////////////////////////////////////
+            Queue<string> animals = new Queue<string>(16);//Емкость очереди
+
+
+            /////////////////////////////////////////////////////////////////////////
+            var pers = new List<string>() {"Tom", "Bob", "Sam"};//Список
+            var employees = new Queue<string>(pers);//Инициализация очереди элементами из другой коллекции/списка или массива:
+            foreach (var item in employees)//Цикл перебора элементов в очереди:
+            {
+                Console.WriteLine(item);
+            }
+
+
+            /////////////////////////////////////////////////////////////////////////
+            var people = new Queue<string>();//Пустая очередь
+            //Добавление элементов в очередь
+            people.Enqueue("Alice");// people = { Alice }
+            people.Enqueue("Britni");// people = { Alice, Britni }
+            people.Enqueue("Karri");// people = { Alice, Britni, Karri}
+
+            Console.WriteLine(people.First());//Первый элемент в очереди
+            Console.WriteLine(people.Last());//Последний элемент в очереди
+            
+            Console.WriteLine(people.Count());//Колличество элементов в очереди
+
+            Console.WriteLine(people.Dequeue());//Извлекает и возращает элемент в очереди
+            Console.WriteLine(people.Dequeue());//Извлекает и возращает элемент в очереди
+            Console.WriteLine(people.Dequeue());//Извлекает и возращает элемент в очереди
+
+            foreach (var item in people)//Цикл перебора элементов в очереди
+            {
+                Console.WriteLine(item);
+            }
+
+            if (people.Count() > 0)//Проверка количества элементов в очереди
+            {
+                var p = people.Peek; 
+                people.Dequeue();
+            }
+
+
+            /////////////////////////////////////////////////////////////////////////
+            var people1 = new Queue<string>();//Пустая очередь
+
+            people1.Enqueue("Jon");//Добавление элементов в очередь
+            //Проверка на элементы в очереди
+            var person1 = people1.TryDequeue(out var per1);// person1 = true
+            if (person1)
+            {
+                Console.WriteLine(per1);// Jon
+            }
+
+            var person2 = people1.TryDequeue(out var per2);// person2 = false
+            if (person2)
+            {
+                Console.WriteLine(per2);// Jon
+            }
+
+        /////////////////////////////////////////////////////////////////////////
+        var patients = new Queue<Person>();//Очередь пациентов на прием к врачу
+
+        patients.Enqueue(new Person("Dima"));
+        patients.Enqueue(new Person("Zulj"));
+        patients.Enqueue(new Person("Lena"));
+
+        var practitioner = new Doctor();
+        practitioner.TakePatients(patients);
+
+        }
+    }
+

@@ -1,0 +1,107 @@
+////////////////////////////Авторизация с помощью JWT-токенов в клиенте JavaScript
+//JWT(Json Web Token) представляет веб-стандарт, который определяет способ
+//передачи данных о пользователе в формате json в зашифрованном виде.
+
+using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;//Деректива для аутентификации
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;//Деректива для аутентификации
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Identity;
+// Не обходимый пакет NuGet: Microsoft.AspNetCore.Authentication.JwtBearer, для аутентификации на основе jwt-токенов.
+
+namespace Space
+{
+    public class AuthOptions//Класс для описания настроек генерации токена авторизации
+    {
+        public const string ISSUER = "MyAuthServer";//Издатель токена
+        public const string AUDIENCE = "MyAuthClient";//Потребитель токена
+        const string KEY = "mysupersecret_secretsecretsecretkey!123";//Ключ для шифрации
+        public static SymmetricSecurityKey GetSymmetricSecurityKey()
+        {
+            return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
+        }
+
+    }
+    class Program
+    {
+        record class Person(string Email, string Password);//Для представления пользователя в приложении
+        static void Main(string[] args)
+        {
+            /////////////Аутентификация на основе jwt-токенов.
+            
+            /////////////////////////////////////Условная БД//////////////////////////
+            var people = new List<Person>
+            {
+                new Person("george@mail.com", "1985"),
+                new Person("tom@mail.com", "12345"),
+                new Person("bob@mail.com", "55555")
+            };
+            ////////////////////////////////////////////////////////////////////
+            //WebApplicationBuilder builder = WebApplication.CreateBuilder();
+            var builder = WebApplication.CreateBuilder(args);
+
+            //builder.Services.AddAuthentication("Bearer").AddBearerToken();//Добавление сервисов (Bearer-носитель) аутентификации
+            builder.Services.AddAuthorization();//Добавление сервисов авторизации
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer((options)=>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,//Указывает, будет ли валидироваться издатель при валидации токена
+                    ValidIssuer = AuthOptions.ISSUER,//Строка, представляющая издателя
+                    ValidateAudience = true,//Будет ли валидироваться потребитель токена
+                    ValidAudience = AuthOptions.AUDIENCE,//Установка потребителя токена
+                    ValidateLifetime = true,//Будет ли валидироваться время существования
+                    IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),//Установка ключа безопасности
+                    ValidateIssuerSigningKey = true,//Валидация ключа безопасности
+                };
+            });
+            
+            //WebApplication app = builder.Build();
+            var app = builder.Build();
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
+            app.UseAuthentication();//Добавление middleware аутентификации
+            app.UseAuthorization();//Добавление middleware авторизации
+
+            app.MapPost("/login", (Person loginData) =>
+            {
+                Person? person = people.FirstOrDefault(p => p.Email == loginData.Email && p.Password == loginData.Password);//Находим пользователя
+                if (person is null)//Если пользователь не найден, отправляется статус код 401
+                {
+                    Results.Unauthorized();
+                }
+
+                var claims = new List<Claim> { new Claim(ClaimTypes.Name, person.Email) };
+                //Создание jwt-токен
+                var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                    audience: AuthOptions.AUDIENCE,
+                    claims: claims,
+                    expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),//Время действия две минуты
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+                //Формирование ответа
+                var response = new
+                {
+                    access_token = encodedJwt,
+                    username = person.Email
+                };
+                return Results.Json(response);
+            });
+
+
+            app.Map("/data", [Authorize]() => new {message = "Hello User"});//Ошибка 401, пользователь не аторизован
+            //app.Map("/", () => "Hello World!");
+
+            app.Run();
+        }
+    }
+}
+

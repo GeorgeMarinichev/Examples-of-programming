@@ -1,0 +1,96 @@
+/////////////////////////////Нефайловые провайдеры конфигурации
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+//////////////////////////////////////////////////////////////
+
+namespace Space
+{
+    record Person(string Name, int Age);
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            /////////////////////////////////////////////////Получение данных конфигурации
+            ////WebApplicationBuilder builder = CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);;  
+            // var app = builder.Build();
+            // //////////////////////////////////////////////////
+      
+            // app.Map("/", (IConfiguration appConfig)=> $"User:{appConfig["user"]} Name:{appConfig["name"]}");
+
+            // // app.Run(async(context)=>
+            // // {
+            // //     //Получение нстроек конфигурации
+            // //     string name = app.Configuration["name"];
+            // //     string age = app.Configuration["age"];
+            // //     await context.Response.WriteAsync($"Name:{name} Age:{age}");
+            // // });
+        
+            // //app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            /////////////////////////////////////////////////
+            // string[] commandLineArgs = {"name=Alice"};//Псевдопараметры командной строки
+            // ////WebApplicationBuilder builder = CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(commandLineArgs);
+            // var app = builder.Build();
+            // //////////////////////////////////////////////////
+      
+            // app.Map("/", (IConfiguration appConfig)=> $"User:{appConfig["user"]} Name:{appConfig["name"]} Age:{appConfig["age"]}");
+
+            // //app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            // //////////////////////////////////////////Применение метода AddCommandLine
+            // //WebApplicationBuilder builder = CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);
+            // string[] commandLineArgs = {"name=Alice"};//Псевдопараметры командной строки
+     
+            // builder.Configuration.AddCommandLine(commandLineArgs);//Передача параметров в качестве конфигурации
+            // var app = builder.Build();
+            // //////////////////////////////////////////////////
+      
+            // app.Map("/", (IConfiguration appConfig)=> $"User:{appConfig["user"]} Name:{appConfig["name"]} Age:{appConfig["age"]}");
+
+            // //app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            //////////////////////////////////////////Переменные среды окружения как источник конфигурации
+            // //WebApplicationBuilder builder = CreateBuilder();
+            // var builder = WebApplication.CreateBuilder(args);
+            // var app = builder.Build();
+            // //////////////////////////////////////////////////
+   
+            // app.Map("/", (IConfiguration appConfig)=> $"JAVA_HOME:{appConfig["JAVA_HOME"] ?? "not set"} C#_HOME:{appConfig["C#_HOME"] ?? "not set"}");
+
+            // //app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            // app.Run();
+
+            ///////////////////////////////////////Хранение конфигурации в памяти
+            //WebApplicationBuilder builder = CreateBuilder();
+            var builder = WebApplication.CreateBuilder(args);
+            var app = builder.Build();
+            //////////////////////////////////////////////////
+            builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
+            {
+                {"name", "Alice"},
+                {"age", "30"}
+            });
+            //////////////////////////////////////////////////
+      
+            app.Map("/", (IConfiguration appConfig)=>
+            {
+                var name = appConfig["name"];
+                var age = appConfig["age"];
+                return $"Name:{name} Age:{age}";
+            });
+
+            //app.Run(async(context)=> await context.Response.WriteAsync("Hello, METANIT.COM"));
+            app.Run();
+
+        }
+    }  
+}

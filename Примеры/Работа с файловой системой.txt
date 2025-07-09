@@ -1,0 +1,33 @@
+namespace Genesis
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Работа с файловой системой");
+    
+            DriveInfo[] drive = DriveInfo.GetDrives();
+
+            foreach (var i in drive)
+            {
+                Console.WriteLine($"Название:{i.Name}");
+                Console.WriteLine($"Тип:{i.DriveType}");
+                Console.WriteLine($"Корневой каталог:{i.RootDirectory}");
+                Console.WriteLine($"Имя файловой системы:{i.DriveFormat}");
+                Console.WriteLine($"Обьем свободного места в байтах:{i.AvailableFreeSpace}");
+                if (i.IsReady)
+                {
+                    Console.WriteLine($"Объем:{i.TotalSize}");
+                    Console.WriteLine($"Свободное пространство:{i.TotalFreeSpace}");
+                    Console.WriteLine($"Метка диска:{i.VolumeLabel}");
+                }
+                Console.WriteLine("end");
+            }
+
+
+
+        }
+    }
+}
+
+

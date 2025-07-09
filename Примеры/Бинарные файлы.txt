@@ -1,0 +1,75 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+class Person
+{
+    public string Name { get; set; }
+    public int Age{ get; set; }
+    public Person(string name, int age)
+    {
+        Name = name;
+        Age = age;
+    }
+}
+
+namespace ConsoleApp2
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Бинарные файлы");
+            //////////////BinaryWriter
+            Person[] people =
+            {
+                new Person("Tom", 25),
+                new Person("Bob", 45)
+            };
+            //string path = "person.dat";
+
+            //// создаем объект BinaryWriter
+            //using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.OpenOrCreate)))//Создаем объект BinaryWriter
+            //{
+            //    foreach (Person person in people)
+            //    {
+            //        writer.Write(person.Name);
+            //        writer.Write(person.Age);
+            //    }
+            //    Console.WriteLine("File has been written");
+            //}
+            //{
+            //    // записываем в файл строку
+            //    writer.Write("Sam");
+            //    // записываем в файл число int
+            //    writer.Write(39);
+            //    Console.WriteLine("File has been written");
+            //}
+
+            Console.WriteLine("-----------------------------------------");
+            //////////////BinaryReader
+            List<Person> people1 = new List<Person>();//Список для считывания данных
+
+            using (BinaryReader reader = new BinaryReader(File.Open("people.bat", FileMode.Open)))//Создаем объект BinaryReader
+            {
+                while(reader.PeekChar() > -1)
+                {
+                    string name = reader.ReadString();
+                    int age = reader.ReadInt32();
+                    people1.Add(new Person(name, age));
+                }
+            }
+
+            foreach (Person person in people1)
+            {
+                Console.WriteLine($"Name:{person.Name}Age:{person.Age}");
+            }
+
+
+
+        }
+    }
+}

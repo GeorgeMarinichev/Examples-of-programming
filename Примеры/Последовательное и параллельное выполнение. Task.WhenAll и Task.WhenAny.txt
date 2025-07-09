@@ -1,0 +1,140 @@
+using System.Data;
+using System.Reflection.Metadata;
+using System.Threading.Tasks;// Деректива поделючения пространство имен многопоточности
+
+namespace Genesis; // Пространство имен
+
+class MyClass//Класс
+{       
+    public void Method()//Метод
+    {
+        Console.WriteLine("1985"); 
+    }
+}
+
+class Account
+{
+    int sum = 0;
+    public event EventHandler<string>? Added;
+    public void Put(int sum)
+    {
+        this.sum += sum;
+        Added?.Invoke(this, $"На счет поступило{sum}$");
+    }
+
+}
+
+record class Person(string Name);
+
+
+class Program // Основной класс программы
+{ 
+    public static async Task Main(string[] args)// Основной метод программы
+    {
+        //Console.SetWindowSize(80, 40);//
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("===<<<Последовательное и параллельное выполнение. Task.WhenAll и Task.WhenAny>>>===");
+        Console.ResetColor();
+        //////////////////////////////Последовательное выполнение////////////////////////////
+        //////Вывод 6 секунд, детерменирован
+        await PrintAsync("Hello C#");
+        await PrintAsync("Hello World");
+        await PrintAsync("Hello METANIT.COM");
+
+        async Task PrintAsync(string message)
+        {
+            await Task.Delay(2000);//Имитация продолжительной операции
+            Console.WriteLine(message);
+        }
+
+        //////////////////////////////Параллельноне выполнение////////////////////////////
+        ///Вывод меньше 6 секунд, недетерменирован
+        Console.WriteLine("--------------------------------------------------------------");
+        var task1 = PrintAsync1("Hello C#");
+        var task2 = PrintAsync1("Hello World");
+        var task3 = PrintAsync1("Hello METANIT.COM");
+
+        await task1;
+        await task1;
+        await task1;
+
+        async Task PrintAsync1(string message)
+        {
+            await Task.Delay(2000);//Имитация продолжительной операции
+            Console.WriteLine(message);
+        }
+
+        //////////////////////////////Параллельноне выполнение метод Task.WhenAll////////////////////////////
+        ///Только для асинхронных методов
+        Console.WriteLine("--------------------------------------------------------------");
+        var task01 = PrintAsync2("Hello C#");
+        var task02 = PrintAsync2("Hello World");
+        var task03 = PrintAsync2("Hello METANIT.COM");
+
+        await Task.WhenAll(task01, task02, task03);//Ожидание завершения всех задач
+
+        async Task PrintAsync2(string message)
+        {
+            await Task.Delay(2000);//Имитация продолжительной операции
+            Console.WriteLine(message);
+        }
+
+        //////////////////////////////Параллельноне выполнение метод Task.WhenAny////////////////////////////
+        ///Только для асинхронных методов
+        Console.WriteLine("--------------------------------------------------------------");
+        var task001 = PrintAsync3("Hello C#");
+        var task002 = PrintAsync3("Hello World");
+        var task003 = PrintAsync3("Hello METANIT.COM");
+
+        await Task.WhenAny(task001, task002, task003);//Ожидание завершения всех задач
+
+        async Task PrintAsync3(string message)
+        {
+            await Task.Delay(2000);//Имитация продолжительной операции
+            Console.WriteLine(message);
+        }
+
+        //////////////////////////////Получение результатов////////////////////////////
+        ///Только для асинхронных методов
+        Console.WriteLine("--------------------------------------------------------------");
+        var task0001 = SquareAsync(1);
+        var task0002 = SquareAsync(2);
+        var task0003 = SquareAsync(3);
+
+        int[] res = await Task.WhenAll(task0001, task0002, task0003);//Ожидание завершения всех задач
+
+        // foreach (var item in res)
+        // {
+        //     Console.WriteLine(item);
+        // }
+        //Или
+        Console.WriteLine($"task2 result:{task0002.Result}");
+
+        async Task<int> SquareAsync(int n)
+        {
+            await Task.Delay(2000);//Имитация продолжительной операции
+            return n * n;
+        }
+
+    }
+
+}
+
+
+
+
+
+
+
+        
+
+    
+
+
+
+
+
+
+
+
+

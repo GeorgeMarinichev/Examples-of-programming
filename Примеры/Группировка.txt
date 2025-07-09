@@ -1,0 +1,113 @@
+record class Person(string Name, string Company);
+    internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Группировка");
+        //////////////////////////Опереатор group by///////////////////////////////////
+        // Person[] people = 
+        // {
+        //     new Person("Tom", "Microsoft"), new Person("Sam", "Google"),
+        //     new Person("Bob", "JetBrains"), new Person("Mike", "Google"),
+        //     new Person("Kate", "Apple"), new Person("Alice", "Yandex")  
+        // };
+        // var companies = from p in people
+        //                 group p by p.Company;
+
+        // foreach (var item1 in companies)
+        // {
+        //     Console.WriteLine(item1.Key);
+            
+        //     foreach (var item2 in item1)
+        //     {
+        //         Console.WriteLine(item2.Name);
+        //     }
+        //     Console.WriteLine("------------------------------------");
+            
+        // }
+
+        //////////////////////////Метод расширения GroupBy()///////////////////////////////////
+        // Person[] people1 = 
+        // {
+        //     new Person("Tom", "Microsoft"), new Person("Sam", "Google"),
+        //     new Person("Bob", "JetBrains"), new Person("Mike", "Google"),
+        //     new Person("Kate", "Apple"), new Person("Alice", "Yandex")  
+        // };
+        // var companies1 = people1.GroupBy(p => p.Company);
+
+        // foreach (var item1 in companies1)
+        // {
+        //     Console.WriteLine(item1.Key);
+            
+        //     foreach (var item2 in item1)
+        //     {
+        //         Console.WriteLine(item2.Name);
+        //     }
+        //     Console.WriteLine("------------------------------------");
+        // }
+        
+        //////////////////////////Создание нового объекта при группировке///////////////////////////////////
+        // Person[] people2 = 
+        // {
+        //     new Person("Tom", "Microsoft"), new Person("Sam", "Google"),
+        //     new Person("Bob", "JetBrains"), new Person("Mike", "Google"),
+        //     new Person("Kate", "Apple"), new Person("Alice", "Yandex")  
+        // };
+
+        // var companies2 = from p in people2 //Оператор сортировки group by
+        //                 group p by p.Company into g
+        //                 select new 
+        //                 {
+        //                     Name = g.Key, 
+        //                     Count = g.Count()
+        //                 };;
+        // //Или
+        // var companies2 = people2.GroupBy(p => p.Company)//Метод расширения GroupBy
+        // .Select(g => new{Name = g.Key, Count = g.Count()});
+
+        // foreach (var item in companies2)
+        // {
+        //     Console.WriteLine($"{item.Name} : {item.Count}");
+        // }
+
+        //////////////////////////Вложенные запросы///////////////////////////////////
+        Person[] people3 = 
+        {
+            new Person("Tom", "Microsoft"), new Person("Sam", "Google"),
+            new Person("Bob", "JetBrains"), new Person("Mike", "Google"),
+            new Person("Kate", "Apple"), new Person("Alice", "Yandex")  
+        };
+
+        // var companies3 = from p in people3 //Оператор сортировки group by
+        //                  group p by p.Company into g
+        //                  select new
+        //                 {
+        //                     Name = g.Key, 
+        //                     Count = g.Count(),
+        //                     Employees = from p in g select p
+        //                 };;
+        //Или
+        var companies3 = people3.GroupBy(p => p.Company)//Метод расширения GroupBy
+        .Select(g => new{
+            Name = g.Key, 
+            Count = g.Count(),
+            Employees = g.Select(p => p)});
+
+        foreach (var item1 in companies3)
+        {
+            Console.WriteLine($"{item1.Name} : {item1.Count}");
+            foreach (var item2 in item1.Employees)
+            {
+                Console.WriteLine(item2.Name);
+            }
+            Console.WriteLine("------------------------------------");
+        }
+    }
+
+}
+    
+        
+
+
+
+

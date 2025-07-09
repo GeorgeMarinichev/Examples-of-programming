@@ -1,0 +1,87 @@
+//Отправка и получение json
+using System;
+using System.Diagnostics;
+using Microsoft.Extensions.FileProviders;
+
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+var argsList = string.Join(" ,", args);//Вывод аргументов командной строки
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// app.Run(async(context)=>
+// {
+//     Person tom = new Person("Tom", 32);
+//     Person den = new("Denis", 18);
+//     var bob = new Person("Bob", 49);
+
+//     //var piople = new[]{tom, bob};//Массив
+//     // List<Person> piople = new List<Person>//Список
+//     // {
+//     //     new Person("Alice", 27),
+//     //     new Person("Jon", 36),    
+//     // };
+//     List<Person> piople = new List<Person>();//Список
+//     piople.Add(tom);
+//     piople.Add(bob);
+//     piople.Add(den);
+
+//     //await context.Response.WriteAsJsonAsync(tom); 
+//     await context.Response.WriteAsJsonAsync(piople); 
+
+// });
+// app.Run();
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// app.Run(async(context)=>//Стандартный метод WriteAsync();
+// {
+//     Person tom = new Person("Tom", 32);
+//     var response = context.Response;
+//     response.Headers.ContentLanguage = "ru-RU";
+//     response.Headers.ContentType = "application/json; charset = utf-8";
+//     await response.WriteAsync($"{tom}");
+// });
+// app.Run();
+
+// //=============================================================================//
+// public interface IPerson//Интерфейс
+// {
+//     string Name { get; }
+//     int Age {get;}
+// }
+// public record Person(string Name, int Age):IPerson; //Запись(record)
+// //=============================================================================//
+// /////////////////////////////////////////////////////////////////////////////////////////////////////
+app.Run(async(context)=> 
+{
+    var response = context.Response;
+    var request = context.Request;
+    //response.Headers.ContentLanguage = "ru-RU";
+
+    if(request.Path == "/api/user")
+    {
+        var message = "Некорректные данные!";//Содержание сообщения по умолчанию
+
+        if(request.HasJsonContentType())
+        {
+            //Пытаемся получить данные json
+            var person = await request.ReadFromJsonAsync<Person>();
+            if(person != null)//Если данные сконвертированы в Person
+            {
+                message = $"Name: {person.Name} Age: {person.Age}";
+            }
+        }
+        //Отпровляем пользователю данные 
+        await response.WriteAsJsonAsync(new {text = message});
+    }
+    else
+    {
+        response.Headers.ContentType = "text/html; charset=utf-8";
+        await response.SendFileAsync(@"C:\Users\SmartPlayer\Desktop\HTML\indexJson.html");
+    }
+
+
+});
+app.Run();
+
+public record Person(string Name, int Age);//Запись
+

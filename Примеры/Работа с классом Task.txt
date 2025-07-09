@@ -1,0 +1,109 @@
+using System.Threading.Tasks;// Деректива поделючения пространство имен многопоточности
+
+namespace Genesis; // Пространство имен
+
+record class Person(string Name, int Age);//Класс персонаж
+
+class MyClass//Класс
+{       
+    public void Method()//Метод
+    {
+        Console.WriteLine("1985"); 
+    }
+}
+class Program // Основной класс программы
+{ 
+    public static void Main(string[] args)// Основной метод программы
+    {
+        //Console.SetWindowSize(80, 40);//
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("======<<<Работа с классом Task>>>=====");
+        Console.ResetColor();
+
+        
+        //////////////////////////////////////////////////////////////////////////////////
+        // var outer = Task.Factory.StartNew(()=>//Внешняя задача
+        // {
+        //     Console.WriteLine("Outer task starting...");
+        //     var inner = Task.Factory.StartNew(()=>//Вложенная задача
+        //     {
+        //         Console.WriteLine("Inner task starting...");
+        //         Thread.Sleep(2000);
+        //         Console.WriteLine("Inner task finished.");
+        //     });//, TaskCreationOptions.AttachedToParent);//
+        // });
+        // outer.Wait();//Ожидаем выполнение внешней задачи
+        // Console.WriteLine("End of Main");
+        //////////////////////////////////////////////////////////////////////////////////
+        // Task[] taskM =new Task[3]
+        // {
+        //     new Task(()=> Console.WriteLine("First Task")),
+        //     new Task(()=> Console.WriteLine("Second Task")),
+        //     new Task(()=> Console.WriteLine("Third Task"))
+        // };
+        // int j = 1;
+        // for (int i = 0; i < taskM.Length; i++)
+        // {
+        //     //Console.WriteLine(taskM[i]);
+        //     taskM[i] = Task.Factory.StartNew(()=> Console.WriteLine($"Task{j++}"));
+        // }
+        
+        // foreach(var t in taskM)
+        // {
+        //     t.Start();
+        // }
+        ///////////////////////////////////////////////////////////////////////////////////
+        // Task[] taskM =new Task[3];
+    
+        // for (int i = 0; i < taskM.Length; i++)
+        // {
+        //     taskM[i] = new Task(()=>
+        //     {
+        //         Thread.Sleep(1000);//Эмуляция долгой работы
+        //         Console.WriteLine($"Task{i} finished");
+        //     });
+        //     taskM[i].Start();//Запуск задачи
+        // }
+        // Console.WriteLine("=====Завершение метода Main=====");
+        //Task.WaitAll(taskM);
+        //Task.WaitAny(taskM);
+       /////////////////////////////////////////////////////////////////////////////////////
+        int n1 = 4, n2 = 5;
+        Task<int> sumTask = new Task<int>(()=> Sum(n1, n2));
+
+        int result = sumTask.Result;
+        Console.WriteLine($"{n1}+{n2}={result}");//4+5=9
+
+        int Sum(int a, int b)
+        {
+            return a + b;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////////////////
+        Task<Person> defaultPersonTask = new Task<Person>(()=> new Person("Том", 40));
+        defaultPersonTask.Start();
+
+        Person defaultPerson = defaultPersonTask.Result;
+        Console.WriteLine($"{defaultPerson.Name}-{defaultPerson.Age}");//Tom-40
+
+    }
+}
+
+    
+
+
+
+
+
+        
+
+    
+
+
+
+
+
+
+
+
+

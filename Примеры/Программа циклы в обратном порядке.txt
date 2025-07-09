@@ -1,0 +1,39 @@
+using System;
+using System.Linq.Expressions;
+
+namespace ConsoleApplication1
+{
+    internal class Program
+    {
+        public static void Main(string[] args)
+        {
+            //restart:
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Программа цикл проверка на четное число...)");
+                int x = 0;
+                while (x<=5)
+                {
+                    System.Threading.Thread.Sleep(500);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Итерация x - {x}");
+                    x++;
+                    
+                }
+                for (int y = 5; y >=0; y--)
+                {
+                    System.Threading.Thread.Sleep(500);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Итерация y - {y}");
+                    
+                }
+                
+                Console.ResetColor();
+                Console.ReadKey();
+                //goto restart;
+            }
+
+        }
+    }
+}

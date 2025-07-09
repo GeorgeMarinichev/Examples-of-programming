@@ -1,0 +1,93 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+Console.WriteLine("Сериализация в JSON");
+
+Person tom = new("Tom", 39);
+string jsonTom = JsonSerializer.Serialize(tom);//Сериализация объекта
+Console.WriteLine(jsonTom);
+
+Console.WriteLine("----------------------------------------");
+
+Person? restoredTom = JsonSerializer.Deserialize<Person>(jsonTom);//Десериализация объекта
+Console.WriteLine(restoredTom?.Name);
+Console.WriteLine(restoredTom?.Age);
+
+
+//////////////////////////////////////////Запись и чтение файла json
+Console.WriteLine("-------------Запись и чтение файла json------------");
+using (FileStream fs = new FileStream("user.json", FileMode.OpenOrCreate))
+{
+    Person george = new("george", 39);
+    await JsonSerializer.SerializeAsync<Person>(fs, george);
+    Console.WriteLine("Data has been saved to file");
+}
+
+using (FileStream fs = new FileStream("user.json", FileMode.OpenOrCreate))
+{ 
+    Person? restoredGeorge = await JsonSerializer.DeserializeAsync<Person>(fs);
+    Console.WriteLine($"Name:{restoredGeorge?.Name} Age:{restoredGeorge?.Age}");
+}
+
+
+//////////////////////////////////////////Настройка сериализации с помощью JsonSerializerOptions
+Console.WriteLine("-------------Настройка сериализации с помощью JsonSerializerOptions------------");
+Person bob = new("Bob", 40);
+var options = new JsonSerializerOptions//
+{
+    WriteIndented = true,//Добавляет дополнительные пробелы 
+};
+string jsonBob = JsonSerializer.Serialize<Person>(bob, options);//Сериализация объекта
+Console.WriteLine(jsonBob);
+
+Console.WriteLine("----------------------------------------");
+
+Person? restoredBob = JsonSerializer.Deserialize<Person>(jsonBob);//Десериализация объекта
+Console.WriteLine(restoredBob?.Name);
+Console.WriteLine(restoredBob?.Age);
+
+
+//////////////////////////////////////////Настройка сериализации с помощью атрибутов
+Console.WriteLine("-------------------Настройка сериализации с помощью атрибутов---------------------");
+Person1 sam = new("Sam", 45);
+string jsonSam = JsonSerializer.Serialize<Person1>(sam);
+Console.WriteLine(jsonSam);
+
+Console.WriteLine("----------------------------------------");
+
+Person1? restoredSam = JsonSerializer.Deserialize<Person1>(jsonSam);
+Console.WriteLine($"Name: {restoredSam?.Name} Age:{restoredSam?.Age}");
+
+
+//////////////////////////////////////////////
+class Person
+//struct Person
+{
+    public string Name {get;}
+    public int Age { get; set; }
+    public Person(string name, int age)
+    {
+        Name = name;
+        Age = age;
+    }
+}
+
+///////////////////////////////////////////
+
+class Person1
+//struct Person
+{
+    [JsonPropertyName("firstname")]
+    public string Name { get; }//Игнорируется
+    [JsonIgnore]
+    public int Age { get; set; }
+    public Person1(string name, int age)
+    {
+        Name = name;
+        Age = age;
+    }
+}
+
+///////////////////////////////////////////
+
+

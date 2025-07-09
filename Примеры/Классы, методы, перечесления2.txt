@@ -1,0 +1,169 @@
+using System.Data.Common;
+using System.Diagnostics;
+using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
+
+namespace Genesis; // Пространство имен бытие
+public enum Color : Byte // enum-перечесления цветов
+{
+    White,
+    Black,
+    Blue,
+    Green,
+    Yellow,
+    Orange,
+    Red
+}
+public class Car // Класс машина
+{
+    public Car() {} // Пустой конструктор Car 
+    public Car(int speed) // Конструктор с параметрами класса Car
+    {
+        this.speed = speed; // Ключевое слово this в классе конструктора Car
+    }
+
+    public Color color;// Поля класса Car
+    private int speed = 0;// Поля класса Car
+    public void PrintSpeed() // Метод класса Car
+    {
+        if (speed == 0)
+        {
+            Console.WriteLine("Стоим на месте");
+        }
+        else if (speed > 0)
+        {
+            Console.WriteLine($"Едем вперед со скоростью {speed}км/ч");
+        }
+        else if (speed < 0)
+        {
+            Console.WriteLine($"Едем назад со скоростью {speed}км/ч");
+        }
+    }
+    public void DriveForward()
+    {
+        speed = 60;
+    }
+    public void Stop()
+    {
+        speed = 0;
+    }
+    public void DriveBackward()
+    {
+        speed = -5;
+    }
+}
+class Student // Класс студент
+{
+    public Student() {} // Пустой конструктор Student
+    public Student(Student student) // Конструктор с классом Student
+    {
+        _firstName = student._firstName;
+        _lastName = student._lastName;
+        _middleName = student._middleName;
+        _age = student._age;
+        _group = student._group;
+    }
+    public Student(string firstName, int age, string group): this() // Конструктор с тремя параметрами в классе Student
+    {
+        _firstName = firstName;
+        _age = age;
+        _group = group;
+    }
+
+    public Student(string firstName, int age, string group, DateTime birthday)// Конструктор с четермя параметрами в классе Student
+    {
+        _firstName = firstName;
+        _age = age;
+        _group = group;
+        _birthday = birthday;
+    }
+    public Guid _id; // Поля класса генерация индивидуального номера
+    public DateTime _birthday; // Поля класса дата создания
+    public Color _color; // Поля класса цвет
+    private string _firstName; // Поля класса имя
+    private string _lastName; // Поля класса фамилия
+    private string _middleName; // Поля класса отчество
+    private int _age = 0; // Поля класса возраст
+    private string _group = "Первый уроваень"; // Поля класса группа
+
+    public void Print()
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine("Информация о студенте");
+        Console.ForegroundColor = ConsoleColor.Green;
+
+        Console.WriteLine($"id: {_id}");
+        Console.WriteLine($"Дата создания: {_birthday}");
+        Console.WriteLine($"Цвет: {_color}");
+        Console.WriteLine($"Фамилия: {_lastName}");
+        Console.WriteLine($"Имя: {_firstName}");
+        Console.WriteLine($"Отчество: {_middleName}");
+        Console.WriteLine($"Возраст: {_age}");
+        Console.WriteLine($"Группа: {_group}");
+    }
+}
+internal class Program ////////////////////// Основной класс программы //////////////////////////
+{
+    private static void Main(string[] args)////////////////////// Основной метод программы //////////////////////////
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Классы, методы, перечесления");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(DateTime.Now);
+
+        // static Student GetStudent() // Метод студент внешний
+        // {
+        //     //var student = new Student();//Экземпляр класса способ 2
+        //     Student student = new();//Экземпляр класса способ 1
+        //     student._id = Guid.NewGuid();
+        //     student._birthday = DateTime.Now;
+        //     student._color = Color.Green;
+        //     student._firstName = "George";
+        //     student._middleName = "Vadimovich";
+        //     student._lastName = "Marinichev";
+        //     student._age = 38;
+        //     student._group = "RBT";
+
+        //     return student;
+        // }
+
+        // Console.WriteLine("---------------Student1---------------------");
+        // Student firstStudent = GetStudent(); // Данные о студенте взяты из метода GetStudent
+        // firstStudent.Print();
+
+        Console.WriteLine("---------------Student2---------------------");
+        Student student2 = new(); // Данные о студенте созданы новые
+        student2._color = Color.Yellow;
+        student2.Print();
+        
+        Console.WriteLine("---------------Student3---------------------");
+        //Student student3 = new();
+        var student3 = new Student("Том", 40, "DNS"); // Экземпляр класса Student с параметрами по второй перегрузке
+        student3._birthday = new DateTime(1976, 11, 12);
+        student3.Print();
+
+        // Console.ForegroundColor = ConsoleColor.White;
+        // Console.WriteLine("--------------Car1-------------");
+        // Console.ForegroundColor = ConsoleColor.Green;
+        // Car car1 = new();
+        // car1.PrintSpeed();
+        // car1.DriveForward();
+        // car1.PrintSpeed();
+        // car1.Stop();
+        // car1.PrintSpeed();
+        
+        // Console.ForegroundColor = ConsoleColor.Red;
+        // Console.WriteLine("--------------Car2-------------");
+        // Console.ForegroundColor = ConsoleColor.Green;
+        // var car2 = new Car();
+        // car2.color = Color.Red;
+        // car2.Stop();
+        // car2.PrintSpeed();
+        // car2.DriveBackward();
+        // car2.PrintSpeed();
+        // car2.Stop();
+        // car2.PrintSpeed();
+
+    }
+}

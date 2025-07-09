@@ -1,0 +1,58 @@
+////////////////////////////Определение своего типа Results
+
+using System;//Подключение директивы
+
+namespace Space//Пространство имен
+{
+    class HtmlResult: IResult//Класс
+    {
+        string htmlCode = "";
+        public HtmlResult(string htmlCode)
+        {
+            this.htmlCode = htmlCode;
+        }
+
+        public async Task ExecuteAsync(HttpContext context)
+        {
+            context.Response.ContentType = "text/html; charset=utf-8";
+            await context.Response.WriteAsync(htmlCode);
+        }
+    }
+    static class ResultsHtmlExtension//Класс расширения
+    {
+        public static IResult Html(this IResultExtensions ex, string htmlCode)
+        {
+            return new HtmlResult(htmlCode);
+        }
+    }
+    class Program//Главный класс приложения
+    {  
+        static void Main(string[] args)
+        {
+            /////////////////////Тип для отправки html
+            var builder = WebApplication.CreateBuilder(new WebApplicationOptions {WebRootPath = "uploads"});//Имя папки для хранения файлов
+            var app = builder.Build();
+
+            app.Map("/html", ()=> Results.Extensions.Html
+            (@"<!DOCTYPE html>
+              <html>
+              <head>
+              <title>METANIT.COM</title>
+              <meta charset='utf-8'/>
+              </head>
+              <body>
+              <h1>Hello METANIT.COM</h1>
+              </body>
+              </html>  
+            "));
+        
+            app.Map("/", ()=> "Hello, World");
+
+            //app.Run(async(context)=> await context.Response.WriteAsync($"Text:{context.Items["text"]}"));
+            app.Run();
+
+
+        }
+     
+    }
+}

@@ -1,0 +1,362 @@
+{
+  "Version": 1,
+  "Hash": "AEB+hOVassbESXX/99kCdiQHICVdxP/a6PGBwg90xMk=",
+  "Source": "MyWebEf",
+  "BasePath": "_content/MyWebEf",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "MyWebEf\\wwwroot",
+      "Source": "MyWebEf",
+      "ContentRoot": "C:\\Users\\SmartPlayer\\Desktop\\VSCSQLWEB\\MyWebEf\\wwwroot\\",
+      "BasePath": "_content/MyWebEf",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\SmartPlayer\\Desktop\\VSCSQLWEB\\MyWebEf\\obj\\Debug\\net9.0\\compressed\\oqdz7euwk0-w6wc9lnz6f.gz",
+      "SourceId": "MyWebEf",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\SmartPlayer\\Desktop\\VSCSQLWEB\\MyWebEf\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/MyWebEf",
+      "RelativePath": "index#[.{fingerprint=w6wc9lnz6f}]?.html.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\SmartPlayer\\Desktop\\VSCSQLWEB\\MyWebEf\\wwwroot\\index.html",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "jkhkcukywl",
+      "Integrity": "8xkHXJK/gTZlexmIlM8PFWizg1vQB7u29abEBKEQ1Q8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\SmartPlayer\\Desktop\\VSCSQLWEB\\MyWebEf\\wwwroot\\index.html"
+    },
+    {
+      "Identity": "C:\\Users\\SmartPlayer\\Desktop\\VSCSQLWEB\\MyWebEf\\wwwroot\\index.html",
+      "SourceId": "MyWebEf",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\SmartPlayer\\Desktop\\VSCSQLWEB\\MyWebEf\\wwwroot\\",
+      "BasePath": "_content/MyWebEf",
+      "RelativePath": "index#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "w6wc9lnz6f",
+      "Integrity": "CIXBWV9RyzuAGeZzMKlyWWL1P6edUaORSfUHWY+pDnY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "index.html",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSCSQLWEB\\MyWebEf\\obj\\Debug\\net9.0\\compressed\\oqdz7euwk0-w6wc9lnz6f.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000606428138"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1648"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8xkHXJK/gTZlexmIlM8PFWizg1vQB7u29abEBKEQ1Q8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Jun 2025 13:31:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"CIXBWV9RyzuAGeZzMKlyWWL1P6edUaORSfUHWY+pDnY=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-CIXBWV9RyzuAGeZzMKlyWWL1P6edUaORSfUHWY+pDnY="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSCSQLWEB\\MyWebEf\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6932"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CIXBWV9RyzuAGeZzMKlyWWL1P6edUaORSfUHWY+pDnY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Jun 2025 13:31:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-CIXBWV9RyzuAGeZzMKlyWWL1P6edUaORSfUHWY+pDnY="
+        }
+      ]
+    },
+    {
+      "Route": "index.html.gz",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSCSQLWEB\\MyWebEf\\obj\\Debug\\net9.0\\compressed\\oqdz7euwk0-w6wc9lnz6f.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1648"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8xkHXJK/gTZlexmIlM8PFWizg1vQB7u29abEBKEQ1Q8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Jun 2025 13:31:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-8xkHXJK/gTZlexmIlM8PFWizg1vQB7u29abEBKEQ1Q8="
+        }
+      ]
+    },
+    {
+      "Route": "index.w6wc9lnz6f.html",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSCSQLWEB\\MyWebEf\\obj\\Debug\\net9.0\\compressed\\oqdz7euwk0-w6wc9lnz6f.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000606428138"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1648"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8xkHXJK/gTZlexmIlM8PFWizg1vQB7u29abEBKEQ1Q8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Jun 2025 13:31:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"CIXBWV9RyzuAGeZzMKlyWWL1P6edUaORSfUHWY+pDnY=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "w6wc9lnz6f"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-CIXBWV9RyzuAGeZzMKlyWWL1P6edUaORSfUHWY+pDnY="
+        }
+      ]
+    },
+    {
+      "Route": "index.w6wc9lnz6f.html",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSCSQLWEB\\MyWebEf\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6932"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CIXBWV9RyzuAGeZzMKlyWWL1P6edUaORSfUHWY+pDnY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Jun 2025 13:31:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "w6wc9lnz6f"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-CIXBWV9RyzuAGeZzMKlyWWL1P6edUaORSfUHWY+pDnY="
+        }
+      ]
+    },
+    {
+      "Route": "index.w6wc9lnz6f.html.gz",
+      "AssetFile": "C:\\Users\\SmartPlayer\\Desktop\\VSCSQLWEB\\MyWebEf\\obj\\Debug\\net9.0\\compressed\\oqdz7euwk0-w6wc9lnz6f.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1648"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8xkHXJK/gTZlexmIlM8PFWizg1vQB7u29abEBKEQ1Q8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Jun 2025 13:31:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "w6wc9lnz6f"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-8xkHXJK/gTZlexmIlM8PFWizg1vQB7u29abEBKEQ1Q8="
+        }
+      ]
+    }
+  ]
+}

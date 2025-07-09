@@ -1,0 +1,98 @@
+
+record class Person(string Name, int Age);
+
+class CustomStringComparer : IComparer<String>
+{
+    public int Compare(string? x, string? y)
+    {
+        int xLength = x?.Length ?? 0; // если x равно null, то длина 0
+        int yLength = y?.Length ?? 0;
+        return xLength - yLength;
+    }
+}
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Сортировка");
+        //////////////////////////Оператор orderby и методOrderBy()///////////////////////////////////
+        int[] number = {1, 9, 8, 5};
+        //var orderbyNumber = from n in number orderby n select n;
+        //Или через метод расширения OrderBy()
+        var orderbyNumber = number.OrderBy(n => n);
+        foreach (var item in orderbyNumber)
+        {
+            Console.WriteLine(item);
+        } 
+
+        ////////////////////////////////////////////////////////////////
+        string[] people = {"Tom", "Bob", "Sam"};
+        var orderbyPeople = from p in people orderby p select p;
+        //Или через метод расширения OrderBy()
+        //var orderbyPeople = people.OrderBy(p => p);
+        foreach (var item in orderbyPeople)
+        {
+            Console.WriteLine(item);
+        }
+
+        //////////////////////////////Сортировка сложных объектов///////////////////////////////
+        
+        var people1 = new List<Person>
+        {
+            new Person("Tom", 30),
+            new Person("Bob", 65),
+            new Person("Sam", 45)
+        };
+        //var orderbyPeople1 = from p in people1 orderby p.Name select p;
+        //Или через метод расширения OrderBy()
+        var orderbyPeople1 = people1.OrderBy(p => p.Name);
+        foreach (var item in orderbyPeople1)
+        {
+            //Console.WriteLine($"{item.Name}-{item.Age}");
+            Console.WriteLine(item.Name + item.Age);
+        }
+
+        ///////////////////////////////Сортировка по возрастанию и убыванию////////////////////////
+        Console.WriteLine("Сортировка");
+        int[] number1 = {1, 9, 8, 5};
+        //var orderbyNumber = from n in number orderby n descending select n;
+        //Или через метод расширения OrderBy()
+        var orderbyNumber1 = number1.OrderByDescending(n => n);
+        foreach (var item in orderbyNumber1)
+        {
+            Console.WriteLine(item);
+        }
+
+        /////////////////////////////////Сортировка множественных объектов////////////////////////
+        var people2 = new List<Person>
+        {
+            new Person("Tom", 30),
+            new Person("Bob", 65),
+            new Person("Sam", 45)
+        };
+        //var orderbyPeople2 = from p in people2 orderby p.Name, p.Age select p;
+        //ИЛИ
+        //var orderbyPeople2 = from p in people2 orderby p.Name, p.Age descending select p;
+        //Или через метод расширения OrderBy()
+        //var orderbyPeople2 = people2.OrderBy(p => p.Name);
+        //Или
+        var orderbyPeople2 = people2.OrderBy(p => p.Name).ThenByDescending(p => p.Age);
+        foreach (var item in orderbyPeople2)
+        {
+            Console.WriteLine($"{item.Name}-{item.Age}");
+        }
+
+        /////////////////////Переопределение критерия сортировки////////////////////////
+        string[] people3 = new[]{"Kate", "Tom", "Sam", "Mike", "Alice"};
+        var sortedPeople3 = people3.OrderBy(p => p, new CustomStringComparer());
+        foreach (var item in sortedPeople3)
+        {
+            Console.WriteLine(item);
+        }
+    
+ 
+    }
+}
+
+

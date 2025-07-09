@@ -1,0 +1,52 @@
+namespace WebApplication3
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+
+            //Console.WriteLine("Преадресация");
+            //////////////////////////
+            //Базовая программа
+            //var builder = WebApplication.CreateBuilder();
+            //var app = builder.Build();
+            //app.Run(async (context) =>
+            //{
+            //    if(context.Request.Path == "/old")
+            //    {
+            //        await context.Response.WriteAsync("Old Page");
+            //    }
+            //    else
+            //    {
+            //        await context.Response.WriteAsync("Main Page");
+            //    }
+            //});
+            //app.Run();
+
+
+            //Первая версия метода
+            var builder = WebApplication.CreateBuilder();
+            var app = builder.Build();
+            app.Run(async (context) =>
+            {
+                if (context.Request.Path == "/old")
+                {
+                    context.Response.Redirect("/new");
+                    //await context.Response.WriteAsync("Old Page");
+                }
+                else if(context.Request.Path == "/new")
+                {
+                    await context.Response.WriteAsync("New Page");
+                }
+                else
+                {
+                    await context.Response.WriteAsync("Main Page");
+                }
+            });
+            app.Run();
+
+
+
+        }
+    }
+}
