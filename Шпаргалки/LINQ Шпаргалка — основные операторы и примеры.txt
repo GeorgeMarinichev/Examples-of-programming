@@ -1,0 +1,74 @@
+							LINQ Шпаргалка — основные операторы и примеры
+
+1. Фильтрация
+  var filtered = collection.Where(x => x.Property > 10);
+
+2. Проекция (преобразование)
+  var projected = collection.Select(x => x.Property);
+
+3. Сортировка
+  var sortedAsc = collection.OrderBy(x => x.Property);
+  var sortedDesc = collection.OrderByDescending(x => x.Property);
+
+4. Группировка
+  var grouped = collection.GroupBy(x => x.Category);
+
+5. Объединение (Join)
+  var joined = collectionA.Join(collectionB,
+                a => a.Key,
+                b => b.Key,
+                (a, b) => new { a, b });
+
+6. Агрегация
+  int count = collection.Count();
+  int sum = collection.Sum(x => x.Value);
+  double avg = collection.Average(x => x.Value);
+  int max = collection.Max(x => x.Value);
+  int min = collection.Min(x => x.Value);
+
+7. Уникальные элементы
+  var distinct = collection.Distinct();
+
+8. Выборка части коллекции
+  var firstFive = collection.Take(5);
+  var skipFive = collection.Skip(5);
+
+9. Элементы по условию
+  var first = collection.First(x => x.Property > 10);
+  var firstOrDefault = collection.FirstOrDefault(x => x.Property > 10);
+  var single = collection.Single(x => x.Id == 5);
+  var singleOrDefault = collection.SingleOrDefault(x => x.Id == 5);
+
+10. Проверки условий
+  bool any = collection.Any(x => x.Property > 10);
+  bool all = collection.All(x => x.Property > 0);
+
+11. Преобразование в коллекцию
+  var list = collection.Where(...).ToList();
+  var array = collection.Select(...).ToArray();
+------------------------
+Основные операторы LINQ (таблица)
+------------------------
+| Оператор          | Описание                          | Пример                           |
+|-------------------|---------------------------------|---------------------------------|
+| Where             | Фильтрация элементов             | items.Where(x => x > 10)         |
+| Select            | Проекция (преобразование)        | items.Select(x => x.Name)        |
+| OrderBy           | Сортировка по возрастанию        | items.OrderBy(x => x.Age)        |
+| OrderByDescending | Сортировка по убыванию           | items.OrderByDescending(x => x.Age) |
+| GroupBy           | Группировка элементов            | items.GroupBy(x => x.Category)   |
+| Join              | Объединение коллекций            | a.Join(b, aKey, bKey, (a,b) => ...) |
+| Sum               | Суммирование значений            | items.Sum(x => x.Value)           |
+| Count             | Подсчёт элементов                | items.Count()                    |
+| Average           | Среднее значение                 | items.Average(x => x.Value)       |
+| Distinct          | Уникальные элементы              | items.Distinct()                 |
+| Take              | Выборка первых N элементов       | items.Take(5)                   |
+| Skip              | Пропуск первых N элементов       | items.Skip(5)                   |
+| First             | Первый элемент (с условием)       | items.First(x => x.Property > 0) |
+| FirstOrDefault    | Первый элемент или значение по умолчанию | items.FirstOrDefault()       |
+
+- Отложенное выполнение — запросы не выполняются до начала перебора.
+- LINQ to Objects — работает с коллекциями в памяти.
+- LINQ to Entities / SQL — запросы преобразуются в SQL, поддерживаются не все методы.
+- Можно создавать собственные методы расширения.
+- Хорошо подходит для удобной и читаемой работы с коллекциями.
+
